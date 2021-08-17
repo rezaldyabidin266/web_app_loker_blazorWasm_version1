@@ -1,0 +1,21 @@
+﻿@page "/loker"
+
+@inherits LokerCompBase
+
+
+<h3>Loker</h3>
+
+@if (lokers != null)
+{
+    @foreach (var item in lokers)
+    {
+        <p>@item.Id</p>
+        <p>@item.JudulLowongan</p>
+        <p>@item.Keterangan</p>
+    }
+}
+
+
+<button onclick="">Get Loker Single</button>
+
+

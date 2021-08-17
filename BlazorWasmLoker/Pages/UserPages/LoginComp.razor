@@ -1,0 +1,18 @@
+﻿@page "/login"
+@inherits LoginCompBase
+<h3>Login</h3>
+
+<DxTextBox @bind-Text="@Email" CssClass="cw-320" />
+<DxTextBox @bind-Text="@Password" CssClass="cw-320" />
+
+<DxButton RenderStyle="ButtonRenderStyle.Success" RenderStyleMode="ButtonRenderStyleMode.Contained"
+          @onclick="loginAsync" Text="Login" />
+
+@if (loginRespond != null)
+{
+    <p>@loginRespond.Message</p>
+    <p>@loginRespond.Token</p>
+}
+
+
+
