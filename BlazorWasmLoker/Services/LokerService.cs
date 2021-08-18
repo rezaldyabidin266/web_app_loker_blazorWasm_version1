@@ -1,4 +1,4 @@
-﻿using BlazorWasmLoker.Resoruces;
+﻿using BlazorWasmLoker.Resoruces.Lokers;
 using System;
 using System.Collections.Generic;
 using System.Linq;

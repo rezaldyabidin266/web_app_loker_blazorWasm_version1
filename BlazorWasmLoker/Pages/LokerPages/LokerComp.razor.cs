@@ -1,4 +1,4 @@
-﻿using BlazorWasmLoker.Resoruces;
+﻿using BlazorWasmLoker.Resoruces.Lokers;
 using BlazorWasmLoker.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 namespace BlazorWasmLoker.Pages.LokerPages
 {
     public class LokerCompBase : ComponentBase
-    {
-        protected List<LokerResource> lokers;
-
+    {     
         [Inject]
         protected LokerService lokerService { get; set; }
+
+        protected List<LokerResource> lokers;
 
         protected override async Task OnInitializedAsync()
         {

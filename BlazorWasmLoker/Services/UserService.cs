@@ -1,5 +1,4 @@
-﻿using BlazorWasmLoker.Resoruces;
-using BlazorWasmLoker.Responds;
+﻿using BlazorWasmLoker.Resoruces.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +17,10 @@ namespace BlazorWasmLoker.Services
             _httpClient = httpClient;
         }
 
-        public async Task<LoginRespond> Login(UserLoginResource userLogin)
+        public async Task<TokenResource> Login(UserLoginResource userLogin)
         {            
             var respond = await _httpClient.PostAsJsonAsync(Controller + "login", userLogin);
-            return await respond.Content.ReadFromJsonAsync<LoginRespond>();
+            return await respond.Content.ReadFromJsonAsync<TokenResource>();
         }
 
 

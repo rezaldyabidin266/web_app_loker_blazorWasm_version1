@@ -1,5 +1,4 @@
-﻿using BlazorWasmLoker.Resoruces;
-using BlazorWasmLoker.Responds;
+﻿using BlazorWasmLoker.Resoruces.Users;
 using BlazorWasmLoker.Services;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -14,12 +13,12 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected UserService userService { get; set; }
         protected string Email;
         protected string Password;
-        protected LoginRespond loginRespond;
+        protected TokenResource loginRespond;
         protected async Task loginAsync()
         {
             var login = new UserLoginResource { Email = Email, Password = Password, Browser = string.Empty, IpAddress = string.Empty };
             var result = await userService.Login(login);
-            loginRespond = new LoginRespond
+            loginRespond = new TokenResource
             {
                 Token = result.Token,
                 Message = result.Message

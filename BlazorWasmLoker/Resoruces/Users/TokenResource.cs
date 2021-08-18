@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorWasmLoker.Responds
+namespace BlazorWasmLoker.Resoruces.Users
 {
-    public class LoginRespond
+    public class TokenResource
     {
         public string Token { get; set; }
         public string Message { get; set; }
