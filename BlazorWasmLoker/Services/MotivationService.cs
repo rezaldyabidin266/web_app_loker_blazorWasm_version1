@@ -22,6 +22,7 @@ namespace BlazorWasmLoker.Services
             return await _httpClient.GetFromJsonAsync<IEnumerable<KalimatMotivasiResoruce>>(Controller + "list-kalimat");
         }
 
+<<<<<<< HEAD
         public async Task<byte[]> GetGambarMotivasi()
         {
             var responsePhoto = await _httpClient.GetAsync(Controller + "show-gambar-motivasiftp");
@@ -31,5 +32,12 @@ namespace BlazorWasmLoker.Services
 
        
 
+=======
+         public async Task<byte[]> GetGamabarMotivasiFtp()
+        {            
+            var result = await _httpClient.GetFromJsonAsync<byte[]>(Controller + "show-gambar-motivasiftp");
+            return result;
+        }
+>>>>>>> cc0105c73f28b9d2b7efb2dbf615bb7ed995263c
     }
 }

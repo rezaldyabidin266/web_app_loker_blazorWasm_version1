@@ -33,6 +33,16 @@ namespace BlazorWasmLoker.Pages.LokerPages
             NavigationManager.NavigateTo("/kriteria/" + idLoker);
            
         }
+<<<<<<< HEAD
+=======
+            
+        protected string JudulLowongan;
+
+        protected void GetLoker(int idLoker)
+        {
+            JudulLowongan = lokers.Single(x => x.Id == idLoker).JudulLowongan;
+        }
+>>>>>>> cc0105c73f28b9d2b7efb2dbf615bb7ed995263c
 
     }
 }

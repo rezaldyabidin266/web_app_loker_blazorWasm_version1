@@ -37,5 +37,11 @@ namespace BlazorWasmLoker.Pages
             await settingService.SaveCounter(counterResoruce);
         }
 
+        protected async Task<byte[]> GetGambarMotivasi()
+        {
+           return await motivationService.GetGamabarMotivasiFtp();
+        }
+
+
     }
 }
