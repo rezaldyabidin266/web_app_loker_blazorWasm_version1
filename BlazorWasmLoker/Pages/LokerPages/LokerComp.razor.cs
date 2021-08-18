@@ -24,5 +24,13 @@ namespace BlazorWasmLoker.Pages.LokerPages
         {
             return await lokerService.GetLoker(idLoker);
         }
+            
+        protected string JudulLowongan;
+
+        protected void GetLoker(int idLoker)
+        {
+            JudulLowongan = lokers.Single(x => x.Id == idLoker).JudulLowongan;
+        }
+
     }
 }

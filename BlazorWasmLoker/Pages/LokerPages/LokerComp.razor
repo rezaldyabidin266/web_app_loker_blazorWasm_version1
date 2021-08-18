@@ -9,12 +9,14 @@
 {
     @foreach (var item in lokers)
     {
-        <p>@item.Id</p>
+        <p>@item.Id</p> 
+        <DxButton @onclick="@(x => GetLoker(item.Id))">  </DxButton>
         <p>@item.JudulLowongan</p>
         <p>@item.Keterangan</p>
     }
 }
 
+<p>@JudulLowongan</p>
 
 <button onclick="">Get Loker Single</button>
 
