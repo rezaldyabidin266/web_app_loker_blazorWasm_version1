@@ -2,6 +2,8 @@
 using BlazorWasmLoker.Resoruces.Settings;
 using BlazorWasmLoker.Services;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Mvc;
+using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,11 +20,18 @@ namespace BlazorWasmLoker.Pages
         protected SettingService settingService { get; set; }
 
         protected List<KalimatMotivasiResoruce> listMotivasi = new List<KalimatMotivasiResoruce>();
-        
+        //protected GambarMotivasiResource gambarMotivasi { get; set; } = new GambarMotivasiResource();
+
+        protected byte[] gambarByte;
+        protected string gambar;
         protected override async Task OnInitializedAsync()
         {
             listMotivasi = (List<KalimatMotivasiResoruce>)await motivationService.GetListKalimat();
+            gambarByte = await motivationService.GetGambarMotivasi();
+            gambar = Convert.ToBase64String(gambarByte);
         }
+
+
         protected async void SaveCounter(CounterResoruce counterResoruce)
         {            
             await settingService.SaveCounter(counterResoruce);

@@ -25,15 +25,16 @@ namespace BlazorWasmLoker.Services
 
         public async Task<LokerResource> GetLoker(int idLoker)
         {
+
             return await _httpClient.GetFromJsonAsync<LokerResource>(Controller + $"get-loker?LokerId={idLoker}");
         }
 
-        public async Task<List<string>> GetKriteria(int idLoker)
+        public async Task<string[]> GetKriteria(int idLoker)
         {
-            return await _httpClient.GetFromJsonAsync<List<string>>(Controller + $"get-kriteria?LokerId={idLoker}");            
+            return await _httpClient.GetFromJsonAsync<string[]>(Controller + $"get-kriteria?LokerId={idLoker}");            
         }
 
-
+      
 
     }
 }

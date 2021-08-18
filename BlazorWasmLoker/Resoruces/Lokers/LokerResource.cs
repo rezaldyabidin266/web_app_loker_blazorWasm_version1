@@ -10,5 +10,6 @@ namespace BlazorWasmLoker.Resoruces.Lokers
         public int Id { get; set; }
         public string JudulLowongan { get; set; }
         public string Keterangan { get; set; }
+
     }
 }

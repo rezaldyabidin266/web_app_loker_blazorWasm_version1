@@ -1,0 +1,18 @@
+﻿
+@page "/kriteria/{idLoker:int}"
+
+<h3>KriteriaPages @idLoker</h3>
+
+@lokers.JudulLowongan
+<br />
+<br />
+@lokers.Keterangan
+<br />
+<br />
+
+<ul>
+    @foreach (var item in kriteriaResc)
+    {
+    <li>@item</li>
+    }
+</ul>

@@ -6,23 +6,33 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace BlazorWasmLoker.Pages.LokerPages
 {
     public class LokerCompBase : ComponentBase
-    {     
+    {
         [Inject]
         protected LokerService lokerService { get; set; }
+
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
         protected List<LokerResource> lokers;
 
         protected override async Task OnInitializedAsync()
         {
             lokers = (List<LokerResource>)await lokerService.ListLoker();
+            Console.WriteLine("INI LOKER");
         }
 
-        protected async Task<LokerResource> GetLokerAsync(int idLoker)
+        protected string JudulLowongan;
+
+        protected void GetLoker(int idLoker)
         {
-            return await lokerService.GetLoker(idLoker);
+            //JudulLowongan = lokers.Single(x => x.Id == idLoker).Keterangan;
+            NavigationManager.NavigateTo("/kriteria/" + idLoker);
+           
         }
+
     }
 }
