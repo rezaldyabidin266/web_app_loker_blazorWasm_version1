@@ -10,7 +10,7 @@ namespace BlazorWasmLoker.Resoruces.Users
         public string NoTlp { get; set; }
         public string TempatLahir { get; set; }
         public DateTime TglLahir { get; set; }
-        public string Passwrod { get; set; }
+        public string password { get; set; }
         public string Note { get; set; }
     }
 }

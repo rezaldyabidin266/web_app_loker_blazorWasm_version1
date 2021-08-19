@@ -13,6 +13,91 @@
 <ul>
     @foreach (var item in kriteriaResc)
     {
-    <li>@item</li>
+        <li>@item</li>
     }
 </ul>
+
+<img src="data:image/png;base64,@gambarBackground" width="300px" height="100%" />
+<img src="data:image/png;base64,@gambarIlustrasi" width="300px" height="100%" />
+
+<br />
+<br />
+
+<h3>Daftar</h3>
+<div class="container-lg">
+    <form class="mb-xl-5 row g-3">
+        <div class="col-lg-6">
+            <label>Nama</label>
+            <DxTextBox @bind-Text="@Nama"
+                       BindValueMode="BindValueMode.OnInput"
+                       NullText="Nama"
+                       CssClass="cw-320" />
+        </div>
+        <div class="col-lg-6">
+            <label>Email</label>
+            <DxTextBox @bind-Text="@Email"
+                       BindValueMode="BindValueMode.OnInput"
+                       NullText="Email."
+                       CssClass="cw-320" />
+        </div>
+        <div class="col-lg-6">
+            <label>Alamat</label>
+            <DxTextBox @bind-Text="@Alamat"
+                       BindValueMode="BindValueMode.OnInput"
+                       NullText="Alamat."
+                       CssClass="cw-320" />
+        </div>
+        <div class="col-lg-6">
+            <label>Tempat Lahir</label>
+            <DxTextBox @bind-Text="@tempatLahir"
+                       BindValueMode="BindValueMode.OnInput"
+                       NullText="Type text..."
+                       CssClass="cw-320" />
+        </div>
+        <div class="col-lg-6">
+            <label>No Telepon</label>
+            <DxTextBox @bind-Text="@noTlp"
+                       BindValueMode="BindValueMode.OnInput"
+                       NullText="Telepon"
+                       CssClass="cw-320" />
+        </div>
+        <div class="col-lg-6">
+            <label>Password</label>
+            <DxTextBox @bind-Text="@password"
+                       BindValueMode="BindValueMode.OnInput"
+                       NullText="Password"
+                       CssClass="cw-320" />
+        </div>
+
+        <div class="col-lg-6">
+            <label>Tanggal Lahir</label>
+            <DxDateEdit @bind-Date="tglLahir"
+                        Mask="dd/MMMM/yyyy">
+                <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+            </DxDateEdit>
+        </div>
+
+        <button class="mt-3 mb-2" @onclick="daftarClick" @onclick:preventDefault="true">Submit</button>
+    </form>
+</div>
+
+@if (response != null)
+{
+    <p>@response.Message</p>
+    <p>@response.Token</p>
+}
+
+
+@if (lokerSaya != null)
+{
+    @*@foreach (var item in lokerCasting)
+    {
+        <p>@item.Id</p>
+        <p>@item.JudulLowongan</p>
+        <p>@item.StatusLamaran</p>
+        <p>@item.Tanggal</p>
+    }*@
+
+    <br />
+    @lokerSaya
+}
