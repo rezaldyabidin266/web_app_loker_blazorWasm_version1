@@ -8,22 +8,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyFungsi;
 
 namespace BlazorWasmLoker.Pages
 {
-    public  class IndexBase : ComponentBase
+    public class IndexBase : ComponentBase
     {
         [Inject]
         protected MotivationService motivationService { get; set; }
-
         [Inject]
         protected SettingService settingService { get; set; }
-
         protected List<KalimatMotivasiResoruce> listMotivasi = new List<KalimatMotivasiResoruce>();
-        //protected GambarMotivasiResource gambarMotivasi { get; set; } = new GambarMotivasiResource();
 
         protected byte[] gambarByte;
         protected string gambar;
+
         protected override async Task OnInitializedAsync()
         {
             listMotivasi = (List<KalimatMotivasiResoruce>)await motivationService.GetListKalimat();
@@ -31,16 +30,11 @@ namespace BlazorWasmLoker.Pages
             gambar = Convert.ToBase64String(gambarByte);
         }
 
-
         protected async void SaveCounter(CounterResoruce counterResoruce)
-        {            
+        {
             await settingService.SaveCounter(counterResoruce);
         }
 
-        protected async Task<byte[]> GetGambarMotivasi()
-        {
-           return await motivationService.GetGamabarMotivasiFtp();
-        }
 
 
     }

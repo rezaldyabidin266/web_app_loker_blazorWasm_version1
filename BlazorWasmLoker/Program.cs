@@ -1,3 +1,5 @@
+using Blazored.LocalStorage;
+using Blazored.SessionStorage;
 using BlazorWasmLoker.Services;
 using BlazorWasmLoker.Utility;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -28,6 +30,8 @@ namespace BlazorWasmLoker
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             var apiEndPoint = BaseApiUrl.Devlopment;
             builder.Services.AddAppSettingService(apiEndPoint);
+            builder.Services.AddBlazoredLocalStorage();
+            builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddDevExpressBlazor();
             await builder.Build().RunAsync();
         }

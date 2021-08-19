@@ -27,8 +27,7 @@ namespace BlazorWasmLoker.Services
         }
 
         public async Task<TokenResource> Login(UserLoginResource userLogin)
-        {            
-            
+        {
             var respond = await _httpClient.PostAsJsonAsync(Controller + "login", userLogin);
             return await respond.Content.ReadFromJsonAsync<TokenResource>();
         }

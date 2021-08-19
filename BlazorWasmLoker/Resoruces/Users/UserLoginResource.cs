@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,4 +11,5 @@ namespace BlazorWasmLoker.Resoruces.Users
         public string IpAddress { get; set; }
         public string Browser { get; set; }
     }
+
 }

@@ -5,26 +5,26 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MyFungsi;
 
 namespace BlazorWasmLoker.Pages.KriteriaPages
 {
     public partial class KriteriaPages : ComponentBase
     {
         [Inject]
-        protected LokerService lokerService { get; set; }
+        protected LokerService LokerService { get; set; }
 
         [Parameter]
-        public int idLoker { get; set; }
+        public int IdLoker { get; set; }
 
+        protected LokerResource Lokers { get; set; } = new LokerResource();
 
-        protected LokerResource lokers { get; set; } = new LokerResource();
-        protected string[] kriteriaResc = new string[] { }; 
+        protected List<string> kriteriaResc = new();
 
         protected override async Task OnInitializedAsync()
         {
-            lokers = await lokerService.GetLoker(Convert.ToInt32(idLoker));
-
-            kriteriaResc = await lokerService.GetKriteria(Convert.ToInt32(idLoker));
+            Lokers = await LokerService.GetLoker(IdLoker);
+            kriteriaResc = await LokerService.GetKriteria(IdLoker);
         }
     }
 }
