@@ -21,8 +21,9 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected override async Task OnInitializedAsync()
         {
+            
             lokers = (List<LokerResource>)await lokerService.ListLoker();
-         
+            
         }
 
         protected string JudulLowongan;

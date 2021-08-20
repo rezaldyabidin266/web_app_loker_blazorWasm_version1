@@ -67,10 +67,6 @@ namespace BlazorWasmLoker.Services
 
         public async Task<object> ListDaftarLokerSaya(string token)
         {
-            //var httpResponse = await _httpClient.GetAsync(Controller + "list-daftar-loker-saya");
-            //add token
-            //httpResponse.Headers.Add("token", token);
-
             var request = new HttpRequestMessage(HttpMethod.Get, Controller + "list-daftar-loker-saya");
             request.Headers.Add("token", token);
 

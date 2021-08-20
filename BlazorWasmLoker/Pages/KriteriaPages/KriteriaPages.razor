@@ -1,5 +1,4 @@
-﻿
-@page "/kriteria/{idLoker:int}"
+﻿@page "/kriteria/{idLoker:int}"
 
 <h3>KriteriaPages @IdLoker</h3>
 
@@ -90,14 +89,16 @@
 
 @if (lokerSaya != null)
 {
-    @*@foreach (var item in lokerCasting)
-    {
-        <p>@item.Id</p>
-        <p>@item.JudulLowongan</p>
-        <p>@item.StatusLamaran</p>
-        <p>@item.Tanggal</p>
-    }*@
 
-    <br />
-    @lokerSaya
+
+    @foreach (var item in lokerCasting)
+    {
+        <p>@item.JudulLowongan</p>
+        <p>@item.Tanggal</p>
+        <p>@item.StatusLamaran</p>
+    }
+
+
 }
+
+@lokerSaya
