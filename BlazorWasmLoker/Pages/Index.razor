@@ -1,20 +1,27 @@
 ﻿@page "/"
 @inherits IndexBase
 
+@*<button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop">Toggle top offcanvas</button>
 
-<h1>Hello, world!</h1>
+<div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasTopLabel">Offcanvas top</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    ...
+  </div>
+</div>*@
 
-Welcome to your new app.
-
-
-<br />
-
-@foreach (var item in listMotivasi)
+@*@foreach (var item in listMotivasi)
 {
     <p>@item.Kalimat</p>
-}
+}*@
 
-<SurveyPrompt Title="How is Blazor working for you?" />
 
-<img width="300px" height="100%" src="data:image/png;base64,@gambar" />
+@*<SurveyPrompt Title="How is Blazor working for you?" />*@
+
+@*<img width="300px" height="100%" src="data:image/png;base64,@gambar" />*@
+
+<BlazorWasmLoker.Pages.LokerPages.LokerComp />
 

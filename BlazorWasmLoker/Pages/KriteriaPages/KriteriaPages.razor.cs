@@ -51,13 +51,15 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
         //response
         protected DaftarResponse response;
         protected dynamic lokerJsonElement = new System.Dynamic.ExpandoObject();
-        protected object lokerSaya;
         protected string serializeString;
-       // protected List<LokerSayaResource> lokerListDaftar = new List<LokerSayaResource>();
-        protected List<LokerSayaResource> lokerCasting = new List<LokerSayaResource>();
-        protected JavaScriptSerializer JsonConvert2 = new JavaScriptSerializer();
+        protected List<LokerSayaResource> loker;
+        protected string message;
+        protected string messagePertanyaan;
+
         //Mask default
         string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
+
+     
 
         protected override async Task OnInitializedAsync()
         {
@@ -71,62 +73,9 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
 
             token = await LocalStorage.GetItemAsync<string>("token");
 
-            lokerSaya = await LokerService.ListDaftarLokerSaya(token);
-
-
-            // LokerSayaResource c = JsonConvert.DeserializeObject<LokerSayaResource>(lokerSaya)
-
-            //foreach ( var item in (List<LokerSayaResource>)lokerSaya)
-            //{
-            //    Console.WriteLine(item.StatusLamaran);
-            //}
-
-            //string serializeString = JsonConvert.Serialize(lokerSaya);
-            //var json = JsonConvert.Deserialize<dynamic>(serializeString);
-            //lokerListDaftar = new List<LokerSayaResource>(json);
-
-            //lokerListDaftar = await LokerService.ListDaftarLokerSaya(token);
-
-            //lokerSaya = await LokerService.ListDaftarLokerSaya(token); //JSONElEMENT
-
-
-            serializeString = JsonConvert2.Serialize(lokerSaya);
-            Console.WriteLine(serializeString);//BadRequest
-            lokerCasting = new List<LokerSayaResource>(JsonConvert2.Deserialize<List<LokerSayaResource>>(serializeString)) { };//INI HASIL YANG BISA DI LOOp
-
-            //pake jsonConvert.serializeObject
-            //object seriall = JsonConvert.SerializeObject(lokerSaya);
-            //var ress = JsonConvert.DeserializeObject(LokerSayaResource)(seriall);
-
-            //di ubah jadi object coleksi
-            //IList coleksi = (IList)lokerSaya;
-            //var coleksi2 = new List<object>((IEnumerable<object>)lokerSaya);
-
-            //foreach (PropertyInfo prop in lokerSaya.GetType().GetProperties())
-            //{
-            //    Console.WriteLine(prop.GetValue("");
-            //}
-
-            //var apalah = JsonConvert.SerializeObject(lokerSaya);
-            //var model = JsonConvert.DeserializeObject<List<LokerSayaResource>>(apalah);
-
-            //foreach(var item in model)
-            //{
-            //    Console.WriteLine(item.StatusLamaran);
-            //}
-
-            //foreach(var item in lokerCasting)
-            //{
-            //    Console.WriteLine(item.JudulLowongan);
-            //    Console.WriteLine(item.StatusLamaran);
-            //}
-
-            //Console.WriteLine(lokerSaya.GetType());
-            //Console.WriteLine(lokerSaya.GetType().GetProperties());
-            //Console.WriteLine(lokerSaya);
-            //Console.WriteLine(lokerCasting);
-       
-
+            await GetListLokerSaya();
+            await GetPertanyaan();
+        
         }
 
         protected async Task daftarClick()
@@ -144,6 +93,7 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
 
             var result = await LokerService.DaftarNonRegis(daftarNoRegis);
             await LocalStorage.SetItemAsync("token", result.Token);
+          
             response = new DaftarResponse
             {
                 IdPelamar = result.IdPelamar,
@@ -152,7 +102,33 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
             };
         }
 
- 
+        protected async Task GetListLokerSaya()
+        {
+            var lokerSaya = await LokerService.ListDaftarLokerSaya(token);
+            message = lokerSaya.info;
+
+            if (lokerSaya.lokerSayaResources != null)
+                loker = lokerSaya.lokerSayaResources;
+
+        }
+
+        protected async Task GetPertanyaan()
+        {
+
+            var idLoker = await LocalStorage.GetItemAsync<int>("IdLoker");
+            var pertanyaan = await LokerService.FormPertanyaan(idLoker);
+            messagePertanyaan = pertanyaan.info;
+            Console.WriteLine(messagePertanyaan);
+
+            if (pertanyaan.fromPertanyaans != null)
+            {
+                foreach (var item in pertanyaan.fromPertanyaans)
+                {
+                    Console.WriteLine(item.Pertanyaan);
+                }
+            }
+            
+        }
 
     }
 }

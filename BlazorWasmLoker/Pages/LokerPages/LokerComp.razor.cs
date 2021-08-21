@@ -16,6 +16,8 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         [Inject]
         public NavigationManager NavigationManager { get; set; }
+        [Inject]
+        protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
 
         protected List<LokerResource> lokers;
 
@@ -32,7 +34,8 @@ namespace BlazorWasmLoker.Pages.LokerPages
         {
             //JudulLowongan = lokers.Single(x => x.Id == idLoker).Keterangan;
             NavigationManager.NavigateTo("/kriteria/" + idLoker);
-           
+
+            LocalStorage.SetItemAsync("IdLoker", idLoker);
         }
     }
 }

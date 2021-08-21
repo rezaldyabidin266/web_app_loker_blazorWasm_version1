@@ -63,8 +63,23 @@
         z-index: 1;
     }
 
-    .main > div {
+  /*  .main > div {
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
-    }
+    }*/
+}
+
+@media only screen and (max-width: 1200px) {
+}
+
+@media only screen and (max-width: 998px) {
+}
+
+@media only screen and (max-width: 767px) {
+}
+
+@media only screen and (max-width: 480px) {
+}
+
+@media only screen and (max-width: 320px) {
 }

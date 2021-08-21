@@ -87,17 +87,20 @@
 }
 
 
-@if (lokerCasting != null)
+
+@if (loker != null)
 {
-
-
-    @foreach (var item in lokerCasting)
+    @foreach (var item in loker)
     {
-        <p>@item.JudulLowongan</p>
-        <p>@item.Tanggal</p>
         <p>@item.StatusLamaran</p>
+        <p>@item.Tanggal</p>
     }
-
-    @serializeString
-
 }
+else { 
+<p>@message</p>
+}
+
+
+
+
+
