@@ -51,8 +51,9 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
         //response
         protected DaftarResponse response;
         protected dynamic lokerJsonElement = new System.Dynamic.ExpandoObject();
-        protected object lokerSaya { get; set; } = new object();
-        protected List<LokerSayaResource> lokerListDaftar = new List<LokerSayaResource>();
+        protected object lokerSaya;
+        protected string serializeString;
+       // protected List<LokerSayaResource> lokerListDaftar = new List<LokerSayaResource>();
         protected List<LokerSayaResource> lokerCasting = new List<LokerSayaResource>();
         protected JavaScriptSerializer JsonConvert2 = new JavaScriptSerializer();
         //Mask default
@@ -73,7 +74,6 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
             lokerSaya = await LokerService.ListDaftarLokerSaya(token);
 
 
-
             // LokerSayaResource c = JsonConvert.DeserializeObject<LokerSayaResource>(lokerSaya)
 
             //foreach ( var item in (List<LokerSayaResource>)lokerSaya)
@@ -90,9 +90,9 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
             //lokerSaya = await LokerService.ListDaftarLokerSaya(token); //JSONElEMENT
 
 
-            string serializeString = JsonConvert2.Serialize(lokerSaya);
-            Console.WriteLine(serializeString);
-            lokerCasting = new List<LokerSayaResource>(JsonConvert2.Deserialize<List<LokerSayaResource>>(serializeString)) { };
+            serializeString = JsonConvert2.Serialize(lokerSaya);
+            Console.WriteLine(serializeString);//BadRequest
+            lokerCasting = new List<LokerSayaResource>(JsonConvert2.Deserialize<List<LokerSayaResource>>(serializeString)) { };//INI HASIL YANG BISA DI LOOp
 
             //pake jsonConvert.serializeObject
             //object seriall = JsonConvert.SerializeObject(lokerSaya);
@@ -115,16 +115,16 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
             //    Console.WriteLine(item.StatusLamaran);
             //}
 
-            foreach(var item in lokerCasting)
-            {
-                Console.WriteLine(item.JudulLowongan);
-                Console.WriteLine(item.StatusLamaran);
-            }
+            //foreach(var item in lokerCasting)
+            //{
+            //    Console.WriteLine(item.JudulLowongan);
+            //    Console.WriteLine(item.StatusLamaran);
+            //}
 
-            Console.WriteLine(lokerSaya.GetType());
-            Console.WriteLine(lokerSaya.GetType().GetProperties());
-            Console.WriteLine(lokerSaya);
-            Console.WriteLine(lokerCasting);
+            //Console.WriteLine(lokerSaya.GetType());
+            //Console.WriteLine(lokerSaya.GetType().GetProperties());
+            //Console.WriteLine(lokerSaya);
+            //Console.WriteLine(lokerCasting);
        
 
         }

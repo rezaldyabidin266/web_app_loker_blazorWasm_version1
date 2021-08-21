@@ -80,7 +80,7 @@ namespace BlazorWasmLoker.Services
                 return errormessage;
             }
 
-            object response = await httpSend.Content.ReadFromJsonAsync<object>();
+            List<LokerSayaResource> response = await httpSend.Content.ReadFromJsonAsync<List<LokerSayaResource>>();
             return response;
 
         }
