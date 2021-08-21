@@ -19,7 +19,7 @@ namespace BlazorWasmLoker.Services
     public class LokerService
     {
         private readonly HttpClient _httpClient;
-       // private readonly HttpResponseMessage _httpRespon;
+        // private readonly HttpResponseMessage _httpRespon;
         private const string Controller = "Lokers/";
         [Inject]
         protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
@@ -28,8 +28,8 @@ namespace BlazorWasmLoker.Services
         public LokerService(HttpClient httpClient)
         {
             _httpClient = httpClient;
-           // _httpRespon = httpRespon;
- 
+            // _httpRespon = httpRespon;
+
         }
 
         public async Task<IEnumerable<LokerResource>> ListLoker()
@@ -65,24 +65,54 @@ namespace BlazorWasmLoker.Services
             return await respond.Content.ReadFromJsonAsync<DaftarResponse>();
         }
 
-        public async Task<object> ListDaftarLokerSaya(string token)
+        public async Task<(string info, List<LokerSayaResource> lokerSayaResources)> ListDaftarLokerSaya(string token)
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, Controller + "list-daftar-loker-saya");
-            request.Headers.Add("token", token);
+            _httpClient.DefaultRequestHeaders.Add("token", token);
+            var result = await _httpClient.GetAsync(Controller + "list-daftar-loker-saya");
 
-            var httpSend = await _httpClient.SendAsync(request);
+            return result.IsSuccessStatusCode
+                ? ("Sukses", await _httpClient.GetFromJsonAsync<List<LokerSayaResource>>(Controller + "list-daftar-loker-saya"))
+                : (await result.Content.ReadAsStringAsync(), null);
+        }
 
-            if (!httpSend.IsSuccessStatusCode)
-            {
-                //error kondisi
-                object errormessage;
-                errormessage = httpSend.ReasonPhrase;  
-                return errormessage;
-            }
+        public async Task<(string info, List<FromPertanyaanResoruce> fromPertanyaans)> FormPertanyaan(string token, int lokerId)
+        {
+            _httpClient.DefaultRequestHeaders.Add("token", token);
+            _httpClient.DefaultRequestHeaders.Add("lokerId", lokerId.ToString());
 
-            List<LokerSayaResource> response = await httpSend.Content.ReadFromJsonAsync<List<LokerSayaResource>>();
+            object response = await httpSend.Content.ReadFromJsonAsync<object>();
             return response;
 
+            if (result.IsSuccessStatusCode)
+            {
+                var respond = JsonConvert.DeserializeObject<RootPertanyaanResource>(result.Content.ReadAsStringAsync().Result);
+                return (respond.Message, respond.Pertanyaan);
+            }
+            else
+            {
+                return (await result.Content.ReadAsStringAsync(), null);
+            }
         }
     }
+
 }
+
+
+
+
+
+//var request = new HttpRequestMessage(HttpMethod.Get, Controller + "list-daftar-loker-saya");
+//request.Headers.Add("token", token);
+
+//var httpSend = await _httpClient.SendAsync(request);
+
+//if (!httpSend.IsSuccessStatusCode)
+//{
+//    //error kondisi
+//    object errormessage;
+//    errormessage = httpSend.ReasonPhrase;  
+//    return errormessage;
+//}
+
+//object response = await httpSend.Content.ReadFromJsonAsync<object>();
+//return response;

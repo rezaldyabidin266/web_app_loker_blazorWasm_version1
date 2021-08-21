@@ -19,13 +19,10 @@ namespace BlazorWasmLoker.Services
         {
             _httpClient = httpClient;
         }
-
-
         public string GetUploadFotoApi()
         {
             return _httpClient.BaseAddress.AbsoluteUri + UploadFotoApi;
         }
-
         public async Task<TokenResource> Login(UserLoginResource userLogin)
         {
             var respond = await _httpClient.PostAsJsonAsync(Controller + "login", userLogin);
