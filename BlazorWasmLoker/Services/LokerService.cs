@@ -75,13 +75,12 @@ namespace BlazorWasmLoker.Services
                 : (await result.Content.ReadAsStringAsync(), null);
         }
 
-        public async Task<(string info, List<FromPertanyaanResoruce> fromPertanyaans)> FormPertanyaan(string token, int lokerId)
+        public async Task<(string info, List<FromPertanyaanResoruce> fromPertanyaans)> FormPertanyaan(int lokerId)
         {
-            _httpClient.DefaultRequestHeaders.Add("token", token);
+            //_httpClient.DefaultRequestHeaders.Add("token", token);
             _httpClient.DefaultRequestHeaders.Add("lokerId", lokerId.ToString());
 
-            object response = await httpSend.Content.ReadFromJsonAsync<object>();
-            return response;
+            var result = await _httpClient.GetAsync(Controller + "form-pertanyaan");
 
             if (result.IsSuccessStatusCode)
             {
@@ -92,6 +91,8 @@ namespace BlazorWasmLoker.Services
             {
                 return (await result.Content.ReadAsStringAsync(), null);
             }
+
+            
         }
     }
 
@@ -100,19 +101,3 @@ namespace BlazorWasmLoker.Services
 
 
 
-
-//var request = new HttpRequestMessage(HttpMethod.Get, Controller + "list-daftar-loker-saya");
-//request.Headers.Add("token", token);
-
-//var httpSend = await _httpClient.SendAsync(request);
-
-//if (!httpSend.IsSuccessStatusCode)
-//{
-//    //error kondisi
-//    object errormessage;
-//    errormessage = httpSend.ReasonPhrase;  
-//    return errormessage;
-//}
-
-//object response = await httpSend.Content.ReadFromJsonAsync<object>();
-//return response;

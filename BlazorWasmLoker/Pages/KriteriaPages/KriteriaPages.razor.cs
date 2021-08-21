@@ -70,7 +70,6 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
             gambarIlustrasiByte = await LokerService.GetImageIlustrasi(IdLoker);
             gambarIlustrasi = Convert.ToBase64String(gambarIlustrasiByte);
 
-
             token = await LocalStorage.GetItemAsync<string>("token");
 
             await GetListLokerSaya();

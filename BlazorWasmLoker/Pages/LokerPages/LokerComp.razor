@@ -1,7 +1,6 @@
 ﻿
 @inherits LokerCompBase
 
-
 <div class="container py-4">
     <div class="row text-center">
           <div class="col-lg-12">
@@ -16,10 +15,10 @@
                 {
             <div class="row d-flex align-items-center mt-5 loker-list">
                 <div class="col-lg-2 loker-judul text-center">
-                    @item.JudulLowongan
+                    <p>@item.JudulLowongan</p>
                 </div>
                 <div class="col-lg-8 loker-keterangan">
-                    @item.Keterangan
+                    <p>@item.Keterangan</p> 
                 </div>
                 <div class="col-lg-2 loker-btn text-center">
                     <button class="btn btn-create" @onclick="@(x => GetLoker(item.Id) )">
@@ -30,7 +29,6 @@
                     }
                 }
             </div>
-      
         @*<div class="col-lg-4 col-loker">
             <div class="card">
                 <div class="card-body">
