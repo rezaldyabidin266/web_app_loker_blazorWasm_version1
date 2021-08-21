@@ -32,7 +32,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected void GetLoker(int idLoker)
         {
-            //JudulLowongan = lokers.Single(x => x.Id == idLoker).Keterangan;
             NavigationManager.NavigateTo("/kriteria/" + idLoker);
 
             LocalStorage.SetItemAsync("IdLoker", idLoker);
