@@ -24,9 +24,15 @@ namespace BlazorWasmLoker.Services
         {
             var respond = await _httpClient.PostAsJsonAsync(Controller + "login", userLogin);
 
-            return respond.IsSuccessStatusCode
-                ? await respond.Content.ReadFromJsonAsync<TokenResource>()
-                : throw new Exception(await respond.Content.ReadAsStringAsync());
+            if (respond.IsSuccessStatusCode)
+                return await respond.Content.ReadFromJsonAsync<TokenResource>();
+            else
+            {
+                if (respond.StatusCode != System.Net.HttpStatusCode.Forbidden)
+                    throw new Exception(await respond.Content.ReadAsStringAsync());
+                else
+                    throw new Exception($"403 :{respond.StatusCode} {await respond.Content.ReadAsStringAsync()}");
+            }
         }
         public async Task<InformasiPelamarRespond> InformasiPelamar(string token)
         {
