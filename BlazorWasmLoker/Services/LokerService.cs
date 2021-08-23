@@ -1,98 +1,111 @@
 ﻿using BlazorWasmLoker.Resoruces.Lokers;
 using BlazorWasmLoker.Resoruces.Users;
-using Grpc.Core;
-using Microsoft.AspNetCore.Components;
-using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
+
 namespace BlazorWasmLoker.Services
 {
-
     public class LokerService
     {
-        private readonly HttpClient _httpClient;
-        // private readonly HttpResponseMessage _httpRespon;
-        private const string Controller = "Lokers/";
-        [Inject]
-        protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
-        public string token;
-
+        private readonly HttpClient _httpClient; 
+        private const string Controller = "Lokers/";  
+      
         public LokerService(HttpClient httpClient)
         {
-            _httpClient = httpClient;
-            // _httpRespon = httpRespon;
-
+            _httpClient = httpClient;            
         }
 
-        public async Task<IEnumerable<LokerResource>> ListLoker()
+        public async Task<List<LokerResource>> ListLoker()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<LokerResource>>(Controller + "list-loker");
+            var respond = await _httpClient.GetAsync(Controller + "list-loker");
+
+            return respond.IsSuccessStatusCode
+              ? JsonConvert.DeserializeObject<List<LokerResource>>(respond.Content.ReadAsStringAsync().Result)
+              : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
         public async Task<LokerResource> GetLoker(int idLoker)
         {
-            return await _httpClient.GetFromJsonAsync<LokerResource>(Controller + $"get-loker?LokerId={idLoker}");
+            var respond = await _httpClient.GetAsync(Controller + $"get-loker?LokerId={idLoker}");
+
+            return respond.IsSuccessStatusCode
+               ? JsonConvert.DeserializeObject<LokerResource>(respond.Content.ReadAsStringAsync().Result)
+               : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
         public async Task<List<string>> GetKriteria(int idLoker)
         {
-            return await _httpClient.GetFromJsonAsync<List<string>>(Controller + $"get-kriteria?LokerId={idLoker}");
+            var respond = await _httpClient.GetAsync(Controller + $"get-kriteria?LokerId={idLoker}");
+
+            return respond.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<List<string>>(respond.Content.ReadAsStringAsync().Result)
+                : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
         public async Task<byte[]> GetImageBackground(int idLoker)
         {
             var respond = await _httpClient.GetAsync(Controller + $"get-image-background?lokerId={idLoker}");
-            return await respond.Content.ReadAsByteArrayAsync();
+
+            return respond.IsSuccessStatusCode
+                ? await respond.Content.ReadAsByteArrayAsync()
+                : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
         public async Task<byte[]> GetImageIlustrasi(int idLoker)
         {
             var respond = await _httpClient.GetAsync(Controller + $"get-image-ilustrasi?lokerId={idLoker}");
-            return await respond.Content.ReadAsByteArrayAsync();
+
+            return respond.IsSuccessStatusCode
+                ? await respond.Content.ReadAsByteArrayAsync()
+                : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
-        public async Task<DaftarResponse> DaftarNonRegis(DaftarResource userDaftar)
+        public async Task<DaftarResponse> DaftarNoRegister(DaftarResource userDaftar)
         {
-            var respond = await _httpClient.PostAsJsonAsync(Controller + "daftar-no-register", userDaftar);
-            return await respond.Content.ReadFromJsonAsync<DaftarResponse>();
+            var content = JsonConvert.SerializeObject(userDaftar);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var respond = await _httpClient.PostAsync(Controller + "daftar-no-register", bodyContent);
+
+            return respond.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<DaftarResponse>(await respond.Content.ReadAsStringAsync())
+                : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
-        public async Task<(string info, List<LokerSayaResource> lokerSayaResources)> ListDaftarLokerSaya(string token)
+        public async Task<List<LokerSayaResource>> ListDaftarLokerSaya(string token)
         {
             _httpClient.DefaultRequestHeaders.Add("token", token);
-            var result = await _httpClient.GetAsync(Controller + "list-daftar-loker-saya");
+            var respond = await _httpClient.GetAsync(Controller + "list-daftar-loker-saya");
 
-            return result.IsSuccessStatusCode
-                ? ("Sukses", await _httpClient.GetFromJsonAsync<List<LokerSayaResource>>(Controller + "list-daftar-loker-saya"))
-                : (await result.Content.ReadAsStringAsync(), null);
+            return respond.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<List<LokerSayaResource>>(await respond.Content.ReadAsStringAsync())
+                : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
-        public async Task<(string info, List<FromPertanyaanResoruce> fromPertanyaans)> FormPertanyaan(int lokerId)
+        public async Task<RootPertanyaanResource> FormPertanyaan(string token, int lokerId)
         {
-            //_httpClient.DefaultRequestHeaders.Add("token", token);
+            _httpClient.DefaultRequestHeaders.Add("token", token);
             _httpClient.DefaultRequestHeaders.Add("lokerId", lokerId.ToString());
+            var respond = await _httpClient.GetAsync(Controller + "form-pertanyaan");
 
-            var result = await _httpClient.GetAsync(Controller + "form-pertanyaan");
+            return respond.IsSuccessStatusCode
+                ? JsonConvert.DeserializeObject<RootPertanyaanResource>(respond.Content.ReadAsStringAsync().Result)
+                : throw new Exception(await respond.Content.ReadAsStringAsync(), null);
+        }
 
-            if (result.IsSuccessStatusCode)
-            {
-                var respond = JsonConvert.DeserializeObject<RootPertanyaanResource>(result.Content.ReadAsStringAsync().Result);
-                return (respond.Message, respond.Pertanyaan);
-            }
-            else
-            {
-                return (await result.Content.ReadAsStringAsync(), null);
-            }
+        public async Task<string> FormSaveListJawaban(List<JawabanResoruce> jawabanResoruce)
+        {
+            var content = JsonConvert.SerializeObject(jawabanResoruce);
+            var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
+            var respond = await _httpClient.PostAsync(Controller + "form-save-list-jawaban", bodyContent);
 
-            
+            return respond.IsSuccessStatusCode
+                ? await respond.Content.ReadAsStringAsync()
+                : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
     }
 

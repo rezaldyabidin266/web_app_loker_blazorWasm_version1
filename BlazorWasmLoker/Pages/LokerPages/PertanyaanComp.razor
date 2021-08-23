@@ -1,0 +1,32 @@
+﻿@page "/pertanyaan"
+
+@inherits PertanyaanCompBase
+
+
+<h3>PertanyaanComp</h3>
+
+@if (FormPertanyaan.Count == 0)
+{
+    <div class="spinner"></div>
+}
+else
+{
+    @foreach (var item in FormPertanyaan)
+    {
+
+        <p>@item.No </p>
+        <p>@item.Pertanyaan</p>
+        <p>@item.Jawaban</p>
+        <p>@item.BentukIsian</p>
+        <p>@item.IsRequired </p>
+
+    }
+}
+
+<p>@ErrorMessage</p>
+
+
+<DxButton @onclick="Save"> Simpan Jawaban </DxButton>
+
+<p>@message</p>
+

@@ -55,14 +55,15 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
         protected List<LokerSayaResource> loker;
         protected string message;
         protected string messagePertanyaan;
+     
 
         //Mask default
         string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
 
-     
 
         protected override async Task OnInitializedAsync()
         {
+            await Task.Delay(2000);
             Lokers = await LokerService.GetLoker(IdLoker);
             kriteriaResc = await LokerService.GetKriteria(IdLoker);
             gambarBackgroundByte = await LokerService.GetImageBackground(IdLoker);
@@ -70,63 +71,87 @@ namespace BlazorWasmLoker.Pages.KriteriaPages
             gambarIlustrasiByte = await LokerService.GetImageIlustrasi(IdLoker);
             gambarIlustrasi = Convert.ToBase64String(gambarIlustrasiByte);
 
-            token = await LocalStorage.GetItemAsync<string>("token");
+            //token = await LocalStorage.GetItemAsync<string>("token");
 
-            await GetListLokerSaya();
-            await GetPertanyaan();
-        
+            //await GetListLokerSaya();
+            //await GetPertanyaan();
+
         }
 
         protected async Task daftarClick()
         {
-            DaftarResource daftarNoRegis = new DaftarResource { };
-
-            daftarNoRegis.Nama = Nama;
-            daftarNoRegis.Alamat = Alamat;
-            daftarNoRegis.Email = Email;
-            daftarNoRegis.password = password;
-            daftarNoRegis.TempatLahir = tempatLahir;
-            daftarNoRegis.TglLahir = tglLahir;
-            daftarNoRegis.NoTlp = noTlp;
-            daftarNoRegis.Note = note;
-
-            var result = await LokerService.DaftarNonRegis(daftarNoRegis);
-            await LocalStorage.SetItemAsync("token", result.Token);
-          
-            response = new DaftarResponse
+            var daftarNoRegis = new DaftarResource
             {
-                IdPelamar = result.IdPelamar,
-                Message = result.Message,
-                Token = result.Token
+                Nama = Nama,
+                Alamat = Alamat,
+                Email = Email,
+                Password = password,
+                TempatLahir = tempatLahir,
+                TglLahir = tglLahir,
+                NoTlp = noTlp,
+                Note = note,
             };
+
+            try
+            {
+                var result = await LokerService.DaftarNoRegister(daftarNoRegis);
+                await LocalStorage.SetItemAsync("token", result.Token);
+                response = new DaftarResponse
+                {
+                    IdPelamar = result.IdPelamar,
+                    Message = result.Message,
+                    Token = result.Token
+                };
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }         
         }
 
         protected async Task GetListLokerSaya()
         {
-            var lokerSaya = await LokerService.ListDaftarLokerSaya(token);
-            message = lokerSaya.info;
+            try
+            {
+                loker = await LokerService.ListDaftarLokerSaya(token);        
+            }
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }
 
-            if (lokerSaya.lokerSayaResources != null)
-                loker = lokerSaya.lokerSayaResources;
+            //var lokerSaya = await LokerService.ListDaftarLokerSaya(token);
+            //message = lokerSaya.info;
+
+            //if (lokerSaya.lokerSayaResources != null)
+            //    loker = lokerSaya.lokerSayaResources;
+
 
         }
 
         protected async Task GetPertanyaan()
         {
-
             var idLoker = await LocalStorage.GetItemAsync<int>("IdLoker");
-            var pertanyaan = await LokerService.FormPertanyaan(idLoker);
-            messagePertanyaan = pertanyaan.info;
-            Console.WriteLine(messagePertanyaan);
+            var token = await LocalStorage.GetItemAsync<string>("Token");
 
-            if (pertanyaan.fromPertanyaans != null)
+            try
             {
-                foreach (var item in pertanyaan.fromPertanyaans)
+                var pertanyaan = await LokerService.FormPertanyaan(token, idLoker);
+                messagePertanyaan = pertanyaan.Message;
+                Console.WriteLine(messagePertanyaan);
+
+                if (pertanyaan.Pertanyaan != null)
                 {
-                    Console.WriteLine(item.Pertanyaan);
+                    foreach (var item in pertanyaan.Pertanyaan)
+                    {
+                        Console.WriteLine(item.Pertanyaan);
+                    }
                 }
             }
-            
+            catch (Exception ex)
+            {
+                message = ex.Message;
+            }         
         }
 
     }

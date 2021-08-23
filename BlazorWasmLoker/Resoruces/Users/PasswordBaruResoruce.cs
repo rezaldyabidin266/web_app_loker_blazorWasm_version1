@@ -1,10 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace BlazorWasmLoker.Resoruces.Users
+﻿namespace BlazorWasmLoker.Resoruces.Users
 {
-    public class UserLoginResource
+    public class PasswordBaruResoruce
     {
         public string Email { get; set; }
         public string Password { get; set; }

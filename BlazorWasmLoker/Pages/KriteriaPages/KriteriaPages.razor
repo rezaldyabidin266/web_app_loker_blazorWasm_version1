@@ -80,12 +80,16 @@
     </form>
 </div>
 
+@if (!string.IsNullOrEmpty(message))
+{
+    <p>@message</p>
+}
+
 @if (response != null)
 {
     <p>@response.Message</p>
     <p>@response.Token</p>
 }
-
 
 
 @if (loker != null)
