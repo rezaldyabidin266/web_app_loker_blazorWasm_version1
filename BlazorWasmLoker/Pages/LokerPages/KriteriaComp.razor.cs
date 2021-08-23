@@ -3,6 +3,7 @@ using BlazorWasmLoker.Resoruces.Users;
 using BlazorWasmLoker.Services;
 using DevExpress.Blazor;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,11 +24,12 @@ namespace BlazorWasmLoker.Pages.LokerPages
         public int IdLoker { get; set; }
 
         protected LokerResource Lokers { get; set; } = new LokerResource();
+        public DaftarResource DaftarResource = new DaftarResource() { TglLahir = DateTime.Today };
+        public EditContext editContext { get; set; }
 
         protected List<string> kriteriaResc = new();
         protected string gambarBackground;
         protected string gambarIlustrasi;
-
         protected string Nama;
         protected string Alamat;
         protected string Email;
@@ -51,15 +53,28 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected string ErrorBg;
         protected string ErrorKriteria;
 
+        //Mask Char
         protected char maskChar = ' ';
-
+        protected char maskGmail = '_';
+        MaskAutoCompleteMode AutoCompleteMode { get; set; } = MaskAutoCompleteMode.Strong;
+        string EmailMask { get; set; } = @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
         //Mask default
         string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
 
 
+        //Spinner
+        protected bool spin = false;
+
+        protected override void OnInitialized()
+        {
+            editContext = new EditContext(DaftarResource);
+        }
+
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
+
+            //editContext = new(DaftarResource);
 
             await GetLoker(IdLoker);
             await KriteriaPelamar(IdLoker);
@@ -121,36 +136,46 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
         }
 
-        protected async Task daftarClick()
+        protected async Task daftarSubmit()
         {
-            var daftarNoRegis = new DaftarResource
+   
+            spin = true;
+            if (editContext.Validate())
             {
-                Nama = Nama,
-                Alamat = Alamat,
-                Email = Email,
-                Password = password,
-                TempatLahir = tempatLahir,
-                TglLahir = tglLahir,
-                NoTlp = noTlp,
-                Note = note,
-            };
 
-            try
-            {
-                var result = await LokerService.DaftarNoRegister(daftarNoRegis);
-                await LocalStorage.SetItemAsync("token", result.Token);
-                NavigationManager.NavigateTo("/pertanyaan");
-                response = new DaftarResponse
+                try
                 {
-                    IdPelamar = result.IdPelamar,
-                    Message = result.Message,
-                    Token = result.Token
-                };
+                    var result = await LokerService.DaftarNoRegister(DaftarResource);
+                    await LocalStorage.SetItemAsync("token", result.Token);
+                    NavigationManager.NavigateTo("/pertanyaan");
+                    response = new DaftarResponse
+                    {
+                        IdPelamar = result.IdPelamar,
+                        Message = result.Message,
+                        Token = result.Token
+                    };
+
+                    spin = false;
+                    message = result.Message;
+                }
+                catch (Exception ex)
+                {
+                    spin = false;
+                    message = ex.Message;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                message = "Gagal Registerasi";
+                spin = false;
+                message = "Form Invalid";
             }
+
+
+        }
+
+        protected async Task daftarInvalid()
+        {
+            message = "FOrm Invalid";
         }
 
         protected async Task GetListLokerSaya()
