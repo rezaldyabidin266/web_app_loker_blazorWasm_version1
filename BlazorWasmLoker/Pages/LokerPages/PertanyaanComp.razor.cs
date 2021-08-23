@@ -14,17 +14,23 @@ namespace BlazorWasmLoker.Pages.LokerPages
         [Inject]
         protected LokerService LokerService { get; set; }
 
+        [Inject]
+        protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
+
         protected List<FromPertanyaanResoruce> FormPertanyaan = new List<FromPertanyaanResoruce>();
         protected string message;
-
+        protected string token;
         protected string ErrorMessage;
 
         protected override async Task OnInitializedAsync()
         {
             await Task.Delay(1000);
+
+            token = await LocalStorage.GetItemAsync<string>("token");
+            var idLoker = await LocalStorage.GetItemAsync<int>("IdLoker");
             try
             {
-                var root = await LokerService.FormPertanyaan("S+94GYw0nhZkzsUCIy1hUQ3BuJqsUkh0Dxx0rhVuCFt+ID2qzPb/SA==", 1);
+                var root = await LokerService.FormPertanyaan(token, idLoker);
                 message = root.Message;
 
                 foreach (var item in root.Pertanyaan)
@@ -73,6 +79,8 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 {
                     jawab.Nominal = 50000;
                 }
+
+              
 
                 jawabans.Add(jawab);
             }

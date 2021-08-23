@@ -1,10 +1,4 @@
 ﻿
-/*@font-face {
-    font-family: Rubik2;
-    src: url(../../wwwroot/css/FontCustom/Rubik/Rubik-Bold.ttf);
-}*/
-
-
 .loker-judul p {
     margin-bottom: 8px;
     text-align: center;
@@ -14,17 +8,13 @@
     font-family: RubikDowload;
 }   
 
-p{
-
-}
-
 .loker-keterangan {
     padding: 1.7rem 2rem;
 }
 
     .loker-keterangan p {
         margin-bottom: 8px;
-      font-family:Rubik;
+        font-family: RubikDowload;
         font-weight: 300;
     }
 
@@ -36,7 +26,7 @@ p{
         background: #1784E3;
         box-shadow: 0 0 15px 0 rgb(1 86 255 / 50%);
         padding: .25rem 2.2rem;
-        font-family: Rubik2;
+        font-family: RubikDowload;
         font-size: .8rem;
         color: white;
     }

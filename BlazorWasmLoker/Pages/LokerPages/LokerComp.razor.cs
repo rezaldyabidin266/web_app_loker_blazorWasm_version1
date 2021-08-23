@@ -19,21 +19,33 @@ namespace BlazorWasmLoker.Pages.LokerPages
         [Inject]
         protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
 
-        protected List<LokerResource> lokers;
+        protected List<LokerResource> lokers = new List<LokerResource>();
+        protected string ErrorMessage;
 
         protected override async Task OnInitializedAsync()
         {
-
-            lokers = (List<LokerResource>)await lokerService.ListLoker();
+            await GetLoker();         
         }
 
-        protected string JudulLowongan;
-
-        protected void GetLoker(int idLoker)
+        protected async Task GetLoker()
         {
-            NavigationManager.NavigateTo("/kriteria/" + idLoker);
+            try
+            {
+                lokers = (List<LokerResource>)await lokerService.ListLoker();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = ex.Message;
+             
+            }
+        }
 
+        protected void RouteKriteria(int idLoker)
+        {
+
+            NavigationManager.NavigateTo("/kriteria/" + idLoker);
             LocalStorage.SetItemAsync("IdLoker", idLoker);
+
         }
     }
 }

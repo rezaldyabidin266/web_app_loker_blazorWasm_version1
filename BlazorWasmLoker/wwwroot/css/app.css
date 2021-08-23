@@ -9,6 +9,12 @@ html, body {
     src: url(../css/FontCustom/Rubik/Rubik-Medium.ttf);
 }
 
+@font-face {
+    font-family: PatrickDowload;
+    src: url(../css/FontCustom/Patrick/PatrickHand-Regular.ttf);
+}
+
+
 
 a, .btn-link {
     color: #0366d6;

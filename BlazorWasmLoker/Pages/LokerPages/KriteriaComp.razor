@@ -1,0 +1,175 @@
+﻿@page "/kriteria/{idLoker:int}"
+
+<section class="backgroud-bg" style="background-image:url('data:image/png;base64,@gambarBackground');">
+    @if (Lokers != null)
+    {
+        <div class="judul-lowongan">
+            <h2>@Lokers.JudulLowongan</h2>
+            <p>@Lokers.Keterangan</p>
+        </div>
+    }
+</section>
+
+@*<div class="overflay"></div>*@
+<div class="container-lg">
+    <div class="row justify-content-md-center justify-content-center">
+        <div class="col-md-7 col-sm-10 col-11 col-kriteria">
+            <div class="kriteria">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-lg-6 kri">
+                            @if (gambarIlustrasi != null)
+                            {
+                                <img class="kriteriaImg" src="data:image/png;base64,@gambarIlustrasi" />
+                            }
+                            else
+                            {
+                                <div class="text-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="kriteria-text">
+                                <p>Kriteria Pelamar :</p>
+                                @if (kriteriaResc.Count != 0)
+                                {
+                                    <ul>
+                                        @foreach (var item in kriteriaResc)
+                                        {
+                                            <li>@item</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <div class="text-center">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 mt-5">
+            <div class="kriteria-daftar">
+                <h2>
+                    Sign Up
+                </h2>
+                <div class="row form-kriteria">
+                    <form>
+                            <div class="bungkus-form row g-3">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Nama</label>
+                                        <DxTextBox @bind-Text="@Nama"
+                                                   BindValueMode="BindValueMode.OnInput"
+                                                   NullText="Nama Lengkap"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Email</label>
+                                        <DxTextBox @bind-Text="@Email"
+                                                   BindValueMode="BindValueMode.OnInput"
+                                                   NullText="AlamatEmail"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Password</label>
+                                        <DxTextBox @bind-Text="@password"
+                                                   BindValueMode="BindValueMode.OnInput"
+                                                   NullText="Password"
+                                                   Password="true"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">No Telepon</label>
+
+                                        <DxMaskedInput @bind-Value="@noTlp"
+                                                       BindValueMode="BindValueMode.OnInput"
+                                                       Mask="0000-0000-0000"
+                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                            <DxTextMaskProperties Placeholder="maskChar" />
+                                        </DxMaskedInput>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Tempat Lahir</label>
+                                        <DxTextBox @bind-Text="@tempatLahir"
+                                                   BindValueMode="BindValueMode.OnInput"
+                                                   NullText="Tempat Lahir"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Tanggal Lahir</label>
+                                        <DxDateEdit @bind-Date="tglLahir"
+                                                    Mask="dd/MMMM/yyyy"
+                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                            <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                                        </DxDateEdit>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Alamat</label>
+                                        <DxMemo @bind-Text="@Alamat"
+                                                BindValueMode="BindValueMode.OnInput"
+                                                Rows="7"
+                                                NullText="Alamat saat ini"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 mt-4">
+                                    <DxButton  CssClass="btn-create"  @onclick="daftarClick" Text="Sign Up" >
+                                        @*<span class="spinner-border spinner-border-sm button-indicator" role="status" aria-hidden="true"></span>
+                                        <span class=''>Sign Up</span>*@
+                                    </DxButton> 
+                                </div>
+                            </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <p>@message</p>
+    }
+
+    @if (response != null)
+    {
+        <p>@response.Message</p>
+        <p>@response.Token</p>
+    }
+
+
+    @*@if (loker != null)
+        {
+            @foreach (var item in loker)
+            {
+                <p>@item.StatusLamaran</p>
+                <p>@item.Tanggal</p>
+            }
+        }*@
+
+
+</div>
+
+
+
