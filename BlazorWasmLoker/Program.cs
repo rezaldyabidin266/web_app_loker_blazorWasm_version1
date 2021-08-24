@@ -1,5 +1,6 @@
 using Blazored.LocalStorage;
 using Blazored.SessionStorage;
+using BlazorStrap;
 using BlazorWasmLoker.Services;
 using BlazorWasmLoker.Utility;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -34,7 +35,7 @@ namespace BlazorWasmLoker
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddDevExpressBlazor();
-
+            builder.Services.AddBootstrapCSS();
             await builder.Build().RunAsync();
         }
     }

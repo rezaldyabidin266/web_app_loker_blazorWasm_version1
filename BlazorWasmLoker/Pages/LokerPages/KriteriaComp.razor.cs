@@ -8,17 +8,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.JSInterop;
 
 namespace BlazorWasmLoker.Pages.LokerPages
 {
     public class KriteriaCompBase : ComponentBase
     {
+
         [Inject]
         protected LokerService LokerService { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Inject]
         protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
 
         [Parameter]
         public int IdLoker { get; set; }
@@ -61,13 +65,22 @@ namespace BlazorWasmLoker.Pages.LokerPages
         //Mask default
         protected string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
 
+        protected string fade = "fade show";
 
         //Spinner
         protected bool spin = false;
+        protected bool isVisible { get; set; } = false;
 
         protected override void OnInitialized()
         {
             editContext = new EditContext(DaftarResource);
+
+          
+        }
+        protected override async void OnAfterRender(bool firstRender)
+        {
+            //await JSRuntime.InvokeVoidAsync("renderjQueryComponents");
+            await JSRuntime.InvokeVoidAsync("toastShow");
         }
 
         protected override async Task OnInitializedAsync()
@@ -81,6 +94,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             await GambarBg(IdLoker);
             await GambarIl(IdLoker);
 
+          
         }
 
         protected async Task KriteriaPelamar(int IdLoker)
@@ -138,7 +152,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected async Task daftarSubmit()
         {
-
+          
             spin = true;
             if (editContext.Validate())
             {
@@ -157,25 +171,26 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
                     spin = false;
                     message = result.Message;
+                    isVisible = true;
+                 
                 }
                 catch (Exception ex)
                 {
                     spin = false;
                     message = ex.Message;
+                    isVisible = true;
+                   
                 }
             }
             else
             {
                 spin = false;
                 message = "Form Invalid";
+                isVisible = true;
+                
             }
 
 
-        }
-
-        protected async Task daftarInvalid()
-        {
-            message = "FOrm Invalid";
         }
 
         protected async Task GetListLokerSaya()

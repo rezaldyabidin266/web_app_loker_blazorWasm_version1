@@ -1,0 +1,202 @@
+﻿.backgroud-bg {
+    height: 450px;
+    background-size: cover;
+    background-position: center center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.judul-lowongan {
+    position: relative;
+    margin-top: -10px;
+    text-align: center;
+
+    h2 {
+        color: #A3DE83;
+        font-size: 1.7rem;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.6);
+        font-family: RubikDowload;
+        letter-spacing: 3px;
+    }
+
+    p {
+        color: #FFFFFF;
+        text-shadow: 2px 2px 2px rgba(0, 0, 0, 0.45);
+        width: 50%;
+        font-size: 1rem;
+        margin: 0 auto;
+        line-height: 1.6;
+        letter-spacing: 1px;
+    }
+}
+
+.overflay {
+    position: absolute;
+    width: inherit !important;
+    height: 200px;
+    background: #FEFFEA;
+    z-index: -1;
+}
+
+.col-kriteria {
+    .kriteria {
+        .card-body {
+            margin-top: -70px;
+            background: #feffea;
+            box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            margin-top: -50px;
+            margin-top: -40px;
+
+            .row {
+                padding: 2rem 2rem;
+                padding: 1.7rem 1.7rem;
+                padding: 1.2rem 1rem;
+
+                .kri {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    text-align: right;
+                    margin-bottom: 32px;
+                    margin-bottom: 25px;
+
+                    .kriteriaImg {
+                        width: 100%;
+                        max-width: 180px;
+                        height: auto;
+                        object-fit: cover;
+                        max-width: 140px;
+                    }
+                }
+
+                .kriteria-text {
+                    p {
+                        font-family: RubikDowload;
+                        letter-spacing: 1px;
+                        font-size: 1rem;
+                        margin-bottom: 7px !important;
+                    }
+
+                    ul {
+                        padding-left: 1rem;
+                        margin-bottom: 5px !important;
+
+                        li {
+                            font-weight: lighter;
+                            font-size: 0.9rem;
+                            font-family: RubikDowload;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.kriteria-daftar {
+    padding-bottom: 60px;
+
+    h2 {
+        text-align: center;
+        font-family: PatrickDowload;
+        color: #e94455;
+        letter-spacing: 3px;
+        font-size: 3.5rem;
+        margin-bottom: 30px;
+    }
+
+    form {
+        .bungkus-form {
+            margin: 0 !important;
+        }
+    }
+}
+
+.form-label {
+    font-weight: 400 !important;
+    letter-spacing: 1px;
+    font-family: RubikDowload;
+}
+
+.btn-create {
+    background: #1784E3;
+    box-shadow: 0 0 15px 0 rgba(1, 86, 255, 0.5);
+    padding: .50rem 2.2rem;
+    color: white;
+    font-size: .95rem;
+}
+
+@media only screen and (max-width: 998px) {
+    .backgroud-bg {
+        height: 300px;
+    }
+
+    .judul-lowongan {
+        h2 {
+            font-size: 1.5rem;
+        }
+
+        p {
+            width: 60%;
+            font-size: 0.9rem;
+        }
+    }
+
+    .col-kriteria {
+        .kriteria {
+            .card-body {
+                margin-top: -50px;
+
+                .row {
+                    padding: 1.7rem 1.7rem;
+
+                    .kri {
+                        margin-bottom: 32px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .backgroud-bg {
+        height: 250px;
+    }
+
+    .judul-lowongan {
+        h2 {
+            font-size: 1.2rem;
+        }
+
+        p {
+            width: 90%;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+    }
+
+    .col-kriteria {
+        .kriteria {
+            .card-body {
+                margin-top: -40px;
+
+                .row {
+                    padding: 1.2rem 1rem;
+
+                    .kri {
+                        margin-bottom: 25px;
+
+                        .kriteriaImg {
+                            max-width: 140px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+body {
+}

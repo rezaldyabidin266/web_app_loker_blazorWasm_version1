@@ -92,8 +92,7 @@
                                                    Mask="@EmailMask"
                                                    MaskMode="MaskMode.RegEx">
                                         <DxRegExMaskProperties MaskAutoCompleteMode="@((MaskAutoCompleteMode)AutoCompleteMode)"
-                                                               Placeholder="maskGmail"
-                                                               />
+                                                               Placeholder="maskGmail" />
                                     </DxMaskedInput>
                                     <ValidationMessage For="@(() => DaftarResource.Email)" />
                                 </div>
@@ -115,6 +114,7 @@
                                     <DxMaskedInput @bind-Value="@DaftarResource.NoTlp"
                                                    BindValueMode="BindValueMode.OnInput"
                                                    Mask="############"
+                                                   NullText="No Tlpn"
                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxTextMaskProperties Placeholder="maskChar" SaveLiteral="true" />
                                     </DxMaskedInput>
@@ -136,7 +136,6 @@
                                     <label class="form-label">Tanggal Lahir</label>
                                     <DxDateEdit @bind-Date="@DaftarResource.TglLahir"
                                                 Mask="dd/MMMM/yyyy"
-
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                     </DxDateEdit>
@@ -155,16 +154,13 @@
                                 </div>
                             </div>
                             <div class="d-grid gap-2 mt-4">
-                                <button class="btn btn-create" type="submit">
+                                <button class="btn btn-create" type="submit" id="toast">
                                     @if (spin)
                                     {
                                         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                                     }
                                     Sign Up
                                 </button>
-                                @*<button type="submit" class="btn btn-create">
-                                    Sign Up
-                                </button>*@
                             </div>
                         </div>
                     </EditForm>
@@ -175,7 +171,16 @@
 
     @if (!string.IsNullOrEmpty(message))
     {
-        <p>@message</p>
+        <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+            <div class="toast hide align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @message
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
     }
 
     @if (response != null)
@@ -184,15 +189,6 @@
         <p>@response.Token</p>
     }
 
-
-    @*@if (loker != null)
-        {
-            @foreach (var item in loker)
-            {
-                <p>@item.StatusLamaran</p>
-                <p>@item.Tanggal</p>
-            }
-        }*@
 
 
 </div>

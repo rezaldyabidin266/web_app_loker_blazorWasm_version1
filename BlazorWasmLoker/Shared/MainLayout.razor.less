@@ -1,0 +1,566 @@
+﻿/*  .main > div {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }*/
+.page {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.main {
+    flex: 1;
+}
+
+.sidebar {
+    background-image: linear-gradient(180deg, rgb(5, 39, 103) 0%, #3a0647 70%);
+}
+
+.pembatas {
+    margin-top: 4rem;
+}
+
+.top-row {
+    background-color: #f7f7f7;
+    border-bottom: 1px solid #d6d5d5;
+    justify-content: flex-end;
+    height: 3.5rem;
+    display: flex;
+    align-items: center;
+
+    &::deep {
+        a {
+            white-space: nowrap;
+            margin-left: 1.5rem;
+        }
+    }
+
+    .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    a {
+        &:first-child {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    }
+}
+
+@media (max-width: 640.98px) {
+    .top-row {
+        &:not(.auth) {
+            display: none;
+        }
+
+        a {
+            margin-left: 0;
+        }
+
+        .btn-link {
+            margin-left: 0;
+        }
+    }
+
+    .top-row.auth {
+        justify-content: space-between;
+    }
+}
+
+@media (min-width: 641px) {
+    .page {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+}
+
+/*Navbar style*/
+
+.navbar {
+    background: rgba(254, 255, 234, 0.8) !important;
+    transition: top 0.3s;
+}
+
+.scrolled-down {
+    transform: translateY(-100%);
+    transition: all 0.3s ease-in-out;
+}
+
+.scrolled-up {
+    transform: translateY(0);
+    transition: all 0.3s ease-in-out;
+}
+
+.navbar-brand {
+    img {
+        display: block;
+        height: 38px;
+    }
+
+    color: black;
+    font-family: RubikDowload;
+    font-weight: 400;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.navbar-nav {
+    .nav-item {
+        margin-left: 30px;
+        line-height: 40px;
+
+        .nav-link {
+            color: rgba(0, 0, 0, 0.8);
+            font-size: 0.925rem;
+            font-weight: 500;
+            font-family: RubikDowload;
+        }
+    }
+}
+
+.navbar-toggler {
+    outline: none;
+    box-shadow: none;
+    border: none;
+
+    &:focus {
+        outline: none;
+        box-shadow: none;
+        border: none;
+    }
+
+    &:active {
+        outline: none;
+        box-shadow: none;
+        border: none;
+    }
+
+    i.open {
+        display: none !important;
+    }
+
+    i.close {
+        display: block !important;
+    }
+
+    .material-icons {
+        font-size: 1.9rem;
+        color: rgba(7, 7, 7, 0.75);
+        margin-right: -0.8rem;
+    }
+}
+
+.navbar-toggler-icon {
+    &:focus {
+        outline: none;
+        box-shadow: none;
+        border: none;
+    }
+}
+
+.navbar-toggler.collapsed {
+    i.close {
+        display: none !important;
+    }
+
+    i.open {
+        display: block !important;
+    }
+}
+
+.drop-akun {
+    .dropstart {
+        .nav-link {
+            padding: 0.5rem;
+            padding-right: 0.5rem !important;
+            color: rgba(7, 7, 7, 0.75);
+        }
+
+        .drop-login {
+            color: black !important;
+            .nav-text {
+                font-family: RubikDowload;
+                font-weight: 400;
+                word-spacing: 1px;
+                font-size: 0.9rem;
+                cursor: pointer;
+                i {
+                    margin-bottom: -2px;
+                }
+            }
+        }
+
+        .dropdown-menu {
+            width: 80px;
+            background: #FEFFEA;
+            padding: 1.2rem 0.9rem !important;
+            box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.05);
+            border: none;
+            margin: 40px 0;
+            margin-right: -35px;
+            border-radius: 10px 5px;
+
+            .dropdown-item {
+                margin-bottom: 4px;
+                font-size: 1.05rem;
+                color: black;
+                font-weight: 300;
+                font-family: RubikDowload;
+
+                i {
+                    color: #A8A7A7;
+                }
+
+                &:hover {
+                    background: transparent;
+                }
+            }
+        }
+
+        .drop-notif {
+            width: 230px;
+            padding: 0.5rem 0 !important;
+
+            .dropdown-header {
+                padding: 1rem 1rem;
+                padding-bottom: 1rem;
+            }
+
+            .notif {
+                cursor: pointer;
+                background: #edf2f9;
+
+                .dropdown-item {
+                    margin: 0;
+                    padding: 0.7rem 1.2rem;
+
+                    .notif-judul {
+                        .judul {
+                            font-size: 0.95rem;
+                            color: black;
+                            font-weight: 400;
+                        }
+                    }
+
+                    .tanggal-notif {
+                        font-size: 0.82rem;
+
+                        i {
+                            font-size: 0.82rem;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background-color: #c7d6ec;
+                }
+            }
+        }
+    }
+}
+
+.drop-akun-login {
+    .dropstart {
+        .nav-link {
+            padding: 0.5rem;
+            padding-right: 0.5rem !important;
+            color: rgba(7, 7, 7, 0.75);
+        }
+
+        .dropdown-header {
+            font-weight: 300;
+            font-size: 1rem;
+            color: #A8A7A7;
+            border-bottom: 1px solid #A8A7A7;
+            padding-bottom: 15px;
+            font-family: RubikDowload;
+            margin-bottom: 10px;
+        }
+
+        .drop-login {
+            color: black;
+        }
+
+        .dropdown-menu {
+            width: 250px;
+            background: #FEFFEA;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+            border: none;
+            margin: 40px 0;
+            margin-right: -35px;
+            border-radius: 10px 5px;
+
+            .dropdown-item {
+                margin-bottom: 6px;
+                font-size: 0.95rem;
+                color: black;
+                font-weight: 400;
+                font-family: RubikDowload;
+                letter-spacing: 1px;
+
+                i {
+                    font-size: 1rem;
+                    color: #A8A7A7;
+                }
+
+                .notifi {
+                    padding-right: 0.5rem;
+
+                    .notif-judul {
+                        font-size: 0.85rem;
+                        font-family: RubikDowload;
+                        letter-spacing: 1px;
+                        font-weight: 400;
+
+                        p {
+                            font-family: RubikDowload;
+                            font-size: 0.7rem;
+                            margin: 2px;
+                            color: #1784E3;
+                            font-weight: 400;
+                            letter-spacing: 1px;
+                        }
+                    }
+
+                    .notif-status {
+                        span {
+                            font-weight: 400;
+                            letter-spacing: 1px;
+                            font-size: 0.8rem;
+                            color: #A8A7A7;
+                            font-family: RubikDowload;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background: transparent;
+                }
+            }
+        }
+    }
+}
+
+.image {
+    .dropdown-menu {
+        width: 140px;
+        padding: 0.5rem 0 !important;
+        box-shadow: 0 10px 30px 0 rgba(31, 45, 61, 0.4);
+        border-radius: 0.5rem;
+        border: none;
+        margin: 0 0;
+        margin-right: 15px;
+
+        .dropdown-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+            padding: 0.7rem 1rem;
+        }
+
+        .dropdown-item {
+            margin-bottom: 10px;
+            font-size: 0.94rem;
+            color: #18113c;
+            font-weight: 500;
+
+            .material-icons {
+                margin-bottom: -2px;
+            }
+
+            &:hover {
+                background: transparent;
+            }
+        }
+    }
+}
+
+.img-wrap {
+    img {
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+    }
+}
+
+.fitur {
+    .dropdown-menu {
+        padding: 0.5rem 0.5rem;
+        box-shadow: 0 10px 30px 0 rgba(31, 45, 61, 0.4);
+        border-radius: 0.5rem;
+        border: none;
+        margin: 0 0;
+
+        .dropdown-header {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .dropdown-item {
+            font-size: 0.94rem;
+            color: #18113c;
+            font-weight: 500;
+
+            .material-icons {
+                margin-bottom: -2px;
+            }
+
+            &:hover {
+                background: transparent;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 998px) {
+    .navbar-brand {
+        img {
+            display: block;
+            height: 39px;
+            margin-left: 5px;
+        }
+    }
+
+    .navbar-nav {
+        padding-top: 1rem;
+
+        .nav-item {
+            margin-left: 10px;
+            line-height: 20px;
+
+            .nav-link {
+                color: rgba(0, 0, 0, 0.9);
+                font-size: 0.9rem;
+                font-weight: 500;
+                font-family: RubikDowload;
+            }
+        }
+    }
+
+    .fitur {
+        .dropdown-menu {
+            padding: 0.5rem 0.5rem;
+            box-shadow: 0 10px 30px 0 rgba(31, 45, 61, 0.2);
+            border-radius: 0.5rem;
+            border: none;
+            margin: 0 0;
+
+            .dropdown-header {
+                font-size: 0.9rem;
+                font-weight: 600;
+            }
+
+            .dropdown-item {
+                margin: 10px 0;
+                font-size: 0.94rem;
+                color: #18113c;
+                font-weight: 500;
+
+                .material-icons {
+                    margin-bottom: -2px;
+                }
+
+                &:hover {
+                    background: transparent;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .drop-akun-login {
+        .dropstart {
+            .nav-link {
+                padding: 0.5rem;
+                padding-right: 0.5rem !important;
+                color: rgba(7, 7, 7, 0.75);
+            }
+
+            .dropdown-header {
+                font-weight: 300;
+                font-size: 1rem;
+                color: #A8A7A7;
+                border-bottom: 1px solid #A8A7A7;
+                padding-bottom: 15px;
+                font-family: RubikDowload;
+                margin-bottom: 10px;
+            }
+
+            .drop-login {
+                color: black;
+            }
+
+            .dropdown-menu {
+                width: 250px;
+                background: #FEFFEA;
+                box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+                border: none;
+                margin: 40px 0;
+                margin-right: -35px;
+                border-radius: 10px 5px;
+
+                .dropdown-item {
+                    margin-bottom: 6px;
+                    font-size: 0.95rem;
+                    color: black;
+                    font-weight: 400;
+                    font-family: RubikDowload;
+                    letter-spacing: 1px;
+
+                    i {
+                        font-size: 1rem;
+                        color: #A8A7A7;
+                    }
+
+                    .notifi {
+                        padding-right: 0.5rem;
+
+                        .notif-judul {
+                            font-size: 0.85rem;
+                            font-family: RubikDowload;
+                            letter-spacing: 1px;
+                            font-weight: 400;
+
+                            p {
+                                font-family: RubikDowload;
+                                font-size: 0.7rem;
+                                margin: 2px;
+                                color: #1784E3;
+                                font-weight: 400;
+                                letter-spacing: 1px;
+                            }
+                        }
+
+                        .notif-status {
+                            span {
+                                font-weight: 400;
+                                letter-spacing: 1px;
+                                font-size: 0.8rem;
+                                color: #A8A7A7;
+                                font-family: RubikDowload;
+                            }
+                        }
+                    }
+
+                    &:hover {
+                        background: transparent;
+                    }
+                }
+            }
+        }
+    }
+}

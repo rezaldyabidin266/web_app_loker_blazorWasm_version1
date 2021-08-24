@@ -11,7 +11,7 @@ html, body {
 
 @font-face {
     font-family: PatrickDowload;
-    src: url(../css/FontCustom/Patrick/PatrickHand-Regular.ttf);
+    src: url(../css/FontCustom/Patrick/PatrickHand-Regular.ttf);  
 }
 
 
@@ -60,3 +60,4 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
+

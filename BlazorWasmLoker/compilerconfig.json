@@ -4,7 +4,19 @@
     "inputFile": "Pages/LokerPages/PertanyaanComp.razor.scss"
   },
   {
-    "outputFile": "Pages/TestFoto/TestScssJsComp.razor.css",
-    "inputFile": "Pages/TestFoto/TestScssJsComp.razor.scss"
+    "outputFile": "Pages/TestFoto/TestFoto.razor.css",
+    "inputFile": "Pages/TestFoto/TestFoto.razor.less"
+  },
+  {
+    "outputFile": "Pages/LokerPages/LokerComp.razor.css",
+    "inputFile": "Pages/LokerPages/LokerComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/LokerPages/KriteriaComp.razor.css",
+    "inputFile": "Pages/LokerPages/KriteriaComp.razor.less"
+  },
+  {
+    "outputFile": "Shared/MainLayout.razor.css",
+    "inputFile": "Shared/MainLayout.razor.less"
   }
 ]
