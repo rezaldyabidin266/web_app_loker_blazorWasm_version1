@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 
 namespace BlazorWasmLoker.Services
 {
+
     public class LokerService
     {
         private readonly HttpClient _httpClient; 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BlazorWasmLoker.Pages.LokerPages
 {
-    public partial class KriteriaComp : ComponentBase
+    public class KriteriaCompBase : ComponentBase
     {
         [Inject]
         protected LokerService LokerService { get; set; }
@@ -56,10 +56,10 @@ namespace BlazorWasmLoker.Pages.LokerPages
         //Mask Char
         protected char maskChar = ' ';
         protected char maskGmail = '_';
-        MaskAutoCompleteMode AutoCompleteMode { get; set; } = MaskAutoCompleteMode.Strong;
-        string EmailMask { get; set; } = @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
+        protected MaskAutoCompleteMode AutoCompleteMode { get; set; } = MaskAutoCompleteMode.Strong;
+        protected string EmailMask { get; set; } = @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
         //Mask default
-        string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
+        protected string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
 
 
         //Spinner
@@ -138,7 +138,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected async Task daftarSubmit()
         {
-   
+
             spin = true;
             if (editContext.Validate())
             {

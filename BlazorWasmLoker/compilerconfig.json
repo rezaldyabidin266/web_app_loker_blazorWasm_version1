@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Pages/LokerPages/PertanyaanComp.razor.css",
+    "inputFile": "Pages/LokerPages/PertanyaanComp.razor.scss"
+  },
+  {
+    "outputFile": "Pages/TestFoto/TestScssJsComp.razor.css",
+    "inputFile": "Pages/TestFoto/TestScssJsComp.razor.scss"
+  }
+]
