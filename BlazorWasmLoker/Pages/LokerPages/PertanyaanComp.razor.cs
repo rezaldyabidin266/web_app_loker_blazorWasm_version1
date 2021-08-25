@@ -2,6 +2,8 @@
 using BlazorWasmLoker.Services;
 using BlazorWasmLoker.Utility;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.JSInterop;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,18 +15,28 @@ namespace BlazorWasmLoker.Pages.LokerPages
     {
         [Inject]
         protected LokerService LokerService { get; set; }
-
         [Inject]
         protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
+        [Inject]
+        IJSRuntime JSRuntime { get; set; }
 
         protected List<FromPertanyaanResoruce> FormPertanyaan = new List<FromPertanyaanResoruce>();
+        protected List<JawabanResoruce> jawabans = new List<JawabanResoruce>();
+        public EditContext editContext { get; set; }
         protected string message;
         protected string token;
         protected string ErrorMessage;
+        protected JawabanResoruce jawab;
+
+        protected override void OnInitialized()
+        {
+            editContext = new EditContext(FormPertanyaan);
+        }
 
         protected override async Task OnInitializedAsync()
         {
-            await Task.Delay(1000);
+
+
 
             token = await LocalStorage.GetItemAsync<string>("token");
             var idLoker = await LocalStorage.GetItemAsync<int>("IdLoker");
@@ -56,34 +68,72 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
         }
 
+        protected void pushJawaban(ChangeEventArgs e, int id, string pertanyaan, string bentukIsian)
+        {
 
+            var jawaban = (string)e.Value;
+            jawab = new JawabanResoruce
+            {
+                Id = id,
+                Pertanyaan = pertanyaan,
+                Jawaban = jawaban,
+                Nominal = 1,
+                Tanggal = DateTime.Now,
+                FilePendukung = null,
+                JawabanTambahan = null
+            };
+
+            //var nominalterbilang = MyFungsi.Helper.Terbilang(10000000);
+            //var umur = MyFungsi.Helper.HitungWaktu(DateTime.Now, DateTime.Now.AddYears(-20));
+
+
+            //if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
+            //{
+            //    jawab.Tanggal = DateTime.Now.AddMonths(-3);
+            //}
+            //else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
+            //{
+            //    jawab.Nominal = 50000;
+            //}
+            jawabans.Add(jawab);
+            LokerService.consoleLog(jawab);
+            Console.WriteLine(jawab);
+
+        }
+
+        protected void pushJawabanCheckBox(object e, int id, string pertanyaan, string bentukIsian)
+        {
+        
+            //var jawaban = (string)e;
+            //var jawaban = string.Join(" ", e);
+            string arrayConver = string.Join(",", e);
+            string value = e.ToString();
+
+            object varObject = e;
+
+            //string arrayy = Array.ConvertAll((object)e, Convert.ToString);
+
+            jawab = new JawabanResoruce
+            {
+                Id = id,
+                Pertanyaan = pertanyaan,
+                Jawaban = value,
+                Nominal = 1,
+                Tanggal = DateTime.Now,
+                FilePendukung = null,
+                JawabanTambahan = null
+            };
+            //jawabans.Add(jawab);
+
+            JSRuntime.InvokeVoidAsync("console.log", e);
+            LokerService.consoleLog(jawab);
+            LokerService.consoleLog(arrayConver);
+            LokerService.consoleLog(varObject);
+
+            //LokerService.consoleLog(value);
+        }
         protected async void Save()
         {
-            var jawabans = new List<JawabanResoruce>();
-
-            foreach (var item in FormPertanyaan)
-            {
-                var jawab = new JawabanResoruce
-                {
-                    Id = item.Id,
-                    Jawaban = item.Jawaban,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
-
-                if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
-                {
-                    jawab.Tanggal = DateTime.Now.AddMonths(-3);
-                }
-                else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
-                {
-                    jawab.Nominal = 50000;
-                }
-
-              
-
-                jawabans.Add(jawab);
-            }
 
             try
             {
@@ -93,6 +143,9 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 message = ex.Message;
             }
+
+
+
         }
     }
 }

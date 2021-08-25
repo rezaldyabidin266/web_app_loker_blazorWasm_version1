@@ -61,7 +61,8 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected char maskChar = ' ';
         protected char maskGmail = '_';
         protected MaskAutoCompleteMode AutoCompleteMode { get; set; } = MaskAutoCompleteMode.Strong;
-        protected string EmailMask { get; set; } = @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
+        protected string EmailMask { get; set; }= @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
+        protected bool PlaceholderVisible { get; set; } = true;
         //Mask default
         protected string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
 
@@ -74,21 +75,15 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected override void OnInitialized()
         {
             editContext = new EditContext(DaftarResource);
-
-          
         }
         protected override async void OnAfterRender(bool firstRender)
         {
-            //await JSRuntime.InvokeVoidAsync("renderjQueryComponents");
             await JSRuntime.InvokeVoidAsync("toastShow");
         }
 
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
-
-            //editContext = new(DaftarResource);
-
             await GetLoker(IdLoker);
             await KriteriaPelamar(IdLoker);
             await GambarBg(IdLoker);
@@ -152,11 +147,9 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected async Task daftarSubmit()
         {
-          
             spin = true;
             if (editContext.Validate())
             {
-
                 try
                 {
                     var result = await LokerService.DaftarNoRegister(DaftarResource);
@@ -189,8 +182,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 isVisible = true;
                 
             }
-
-
         }
 
         protected async Task GetListLokerSaya()
@@ -205,31 +196,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
 
         }
-
-        //protected async Task GetPertanyaan()
-        //{
-        //    var idLoker = await LocalStorage.GetItemAsync<int>("IdLoker");
-        //    //var token = await LocalStorage.GetItemAsync<string>("Token");
-
-        //    try
-        //    {
-        //        var pertanyaan = await LokerService.FormPertanyaan(token, idLoker);
-        //        messagePertanyaan = pertanyaan.Message;
-        //        Console.WriteLine(messagePertanyaan);
-
-        //        if (pertanyaan.Pertanyaan != null)
-        //        {
-        //            foreach (var item in pertanyaan.Pertanyaan)
-        //            {
-        //                Console.WriteLine(item.Pertanyaan);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        message = ex.Message;
-        //    }
-        //}
 
     }
 }

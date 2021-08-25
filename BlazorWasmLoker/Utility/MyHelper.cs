@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Microsoft.JSInterop;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace BlazorWasmLoker.Utility
@@ -49,7 +51,19 @@ namespace BlazorWasmLoker.Utility
                 default:
                     throw new ArgumentException(value.ToString());
             }
-        }
+        } 
+    }
+    public  class JsConsoleLog 
+    {
+        private readonly IJSRuntime JsRuntime;
+        public JsConsoleLog(IJSRuntime jSRuntime)
+        {
+            JsRuntime = jSRuntime;
+        }    
 
+        public async Task LogAsync(object message)
+        {
+            await JsRuntime.InvokeVoidAsync("console.log", message);
+        }
     }
 }

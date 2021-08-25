@@ -2,27 +2,109 @@
 
 @inherits PertanyaanCompBase
 
+<div class="container-lg">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="judul-lowongan">
+                <h2>
+                    Pertanyaan
+                </h2>
+                <p>
+                    Harap Isi semua pertanyaan !
+                </p>
+            </div>
 
-<h3>PertanyaanComp</h3>
+            @* Pertanyaan *@
 
-@if (FormPertanyaan.Count == 0)
-{
-    <div class="spinner"></div>
-}
-else
-{
-    @foreach (var item in FormPertanyaan)
-    {
+            @if (FormPertanyaan.Count == 0)
+            {
+                <div class="spinner"></div>
+            }
+            else
+            {
 
-      
-        <p>@item.No </p>
-        <p>@item.Pertanyaan</p>
-        <p>@item.Jawaban</p>
-        <p>@item.BentukIsian</p>
-        <p>@item.IsRequired </p>
+                @foreach (var item in FormPertanyaan)
+                {
+                    @switch (item.BentukIsian)
+                    {
+                        case "Paragraf":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        @item.Id;
+                                        <DxMemo Rows="7"
+                                                NullText="Alamat saat ini"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
+                                    </div>
+                                </div>
+                            </div>
+                            break;
 
-    }
-}
+                        case "Simple Text":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        @item.Id;
+                                        <DxTextBox NullText="Alamat saat ini"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                   @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+
+                        case "Checkbox":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">   
+                                    <div class="bungkus-input">
+                                        <DxTagBox Data="@item.Pilihan"
+                                                  TData=object
+                                                  TValue=object
+                                                  ValuesChanged="@((x) => pushJawabanCheckBox(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                        </DxTagBox>
+                                    </div>
+                                </div>
+                            </div>
+
+                            break;
+                        case "Yes No Question":
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Yes No Question     @item.Id;</p>
+                            break;
+                        case "Nominal":
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Nominal     @item.Id;</p>
+                            break;
+                        case "Tanggal":
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Tanggal     @item.Id;</p>
+                            break;
+                        case "Pilihan Ganda":
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Pilihan Ganda     @item.Id;</p>
+                            break;
+                    }
+
+                }
+
+            }
+
+        </div>
+    </div>
+</div>
 
 <p>@ErrorMessage</p>
 

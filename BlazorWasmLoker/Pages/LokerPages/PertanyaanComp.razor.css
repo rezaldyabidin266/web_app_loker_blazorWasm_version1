@@ -1,9 +1,11 @@
 ﻿@keyframes "spin" {
   0% {
-    transform: rotate(0deg); }
+    transform: rotate(0deg);
+  }
   100% {
-    transform: rotate(360deg); } }
-
+    transform: rotate(360deg);
+  }
+}
 .spinner {
   border: 16px solid silver;
   border-top: 16px solid #337AB7;
@@ -13,4 +15,5 @@
   animation: spin 700ms linear infinite;
   top: 40%;
   left: 55%;
-  position: absolute; }
+  position: absolute;
+}

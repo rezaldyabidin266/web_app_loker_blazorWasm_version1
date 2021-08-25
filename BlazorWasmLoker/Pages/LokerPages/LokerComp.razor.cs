@@ -13,7 +13,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
     {
         [Inject]
         protected LokerService lokerService { get; set; }
-
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Inject]
@@ -36,13 +35,11 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
-             
             }
         }
 
         protected void RouteKriteria(int idLoker)
         {
-
             NavigationManager.NavigateTo("/kriteria/" + idLoker);
             LocalStorage.SetItemAsync("IdLoker", idLoker);
 

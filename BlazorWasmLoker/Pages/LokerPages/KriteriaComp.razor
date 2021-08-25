@@ -89,10 +89,7 @@
                                                    BindValueMode="BindValueMode.OnInput"
                                                    NullText="Alamat Email"
                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                   Mask="@EmailMask"
-                                                   MaskMode="MaskMode.RegEx">
-                                        <DxRegExMaskProperties MaskAutoCompleteMode="@((MaskAutoCompleteMode)AutoCompleteMode)"
-                                                               Placeholder="maskGmail" />
+                                                  >
                                     </DxMaskedInput>
                                     <ValidationMessage For="@(() => DaftarResource.Email)" />
                                 </div>

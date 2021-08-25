@@ -1,9 +1,5 @@
 ﻿[
   {
-    "outputFile": "Pages/LokerPages/PertanyaanComp.razor.css",
-    "inputFile": "Pages/LokerPages/PertanyaanComp.razor.scss"
-  },
-  {
     "outputFile": "Pages/TestFoto/TestFoto.razor.css",
     "inputFile": "Pages/TestFoto/TestFoto.razor.less"
   },
@@ -18,5 +14,9 @@
   {
     "outputFile": "Shared/MainLayout.razor.css",
     "inputFile": "Shared/MainLayout.razor.less"
+  },
+  {
+    "outputFile": "Pages/LokerPages/PertanyaanComp.razor.css",
+    "inputFile": "Pages/LokerPages/PertanyaanComp.razor.less"
   }
 ]
