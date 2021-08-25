@@ -16,22 +16,25 @@ namespace BlazorWasmLoker.Services
 
     public class LokerService
     {
-        private readonly HttpClient _httpClient; 
-        private const string Controller = "Lokers/";          
+        private readonly HttpClient _httpClient;
+        private const string Controller = "Lokers/";
+        private readonly IJSRuntime _jsRuntime;
+        private readonly ILocalStorageService _localStorage;
+        private readonly NavigationManager _navigationManager;
 
-        public IJSRuntime _Jsruntime { get; }
-        public ILocalStorageService _LocalStorage { get; }
-
-        public LokerService(HttpClient httpClient , IJSRuntime jsruntime, ILocalStorageService localStorage )
+        public LokerService(HttpClient httpClient, NavigationManager navigationManager,
+                            IJSRuntime jsruntime, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
-            _LocalStorage = localStorage;
-            _Jsruntime = jsruntime;
+            _localStorage = localStorage;
+            _navigationManager = navigationManager;
+            _jsRuntime = jsruntime;
         }
 
-        public void consoleLog(object message)
+        //DRY Code
+        public void JsConsoleLog(object message)
         {
-             _Jsruntime.InvokeVoidAsync("console.log", message);
+            _jsRuntime.InvokeVoidAsync("console.log", message);
         }
 
         public async Task<List<LokerResource>> ListLoker()
@@ -46,10 +49,10 @@ namespace BlazorWasmLoker.Services
         public async Task<LokerResource> GetLoker(int idLoker)
         {
             var respond = await _httpClient.GetAsync(Controller + $"get-loker?LokerId={idLoker}");
-            var data = _LocalStorage.GetItemAsync<string>("token");
+
             return respond.IsSuccessStatusCode
-               ? JsonConvert.DeserializeObject<LokerResource>(respond.Content.ReadAsStringAsync().Result)
-               : throw new Exception(await respond.Content.ReadAsStringAsync());
+              ? JsonConvert.DeserializeObject<LokerResource>(respond.Content.ReadAsStringAsync().Result)
+              : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
 
         public async Task<List<string>> GetKriteria(int idLoker)

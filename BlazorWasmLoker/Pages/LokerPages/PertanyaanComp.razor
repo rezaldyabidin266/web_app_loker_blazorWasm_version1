@@ -1,6 +1,7 @@
 ﻿@page "/pertanyaan"
 
 @inherits PertanyaanCompBase
+@using Utility
 
 <div class="container-lg">
     <div class="row">
@@ -23,8 +24,87 @@
             else
             {
 
+                 Task.Delay(2000);
+
                 @foreach (var item in FormPertanyaan)
                 {
+                    @*switch ((MyHelper.BentukIsian)Enum.Parse(typeof(MyHelper.BentukIsian), item.BentukIsian))
+                    {
+                        case MyHelper.BentukIsian.SimpleText:
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        @item.Id;
+                                        <DxTextBox NullText="Alamat saat ini"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                   @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case MyHelper.BentukIsian.YesNo:
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Yes No Question     @item.Id;</p>
+                            break;
+                        case MyHelper.BentukIsian.Paragraf:
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        @item.Id;
+                                        <DxMemo Rows="7"
+                                                NullText="Alamat saat ini"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case MyHelper.BentukIsian.PilihanGanda:
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Pilihan Ganda     @item.Id;</p>
+                            break;
+                        case MyHelper.BentukIsian.Checkbox:
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxTagBox Data="@item.Pilihan"
+                                                  TData=object
+                                                  TValue=object
+                                                  ValuesChanged="@((x) => pushJawabanCheckBox(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                        </DxTagBox>
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case MyHelper.BentukIsian.DropDown:
+                            break;
+                        case MyHelper.BentukIsian.UploadFile:
+                            break;
+                        case MyHelper.BentukIsian.Tanggal:
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Tanggal @item.Id;</p>
+                            break;
+                        case MyHelper.BentukIsian.Nominal:
+                            <p>@item.Pertanyaan</p>
+                            <p>INI Nominal @item.Id;</p>
+                            break;
+                        case MyHelper.BentukIsian.PrivateOnSite:
+                            break;
+                    }*@
+
+
                     @switch (item.BentukIsian)
                     {
                         case "Paragraf":
@@ -68,7 +148,7 @@
                                     <span class="me-auto">@item.Pertanyaan</span>
                                     <span class="bintang">*</span>
                                 </p>
-                                <div class="kotak-input">   
+                                <div class="kotak-input">
                                     <div class="bungkus-input">
                                         <DxTagBox Data="@item.Pilihan"
                                                   TData=object

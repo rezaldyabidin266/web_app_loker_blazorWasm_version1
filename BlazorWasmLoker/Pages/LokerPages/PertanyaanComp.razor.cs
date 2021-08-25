@@ -27,6 +27,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected string token;
         protected string ErrorMessage;
         protected JawabanResoruce jawab;
+        protected MyHelper.BentukIsian bentukIsian { get; set; }
 
         protected override void OnInitialized()
         {
@@ -35,9 +36,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected override async Task OnInitializedAsync()
         {
-
-
-
             token = await LocalStorage.GetItemAsync<string>("token");
             var idLoker = await LocalStorage.GetItemAsync<int>("IdLoker");
             try
@@ -59,12 +57,10 @@ namespace BlazorWasmLoker.Pages.LokerPages
                     };
                     FormPertanyaan.Add(data);
                 }
-
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
-
             }
         }
 
@@ -96,7 +92,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             //    jawab.Nominal = 50000;
             //}
             jawabans.Add(jawab);
-            LokerService.consoleLog(jawab);
+            LokerService.JsConsoleLog(jawab);
             Console.WriteLine(jawab);
 
         }
@@ -126,9 +122,9 @@ namespace BlazorWasmLoker.Pages.LokerPages
             //jawabans.Add(jawab);
 
             JSRuntime.InvokeVoidAsync("console.log", e);
-            LokerService.consoleLog(jawab);
-            LokerService.consoleLog(arrayConver);
-            LokerService.consoleLog(varObject);
+            LokerService.JsConsoleLog(jawab);
+            LokerService.JsConsoleLog(arrayConver);
+            LokerService.JsConsoleLog(varObject);
 
             //LokerService.consoleLog(value);
         }

@@ -1,5 +1,8 @@
-﻿using BlazorWasmLoker.Resoruces.Users;
+﻿using Blazored.LocalStorage;
+using BlazorWasmLoker.Resoruces.Users;
+using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Http;
+using Microsoft.JSInterop;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,11 +18,26 @@ namespace BlazorWasmLoker.Services
     {
         private readonly HttpClient _httpClient;
         private const string Controller = "Users/";
-        public UserService(HttpClient httpClient)
+        private readonly IJSRuntime _jsRuntime;
+        private readonly ILocalStorageService _localStorage;
+        private readonly NavigationManager _navigationManager;
+
+        public UserService(HttpClient httpClient, NavigationManager navigationManager,
+                            IJSRuntime jsruntime, ILocalStorageService localStorage)
         {
             _httpClient = httpClient;
+            _navigationManager = navigationManager;
+            _jsRuntime = jsruntime;
+            _localStorage = localStorage;
             _httpClient.DefaultRequestHeaders.Clear();
         }
+
+        //DRY Code
+        public void JsConsoleLog(object message)
+        {
+            _jsRuntime.InvokeVoidAsync("console.log", message);
+        }
+
         public async Task<TokenResource> Login(UserLoginResource userLogin)
         {
             var respond = await _httpClient.PostAsJsonAsync(Controller + "login", userLogin);

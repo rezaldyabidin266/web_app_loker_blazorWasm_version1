@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace BlazorWasmLoker.Utility
 {
-    public class MyHelper
+    public static class MyHelper
     {
         public enum BentukIsian
         {
@@ -53,17 +53,5 @@ namespace BlazorWasmLoker.Utility
             }
         } 
     }
-    public  class JsConsoleLog 
-    {
-        private readonly IJSRuntime JsRuntime;
-        public JsConsoleLog(IJSRuntime jSRuntime)
-        {
-            JsRuntime = jSRuntime;
-        }    
 
-        public async Task LogAsync(object message)
-        {
-            await JsRuntime.InvokeVoidAsync("console.log", message);
-        }
-    }
 }
