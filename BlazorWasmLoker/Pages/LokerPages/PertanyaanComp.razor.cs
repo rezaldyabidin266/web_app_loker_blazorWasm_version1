@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -27,7 +28,10 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected string token;
         protected string ErrorMessage;
         protected JawabanResoruce jawab;
+        protected DateTime Date = DateTime.Today;
         protected MyHelper.BentukIsian bentukIsian { get; set; }
+
+
 
         protected override void OnInitialized()
         {
@@ -42,6 +46,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 var root = await LokerService.FormPertanyaan(token, idLoker);
                 message = root.Message;
+                
 
                 foreach (var item in root.Pertanyaan)
                 {
@@ -64,6 +69,11 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
         }
 
+        protected override async void OnAfterRender(bool firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("toastShow");
+        }
+
         protected void pushJawaban(ChangeEventArgs e, int id, string pertanyaan, string bentukIsian)
         {
 
@@ -79,58 +89,99 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 JawabanTambahan = null
             };
 
-            //var nominalterbilang = MyFungsi.Helper.Terbilang(10000000);
-            //var umur = MyFungsi.Helper.HitungWaktu(DateTime.Now, DateTime.Now.AddYears(-20));
-
-
-            //if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
-            //{
-            //    jawab.Tanggal = DateTime.Now.AddMonths(-3);
-            //}
-            //else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
-            //{
-            //    jawab.Nominal = 50000;
-            //}
             jawabans.Add(jawab);
             LokerService.JsConsoleLog(jawab);
-            Console.WriteLine(jawab);
+            LokerService.JsConsoleLog(jawaban);
 
         }
 
-        protected void pushJawabanCheckBox(object e, int id, string pertanyaan, string bentukIsian)
+        protected void pushJawabanCheckBox(object jawabanHtml, int id, string pertanyaan, string bentukIsian)
         {
+
+
+            if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.PilihanGanda))
+            {
+
+                string jawabanString = jawabanHtml.ToString();
+                jawab = new JawabanResoruce
+                {
+                    Id = id,
+                    Pertanyaan = pertanyaan,
+                    Jawaban = jawabanString,
+                    Nominal = 1,
+                    Tanggal = DateTime.Now,
+                    FilePendukung = null,
+                    JawabanTambahan = null
+                };
+                jawabans.Add(jawab);
+                LokerService.JsConsoleLog(jawabanString);
+            }
+            else
+            {
+                //object -> List<object> kalau gak di ubah hasilnya system-sytem
+                var result = ((IEnumerable)jawabanHtml).Cast<object>().ToList();
+                //List<Object> -> string
+                string arrayConver = string.Join(",", result);
+
+                jawab = new JawabanResoruce
+                {
+                    Id = id,
+                    Pertanyaan = pertanyaan,
+                    Jawaban = arrayConver,
+                    Nominal = 1,
+                    Tanggal = DateTime.Now,
+                    FilePendukung = null,
+                    JawabanTambahan = null
+                };
+                jawabans.Add(jawab);
+                LokerService.JsConsoleLog(arrayConver);
+            }
+
+
+
+            LokerService.JsConsoleLog(jawabans);
         
-            //var jawaban = (string)e;
-            //var jawaban = string.Join(" ", e);
-            string arrayConver = string.Join(",", e);
-            string value = e.ToString();
+        }
 
-            object varObject = e;
-
-            //string arrayy = Array.ConvertAll((object)e, Convert.ToString);
-
+        protected void pushJawabanNominal(int e, int id, string pertanyaan, string bentukIsian)
+        {
+            var jawaban = e.ToString();
             jawab = new JawabanResoruce
             {
                 Id = id,
                 Pertanyaan = pertanyaan,
-                Jawaban = value,
-                Nominal = 1,
+                Jawaban = jawaban,
+                Nominal = e,
                 Tanggal = DateTime.Now,
                 FilePendukung = null,
                 JawabanTambahan = null
             };
-            //jawabans.Add(jawab);
+            jawabans.Add(jawab);
 
-            JSRuntime.InvokeVoidAsync("console.log", e);
             LokerService.JsConsoleLog(jawab);
-            LokerService.JsConsoleLog(arrayConver);
-            LokerService.JsConsoleLog(varObject);
-
-            //LokerService.consoleLog(value);
+            LokerService.JsConsoleLog(jawabans);
         }
+
+        protected void pushJawabanDate(DateTime e, int id, string pertanyaan, string bentukIsian)
+        {
+            Date = e;
+            var jawaban = e.ToString("yyyy-MM-dd");
+            jawab = new JawabanResoruce
+            {
+                Id = id,
+                Pertanyaan = pertanyaan,
+                Jawaban = jawaban,
+                Nominal = 1,
+                Tanggal = e,
+                FilePendukung = null,
+                JawabanTambahan = null
+            };
+            jawabans.Add(jawab);
+        }
+
         protected async void Save()
         {
-
+            LokerService.JsConsoleLog(jawabans);
             try
             {
                 message = await LokerService.FormSaveListJawaban(jawabans);
@@ -139,9 +190,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 message = ex.Message;
             }
-
-
-
         }
     }
 }

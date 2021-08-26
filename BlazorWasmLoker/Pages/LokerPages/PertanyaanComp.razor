@@ -4,9 +4,9 @@
 @using Utility
 
 <div class="container-lg">
-    <div class="row">
+    <div class="row justify-content-md-center">
         <div class="col-md-8">
-            <div class="judul-lowongan">
+            <div class="judul-pertanyaan">
                 <h2>
                     Pertanyaan
                 </h2>
@@ -14,96 +14,85 @@
                     Harap Isi semua pertanyaan !
                 </p>
             </div>
-
-            @* Pertanyaan *@
-
             @if (FormPertanyaan.Count == 0)
             {
-                <div class="spinner"></div>
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
             }
             else
             {
-
-                 Task.Delay(2000);
-
                 @foreach (var item in FormPertanyaan)
-                {
-                    @*switch ((MyHelper.BentukIsian)Enum.Parse(typeof(MyHelper.BentukIsian), item.BentukIsian))
-                    {
-                        case MyHelper.BentukIsian.SimpleText:
-                            <div class="card-body">
-                                <p class="d-flex">
-                                    <span class="me-auto">@item.Pertanyaan</span>
-                                    <span class="bintang">*</span>
-                                </p>
-                                <div class="kotak-input">
-                                    <div class="bungkus-input">
-                                        @item.Id;
-                                        <DxTextBox NullText="Alamat saat ini"
-                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                   @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
-                                    </div>
-                                </div>
-                            </div>
-                            break;
-                        case MyHelper.BentukIsian.YesNo:
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Yes No Question     @item.Id;</p>
-                            break;
-                        case MyHelper.BentukIsian.Paragraf:
-                            <div class="card-body">
-                                <p class="d-flex">
-                                    <span class="me-auto">@item.Pertanyaan</span>
-                                    <span class="bintang">*</span>
-                                </p>
-                                <div class="kotak-input">
-                                    <div class="bungkus-input">
-                                        @item.Id;
-                                        <DxMemo Rows="7"
-                                                NullText="Alamat saat ini"
-                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
-                                    </div>
-                                </div>
-                            </div>
-                            break;
-                        case MyHelper.BentukIsian.PilihanGanda:
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Pilihan Ganda     @item.Id;</p>
-                            break;
-                        case MyHelper.BentukIsian.Checkbox:
-                            <div class="card-body">
-                                <p class="d-flex">
-                                    <span class="me-auto">@item.Pertanyaan</span>
-                                    <span class="bintang">*</span>
-                                </p>
-                                <div class="kotak-input">
-                                    <div class="bungkus-input">
-                                        <DxTagBox Data="@item.Pilihan"
-                                                  TData=object
-                                                  TValue=object
-                                                  ValuesChanged="@((x) => pushJawabanCheckBox(x,item.Id,item.Pertanyaan,item.BentukIsian))">
-                                        </DxTagBox>
-                                    </div>
-                                </div>
-                            </div>
-                            break;
-                        case MyHelper.BentukIsian.DropDown:
-                            break;
-                        case MyHelper.BentukIsian.UploadFile:
-                            break;
-                        case MyHelper.BentukIsian.Tanggal:
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Tanggal @item.Id;</p>
-                            break;
-                        case MyHelper.BentukIsian.Nominal:
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Nominal @item.Id;</p>
-                            break;
-                        case MyHelper.BentukIsian.PrivateOnSite:
-                            break;
-                    }*@
 
+                {
+                    @*<div>
+                            @{ var isian = (MyHelper.BentukIsian)Enum.Parse(typeof(MyHelper.BentukIsian), item.BentukIsian); }
+                        </div>*@
+
+                    @*var isian = (MyHelper.BentukIsian)Enum.Parse(typeof(MyHelper.BentukIsian), item.BentukIsian);
+                        LokerService.JsConsoleLog(isian);
+
+                            @switch (isian)
+                                {
+                                    case MyHelper.BentukIsian.SimpleText:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.YesNo:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.Paragraf:
+                                        <div class="card-body">
+                                            <p class="d-flex">
+                                                <span class="me-auto">@item.Pertanyaan @item.BentukIsian</span>
+                                                <span class="bintang">*</span>
+                                            </p>
+                                            <div class="kotak-input">
+                                                <div class="bungkus-input">
+                                                    @item.Id;
+                                                    <DxMemo Rows="7"
+                                                            NullText="Alamat saat ini"
+                                                            ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                            @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.PilihanGanda:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.Checkbox:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.DropDown:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.UploadFile:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.Tanggal:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.Nominal:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    case MyHelper.BentukIsian.PrivateOnSite:
+                                        @item.Pertanyaan @item.BentukIsian
+                                        <br />
+                                        break;
+                                    default:
+                                        break;
+                                }*@
 
                     @switch (item.BentukIsian)
                     {
@@ -115,11 +104,14 @@
                                 </p>
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
-                                        @item.Id;
                                         <DxMemo Rows="7"
-                                                NullText="Alamat saat ini"
+                                                NullText="Enter Jawaban"
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
+                                                @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                        @*<DxMemo Rows="7"
+                                            NullText="Alamat saat ini"
+                                            ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                            TextChanged="(x) => pushJawabanCheckBox(x,item.Id,item.Pertanyaan,item.BentukIsian)" />*@
                                     </div>
                                 </div>
                             </div>
@@ -133,10 +125,10 @@
                                 </p>
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
-                                        @item.Id;
-                                        <DxTextBox NullText="Alamat saat ini"
+
+                                        <DxTextBox NullText="Enter Jawaban"
                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                   @onchange="@(x => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))" />
+                                                   @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
                                     </div>
                                 </div>
                             </div>
@@ -152,8 +144,9 @@
                                     <div class="bungkus-input">
                                         <DxTagBox Data="@item.Pilihan"
                                                   TData=object
-                                                  TValue=object
-                                                  ValuesChanged="@((x) => pushJawabanCheckBox(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                                  TValue=ChangeEventArgs
+                                                  ValuesChanged="@((x) => pushJawabanCheckBox(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                  ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         </DxTagBox>
                                     </div>
                                 </div>
@@ -161,35 +154,121 @@
 
                             break;
                         case "Yes No Question":
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Yes No Question     @item.Id;</p>
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <div class="form-check">
+                                            <input class="form-check-input" value="Yes" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id" id="@item.Id">
+                                            <label class="form-check-label" for="@item.Id">
+                                                Yes
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" value="No" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id" id="@item.Id">
+                                            <label class="form-check-label" for="@item.Id">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                             break;
                         case "Nominal":
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Nominal     @item.Id;</p>
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxMaskedInput Mask="Rp #,#########"
+                                                       ValueChanged="@((int x) => pushJawabanNominal(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                        </DxMaskedInput>
+                                    </div>
+                                </div>
+                            </div>
                             break;
+
                         case "Tanggal":
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Tanggal     @item.Id;</p>
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxDateEdit Mask="dd/MMMM/yyyy"
+                                                    Date="@Date"
+                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                    DateChanged="@((DateTime x) => pushJawabanDate(x, item.Id, item.Pertanyaan, item.BentukIsian))">
+                                            <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                                        </DxDateEdit>
+                                    </div>
+                                </div>
+                            </div>
                             break;
+
                         case "Pilihan Ganda":
-                            <p>@item.Pertanyaan</p>
-                            <p>INI Pilihan Ganda     @item.Id;</p>
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxComboBox Data="@item.Pilihan"
+                                                    TData="object"
+                                                    TValue="object"
+                                                    ValueChanged="((x) => pushJawabanCheckBox(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                        </DxComboBox>
+                                    </div>
+                                </div>
+                            </div>
                             break;
                     }
-
                 }
 
             }
-
+            <div class="d-grid gap-2 mt-4 mb-4">
+                <button class="btn btn-create" @onclick="Save" type="submit">
+                    @*<span *ngIf="spin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                    Kirim Jawaban
+                </button>
+            </div>
         </div>
     </div>
 </div>
 
-<p>@ErrorMessage</p>
+@if (!string.IsNullOrEmpty(@ErrorMessage))
+{
+    <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+        <div class="toast hide align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @ErrorMessage
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
 
-
-<DxButton @onclick="Save"> Simpan Jawaban </DxButton>
-
-<p>@message</p>
+@if (!string.IsNullOrEmpty(message))
+{
+    <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+        <div class="toast hide align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @message
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}
 

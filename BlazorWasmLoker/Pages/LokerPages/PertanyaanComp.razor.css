@@ -1,19 +1,88 @@
-﻿@keyframes "spin" {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+﻿.card-banner {
+  margin-bottom: 14px;
+  background: url("/assets/image/gb7.jpg");
+  background-size: cover;
+  height: 180px;
+  box-shadow: rgb(53 64 5.46666667%) 0px 0px 0.875rem 0px;
+  border-radius: 0.4rem;
+  border: 1px solid #dadce0;
 }
-.spinner {
-  border: 16px solid silver;
-  border-top: 16px solid #337AB7;
-  border-radius: 50%;
-  width: 80px;
-  height: 80px;
-  animation: spin 700ms linear infinite;
-  top: 40%;
-  left: 55%;
-  position: absolute;
+.judul-pertanyaan {
+  text-align: center;
+  margin-bottom: 30px;
+}
+.judul-pertanyaan h2 {
+  color: #2EB872;
+  font-family: PatrickDowload;
+  letter-spacing: 4px;
+  font-size: 4rem;
+  margin-bottom: 20px;
+}
+.judul-pertanyaan p {
+  color: #A8A7A7;
+  font-family: RubikDowload;
+  letter-spacing: 1px;
+  font-weight: 300 !important;
+}
+.card-body {
+  margin: 1rem 0 !important;
+  background: #f7f7f7;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  padding: 1.3rem 2.3rem;
+  font-family: RubikDowload;
+  letter-spacing: 1px;
+  font-weight: 400 !important;
+  border: 1px solid #A8A7A7 !important;
+}
+.card-body p {
+  margin-bottom: 10px !important;
+}
+.bungkus-input {
+  width: 100% !important;
+}
+.bintang {
+  color: #da6a76;
+}
+.btn-create {
+  background: #1784E3;
+  box-shadow: 0 0 15px 0 rgb(1 86 5.1%);
+  padding: 0.25rem 2.2rem;
+  color: white;
+  font-size: 0.8rem;
+}
+::ng-deep .dx-radiobutton {
+  margin: 7px 0 !important;
+}
+@media only screen and (max-width: 480px) {
+  .judul-pertanyaan {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .judul-pertanyaan h2 {
+    color: #2EB872;
+    font-family: PatrickDowload;
+    letter-spacing: 4px;
+    font-size: 3rem;
+    margin-bottom: 20px;
+  }
+  .judul-pertanyaan p {
+    color: #A8A7A7;
+    font-family: RubikDowload;
+    letter-spacing: 1px;
+    font-weight: 300;
+  }
+  .card-body {
+    margin: 1rem 0 !important;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    padding: 1.2rem 1.3rem;
+    font-family: RubikDowload;
+    letter-spacing: 1px;
+    font-weight: 400 !important;
+    border: 1px solid #A8A7A7 !important;
+  }
+  .card-body p {
+    margin-bottom: 10px !important;
+  }
 }

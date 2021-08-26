@@ -65,9 +65,6 @@
                     Sign Up
                 </h2>
                 <div class="row form-kriteria">
-                    @*<EditForm Model="@DaftarResource"
-                        OnValidSubmit="@daftarSubmit"
-                        OnInvalidSubmit="@daftarInvalid">*@
                     <EditForm EditContext="editContext"
                               OnSubmit="@daftarSubmit">
                         <DataAnnotationsValidator />
@@ -112,7 +109,8 @@
                                                    BindValueMode="BindValueMode.OnInput"
                                                    Mask="############"
                                                    NullText="No Tlpn"
-                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                 >
                                         <DxTextMaskProperties Placeholder="maskChar" SaveLiteral="true" />
                                     </DxMaskedInput>
                                     <ValidationMessage For="@(() => DaftarResource.NoTlp)" />
@@ -179,14 +177,6 @@
             </div>
         </div>
     }
-
-    @if (response != null)
-    {
-        <p>@response.Message</p>
-        <p>@response.Token</p>
-    }
-
-
 
 </div>
 

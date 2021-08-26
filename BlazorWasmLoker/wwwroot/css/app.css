@@ -1,7 +1,7 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
- /*   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
+    /*   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
 }
 
 @font-face {
@@ -10,8 +10,13 @@ html, body {
 }
 
 @font-face {
+    font-family: RubikLigter;
+    src:url(../css/FontCustom/Rubik/Rubik-Regular.ttf);
+}
+
+@font-face {
     font-family: PatrickDowload;
-    src: url(../css/FontCustom/Patrick/PatrickHand-Regular.ttf);  
+    src: url(../css/FontCustom/Patrick/PatrickHand-Regular.ttf);
 }
 
 
@@ -60,4 +65,3 @@ a, .btn-link {
         right: 0.75rem;
         top: 0.5rem;
     }
-

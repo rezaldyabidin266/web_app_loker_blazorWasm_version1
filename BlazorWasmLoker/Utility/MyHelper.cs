@@ -27,7 +27,6 @@ namespace BlazorWasmLoker.Utility
         {
             switch (value)
             {
-
                 case BentukIsian.SimpleText:
                     return "Simple Text";
                 case BentukIsian.YesNo:
