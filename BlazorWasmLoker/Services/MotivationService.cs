@@ -1,6 +1,4 @@
 ﻿using BlazorWasmLoker.Resoruces.Motivations;
-using Microsoft.AspNetCore.Mvc;
-using NPOI.SS.Formula.Functions;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;

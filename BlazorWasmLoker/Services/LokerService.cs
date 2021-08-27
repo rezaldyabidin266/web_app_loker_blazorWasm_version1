@@ -37,6 +37,11 @@ namespace BlazorWasmLoker.Services
             _jsRuntime.InvokeVoidAsync("console.log", message);
         }
 
+        public void GotoLogin()
+        {
+            _navigationManager.NavigateTo("/login");
+        }
+
         public async Task<List<LokerResource>> ListLoker()
         {
             var respond = await _httpClient.GetAsync(Controller + "list-loker");

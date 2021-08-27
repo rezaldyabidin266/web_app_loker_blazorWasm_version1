@@ -2,8 +2,6 @@
 using BlazorWasmLoker.Resoruces.Settings;
 using BlazorWasmLoker.Services;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Mvc;
-using NPOI.SS.Formula.Functions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
