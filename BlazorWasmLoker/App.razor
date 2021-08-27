@@ -1,4 +1,4 @@
-<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true">
+<Router AppAssembly="@typeof(Program).Assembly" PreferExactMatches="@true" OnNavigateAsync="@HandlerNavigation">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)" />
     </Found>
@@ -8,3 +8,16 @@
         </LayoutView>
     </NotFound>
 </Router>
+
+
+@code {
+    [Inject]
+    protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    public async Task HandlerNavigation(NavigationContext context)
+    {
+    }
+
+}

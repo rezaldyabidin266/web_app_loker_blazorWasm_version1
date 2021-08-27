@@ -8,6 +8,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 
 namespace BlazorWasmLoker.Pages.LokerPages
@@ -20,18 +21,17 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         protected List<FromPertanyaanResoruce> FormPertanyaan = new List<FromPertanyaanResoruce>();
         protected List<JawabanResoruce> jawabans = new List<JawabanResoruce>();
         public EditContext editContext { get; set; }
-        protected string message;
+        protected string messageGetPertanyaan;
         protected string token;
-        protected string ErrorMessage;
+        protected string messagePostPertanyaan;
         protected JawabanResoruce jawab;
         protected DateTime Date = DateTime.Today;
         protected MyHelper.BentukIsian bentukIsian { get; set; }
-
-
 
         protected override void OnInitialized()
         {
@@ -45,8 +45,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             try
             {
                 var root = await LokerService.FormPertanyaan(token, idLoker);
-                message = root.Message;
-                
+                // messageGetPertanyaan = root.Message;
 
                 foreach (var item in root.Pertanyaan)
                 {
@@ -65,7 +64,9 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
             catch (Exception ex)
             {
-                ErrorMessage = ex.Message;
+                messageGetPertanyaan = ex.Message;
+                LokerService.GotoLogin();
+                LokerService.JsConsoleLog(messageGetPertanyaan);
             }
         }
 
@@ -74,34 +75,10 @@ namespace BlazorWasmLoker.Pages.LokerPages
             await JSRuntime.InvokeVoidAsync("toastShow");
         }
 
-        protected void pushJawaban(ChangeEventArgs e, int id, string pertanyaan, string bentukIsian)
+        protected void pushJawaban(object jawabanHtml, int id, string pertanyaan, string bentukIsian)
         {
-
-            var jawaban = (string)e.Value;
-            jawab = new JawabanResoruce
-            {
-                Id = id,
-                Pertanyaan = pertanyaan,
-                Jawaban = jawaban,
-                Nominal = 1,
-                Tanggal = DateTime.Now,
-                FilePendukung = null,
-                JawabanTambahan = null
-            };
-
-            jawabans.Add(jawab);
-            LokerService.JsConsoleLog(jawab);
-            LokerService.JsConsoleLog(jawaban);
-
-        }
-
-        protected void pushJawabanCheckBox(object jawabanHtml, int id, string pertanyaan, string bentukIsian)
-        {
-
-
             if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.PilihanGanda))
             {
-
                 string jawabanString = jawabanHtml.ToString();
                 jawab = new JawabanResoruce
                 {
@@ -114,9 +91,9 @@ namespace BlazorWasmLoker.Pages.LokerPages
                     JawabanTambahan = null
                 };
                 jawabans.Add(jawab);
-                LokerService.JsConsoleLog(jawabanString);
+
             }
-            else
+            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Checkbox))
             {
                 //object -> List<object> kalau gak di ubah hasilnya system-sytem
                 var result = ((IEnumerable)jawabanHtml).Cast<object>().ToList();
@@ -134,61 +111,129 @@ namespace BlazorWasmLoker.Pages.LokerPages
                     JawabanTambahan = null
                 };
                 jawabans.Add(jawab);
-                LokerService.JsConsoleLog(arrayConver);
+
             }
-
-
-
-            LokerService.JsConsoleLog(jawabans);
-        
-        }
-
-        protected void pushJawabanNominal(int e, int id, string pertanyaan, string bentukIsian)
-        {
-            var jawaban = e.ToString();
-            jawab = new JawabanResoruce
+            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Paragraf))
             {
-                Id = id,
-                Pertanyaan = pertanyaan,
-                Jawaban = jawaban,
-                Nominal = e,
-                Tanggal = DateTime.Now,
-                FilePendukung = null,
-                JawabanTambahan = null
-            };
-            jawabans.Add(jawab);
+                //Get value di ChangeEvent
+                var prop = jawabanHtml.GetType().GetProperties().First(o => o.Name == "Value").GetValue(jawabanHtml, null);
+                var jawaban = prop.ToString();
+                jawab = new JawabanResoruce
+                {
+                    Id = id,
+                    Pertanyaan = pertanyaan,
+                    Jawaban = jawaban,
+                    Nominal = 1,
+                    Tanggal = DateTime.Now,
+                    FilePendukung = null,
+                    JawabanTambahan = null
+                };
 
-            LokerService.JsConsoleLog(jawab);
-            LokerService.JsConsoleLog(jawabans);
-        }
+                jawabans.Add(jawab);
 
-        protected void pushJawabanDate(DateTime e, int id, string pertanyaan, string bentukIsian)
-        {
-            Date = e;
-            var jawaban = e.ToString("yyyy-MM-dd");
-            jawab = new JawabanResoruce
+            }
+            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.SimpleText))
             {
-                Id = id,
-                Pertanyaan = pertanyaan,
-                Jawaban = jawaban,
-                Nominal = 1,
-                Tanggal = e,
-                FilePendukung = null,
-                JawabanTambahan = null
-            };
-            jawabans.Add(jawab);
-        }
+                //Get value di ChangeEvent
+                var prop = jawabanHtml.GetType().GetProperties().First(o => o.Name == "Value").GetValue(jawabanHtml, null);
+                var jawaban = prop.ToString();
+                jawab = new JawabanResoruce
+                {
+                    Id = id,
+                    Pertanyaan = pertanyaan,
+                    Jawaban = jawaban,
+                    Nominal = 1,
+                    Tanggal = DateTime.Now,
+                    FilePendukung = null,
+                    JawabanTambahan = null
+                };
 
+                jawabans.Add(jawab);
+
+            }
+            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.YesNo))
+            {
+                //Get value di ChangeEvent
+                var prop = jawabanHtml.GetType().GetProperties().First(o => o.Name == "Value").GetValue(jawabanHtml, null);
+                var jawaban = prop.ToString();
+                jawab = new JawabanResoruce
+                {
+                    Id = id,
+                    Pertanyaan = pertanyaan,
+                    Jawaban = jawaban,
+                    Nominal = 1,
+                    Tanggal = DateTime.Now,
+                    FilePendukung = null,
+                    JawabanTambahan = null
+                };
+
+                jawabans.Add(jawab);
+
+            }
+            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
+            {
+                var jawaban = jawabanHtml.ToString();
+                var jawabanInt = (int)jawabanHtml;
+                jawab = new JawabanResoruce
+                {
+                    Id = id,
+                    Pertanyaan = pertanyaan,
+                    Jawaban = jawaban,
+                    Nominal = jawabanInt,
+                    Tanggal = DateTime.Now,
+                    FilePendukung = null,
+                    JawabanTambahan = null
+                };
+                jawabans.Add(jawab);
+            }
+            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
+            {
+
+                Date = Convert.ToDateTime(jawabanHtml);
+                var jawaban = Date.ToString("yyyy-MM-dd");
+
+                if (MyFungsi.Helper.IsNotEmpty(jawaban))
+                {
+                    jawab = new JawabanResoruce
+                    {
+                        Id = id,
+                        Pertanyaan = pertanyaan,
+                        Jawaban = jawaban,
+                        Nominal = 1,
+                        Tanggal = Date,
+                        FilePendukung = null,
+                        JawabanTambahan = null
+                    };
+                }
+                else
+                {
+                    jawab = new JawabanResoruce
+                    {
+                        Id = id,
+                        Pertanyaan = pertanyaan,
+                        Jawaban = DateTime.Now.ToString(),
+                        Nominal = 1,
+                        Tanggal = DateTime.Now,
+                        FilePendukung = null,
+                        JawabanTambahan = null
+                    };
+                }
+
+                jawabans.Add(jawab);
+            }
+        }
         protected async void Save()
         {
             LokerService.JsConsoleLog(jawabans);
             try
             {
-                message = await LokerService.FormSaveListJawaban(jawabans);
+                var post = await LokerService.FormSaveListJawaban(jawabans);
+                messagePostPertanyaan = "Sukses isi form";
+                NavigationManager.NavigateTo("/pengalaman");
             }
             catch (Exception ex)
             {
-                message = ex.Message;
+                messagePostPertanyaan = ex.Message;
             }
         }
     }

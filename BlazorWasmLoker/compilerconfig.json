@@ -18,5 +18,17 @@
   {
     "outputFile": "Pages/LokerPages/PertanyaanComp.razor.css",
     "inputFile": "Pages/LokerPages/PertanyaanComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/LokerPages/PengalamanComp.razor.css",
+    "inputFile": "Pages/LokerPages/PengalamanComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/LoginComp.razor.css",
+    "inputFile": "Pages/UserPages/LoginComp.razor.less"
+  },
+  {
+    "outputFile": "Shared/LoginLayout.razor.css",
+    "inputFile": "Shared/LoginLayout.razor.less"
   }
 ]

@@ -1,16 +1,103 @@
 ﻿@page "/login"
 @inherits LoginCompBase
-<h3>Login</h3>
+@layout LoginLayout
 
-<DxTextBox @bind-Text="@Email" CssClass="cw-320" />
-<DxTextBox @bind-Text="@Password" CssClass="cw-320" />
+<div class="container full-height">
+    <div class="row justify-content-md-center align-items-center h-100">
+        <div class="col-12">
+            <div class="card card-login mx-auto">
+                <div class="card-body">
+                    <div class="card-title">
+                        <img src="asset/image/faviconLogo.png" alt="">
+                    </div>
+                    <form action="">
+                        <EditForm EditContext="editContext"
+                                  OnSubmit="loginAsync">
+                            <div class="dx-fieldset">
+                                <div class="dx-field">
+                                    <div class="dx-field-value">
+                                        <label class="form-label">Email address</label>
+                                        <DxMaskedInput @bind-Value="@UserLoginResource.Email"
+                                                       BindValueMode="BindValueMode.OnInput"
+                                                       NullText="Alamat Email"
+                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                        </DxMaskedInput>
+                                        <ValidationMessage For="@(() => UserLoginResource.Email)" />
+                                    </div>
+                                </div>
+                                <div class="dx-field">
+                                    <div class="dx-field-value">
+                                        <label class="form-label d-flex">
+                                            Password
+                                            <span class="me-auto"></span>
+                                            <span class="">
+                                                <a class="lupaPassword" (click)="routeLupaPassword()">Lupa Password ?</a>
+                                            </span>
+                                        </label>
+                                        <DxTextBox @bind-Text="@UserLoginResource.Password"
+                                                   BindValueMode="BindValueMode.OnInput"
+                                                   NullText="Password"
+                                                   Password="true"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        <ValidationMessage For="@(() => UserLoginResource.Password)" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card card-akun">
+                                <div class="card-body">
+                                    Buat Akun? <a class="register">Register</a>
+                                </div>
+                            </div>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" type="submit">
+                                    @*<span *ngIf="showSpin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                                    Log In
+                                </button>
+                            </div>
+                            <div class="navHome">
 
-<DxButton RenderStyle="ButtonRenderStyle.Success" RenderStyleMode="ButtonRenderStyleMode.Contained"
-          @onclick="loginAsync" Text="Login" />
+                                <NavLink href="/">
+                                    Back To Home
+                                </NavLink>
+                            </div>
+                        </EditForm>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*@if (!string.IsNullOrEmpty(MessageLoginTrue))
+    {
+        <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+            <div class="toast hide align-items-center text-white bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @MessageLoginTrue
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+    }
+    @if (!string.IsNullOrEmpty(MessageLogin))
+    {
+        <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+            <div class="toast hide align-items-center text-white bg-success border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @MessageLogin
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+
+    }*@
+</div>
 
 @if (loginRespond != null)
 {
-    <p>@loginRespond.Message</p>
     <p>@loginRespond.Token</p>
 }
 

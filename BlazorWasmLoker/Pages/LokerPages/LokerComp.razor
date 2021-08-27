@@ -15,7 +15,7 @@
                 {
                     @foreach (var item in lokers)
                     {
-                        <div class="row d-flex align-items-center mt-5 loker-list">
+                        <div class="row d-flex align-items-center mt-5 loker-list" @onclick="@(x => RouteKriteria(item.Id) )">
                             <div class="col-md-2 loker-judul text-center">
                                 <p>@item.JudulLowongan</p>
                             </div>

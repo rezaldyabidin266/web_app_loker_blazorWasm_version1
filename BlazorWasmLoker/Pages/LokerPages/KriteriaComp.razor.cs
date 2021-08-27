@@ -23,10 +23,8 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-
         [Parameter]
         public int IdLoker { get; set; }
-
         protected LokerResource Lokers { get; set; } = new LokerResource();
         public DaftarResource DaftarResource = new DaftarResource() { TglLahir = DateTime.Today };
         public EditContext editContext { get; set; }
@@ -61,7 +59,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected char maskChar = ' ';
         protected char maskGmail = '_';
         protected MaskAutoCompleteMode AutoCompleteMode { get; set; } = MaskAutoCompleteMode.Strong;
-        protected string EmailMask { get; set; }= @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
+        protected string EmailMask { get; set; } = @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
         protected bool PlaceholderVisible { get; set; } = true;
         //Mask default
         protected string DateTimeMaskValue { get; set; } = DateTimeMask.LongDate;
@@ -88,8 +86,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
             await KriteriaPelamar(IdLoker);
             await GambarBg(IdLoker);
             await GambarIl(IdLoker);
-
-          
         }
 
         protected async Task KriteriaPelamar(int IdLoker)
@@ -165,14 +161,14 @@ namespace BlazorWasmLoker.Pages.LokerPages
                     spin = false;
                     message = result.Message;
                     isVisible = true;
-                 
+
                 }
                 catch (Exception ex)
                 {
                     spin = false;
                     message = ex.Message;
                     isVisible = true;
-                   
+
                 }
             }
             else
@@ -180,7 +176,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 spin = false;
                 message = "Form Invalid";
                 isVisible = true;
-                
+
             }
         }
 
