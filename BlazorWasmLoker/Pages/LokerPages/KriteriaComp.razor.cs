@@ -14,7 +14,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
 {
     public class KriteriaCompBase : ComponentBase
     {
-
         [Inject]
         protected LokerService LokerService { get; set; }
         [Inject]

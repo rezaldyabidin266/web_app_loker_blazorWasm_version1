@@ -2,4 +2,188 @@
 
 @inherits PengalamanCompBase
 
-<h3>PengalamanComp</h3>
+
+<div class="container-lg">
+    <div class="row justify-content-md-center">
+        <div class="col-md-7">
+            <div class="judul-pertanyaan">
+                <h2>Pengalaman Kerja</h2>
+                <p>Diharapkan memberitahu pengalaman kerja !</p>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <EditForm EditContext="editContext" OnSubmit="submitPengalaman">
+                <DataAnnotationsValidator />
+                <div class="dx-fieldset row g-3">
+                    <div class="col-md-6 col-sm-6">
+                        <div class="dx-field">
+                            <label class="form-label">Tempat Kerja</label>
+                            <DxTextBox @bind-Text="@PengalamanResoruceMapping.TempatKerja"
+                                       BindValueMode="BindValueMode.OnInput"
+                                       NullText="Nama Lengkap"
+                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-sm-6">
+                        <div class="dx-field">
+                            <label class="form-label">Jabatan/Posisi</label>
+                            <DxTextBox @bind-Text="@PengalamanResoruceMapping.Posisi"
+                                       BindValueMode="BindValueMode.OnInput"
+                                       NullText="Nama Lengkap"
+                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="dx-field">
+                            <label class="form-label">Salary</label>
+                            <DxMaskedInput @bind-Value="@PengalamanResoruceMapping.Nominal"
+                                           CssClass="cw-320"
+                                           Mask="Rp #,#########"
+                                           ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="dx-field">
+                            <label class="form-label">Tanggal Masuk</label>
+                            <DxDateEdit @bind-Date="@PengalamanResoruceMapping.TglAwal"
+                                        Mask="dd/MMMM/yyyy"
+                                        ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                            </DxDateEdit>
+                            <ValidationMessage For="@(() => PengalamanResoruceMapping.TglAwal)" />
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4">
+                        <div class="dx-field">
+                            <label class="form-label">Tanggal Keluar</label>
+                            <DxDateEdit @bind-Date="@PengalamanResoruceMapping.TglAkhir"
+                                        Mask="dd/MMMM/yyyy"
+                                        ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                            </DxDateEdit>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-sm-12">
+                        <div class="dx-field">
+                            <label class="form-label">Deskripsi Pekerjaan</label>
+                            <DxMemo Rows="7"
+                                    NullText="Enter Jawaban"
+                                    @bind-Text="@PengalamanResoruceMapping.Keterangan"
+                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                        </div>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-between btn-g">
+                        <button class="btn btn-create" type="submit">
+                            @*<span *ngIf="spin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                            Save
+                        </button>
+                        <button class="btn btn-create">Kirim</button>
+                    </div>
+                    <p class="info">Pilih save jika ingin menambahkan pengalaman !</p>
+                </div>
+            </EditForm>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="story">
+                @if (PengalamanResoruceId.Count != 0)
+                {
+                    @foreach (var item in PengalamanResoruceId)
+                    {
+                        <div class="card card-story">
+                            <div class="item">
+                                <div class="card-title d-flex align-items-center">
+                                    <span class="me-auto">
+                                        Pengalaman
+                                    </span>
+                                    <span class="delete d-flex align-items-center">
+                                        @*<span class="spinner-grow spinner-grow-sm spin-del" role="status" aria-hidden="true"></span>*@
+                                        <i class="fas fa-trash delete-icon" @onclick="@(x => DeletePengalaman(x, item.Id))"></i>
+                                    </span>
+                                </div>
+                                <div class="row card-list">
+                                    <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                        Tempat Kerja
+                                    </div>
+                                    <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                        @item.TempatKerja
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                        Jabatan/Posisi
+                                    </div>
+                                    <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                        @item.Posisi
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-12 card-excel">
+                                        Pengalaman Kerja
+                                    </div>
+                                    <div class="col-md-8 col-sm-8 col-12 card-excelIsi">
+                                        @item.Keterangan
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                        Salary
+                                    </div>
+                                    <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                        @item.Nominal
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                        Tanggal Masuk
+                                    </div>
+                                    <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                        @item.TglAwal
+                                    </div>
+                                    <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                        Tanggal Resign
+                                    </div>
+                                    <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                        @item.TglAkhir
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center mt-4">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    @if (!string.IsNullOrEmpty(suksesMessage))
+    {
+        <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+            <div class="toast hide align-items-center text-white bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @suksesMessage
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    }
+    @if (!string.IsNullOrEmpty(errorMessage))
+    {
+        <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+            <div class="toast hide align-items-center text-white bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                    <div class="toast-body">
+                        @errorMessage
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+        </div>
+    }
+</div>

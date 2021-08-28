@@ -11,7 +11,7 @@ namespace BlazorWasmLoker.Pages.UserPages
 {
     public class LoginCompBase : ComponentBase
     {
-  
+
         [Inject]
         protected UserService userService { get; set; }
         [Inject]
@@ -30,15 +30,14 @@ namespace BlazorWasmLoker.Pages.UserPages
         {
             editContext = new EditContext(UserLoginResource);
         }
-           protected override async void OnAfterRender(bool firstRender)
-        {
-           
-        }
+        //protected override async void OnAfterRender(bool firstRender)
+        //{
+
+        //}
         protected async Task loginAsync()
         {
             await JSRuntime.InvokeVoidAsync("toastShow");
             /* var login = new UserLoginResource { Email = Email, Password = Password, Browser = string.Empty, IpAddress = string.Empty }*/
-            ;
             if (editContext.Validate())
             {
                 try
@@ -51,7 +50,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                         Message = result.Message
                     };
                     MessageLoginTrue = result.Message;
-                   
+
                 }
                 catch (Exception ex)
                 {

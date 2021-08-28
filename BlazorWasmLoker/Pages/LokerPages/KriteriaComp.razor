@@ -6,7 +6,7 @@
     @if (Lokers != null)
     {
         <div class="judul-lowongan">
-            <h2>@Lokers.JudulLowongan</h2>
+            <h2>@Lokers.JudulLowongan 2</h2>
             <p>@Lokers.Keterangan</p>
         </div>
     }
@@ -85,8 +85,7 @@
                                     <DxMaskedInput @bind-Value="@DaftarResource.Email"
                                                    BindValueMode="BindValueMode.OnInput"
                                                    NullText="Alamat Email"
-                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                  >
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                     </DxMaskedInput>
                                     <ValidationMessage For="@(() => DaftarResource.Email)" />
                                 </div>
@@ -109,8 +108,7 @@
                                                    BindValueMode="BindValueMode.OnInput"
                                                    Mask="############"
                                                    NullText="No Tlpn"
-                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                 >
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxTextMaskProperties Placeholder="maskChar" SaveLiteral="true" />
                                     </DxMaskedInput>
                                     <ValidationMessage For="@(() => DaftarResource.NoTlp)" />

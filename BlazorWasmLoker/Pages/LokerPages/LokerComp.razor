@@ -1,48 +1,48 @@
 ﻿
 @inherits LokerCompBase
 
-    <div class="container">
-        <div class="row ">
-            <div class="col-lg-12">
-                <div class="judul">
-                    <h5>Job List</h5>
-                </div>
+<div class="container">
+    <div class="row ">
+        <div class="col-lg-12">
+            <div class="judul">
+                <h5>Job List</h5>
             </div>
-        </div>
-        <div class="row loker">
-            <div class="col-md-12">
-                @if (lokers.Count != 0)
-                {
-                    @foreach (var item in lokers)
-                    {
-                        <div class="row d-flex align-items-center mt-5 loker-list" @onclick="@(x => RouteKriteria(item.Id) )">
-                            <div class="col-md-2 loker-judul text-center">
-                                <p>@item.JudulLowongan</p>
-                            </div>
-                            <div class="col-md-8 loker-keterangan">
-                                <p>@item.Keterangan</p>
-                            </div>
-                            <div class="col-md-2 loker-btn text-center">
-                                <button class="btn btn-create" @onclick="@(x => RouteKriteria(item.Id) )">
-                                    Daftar
-                                </button>
-                            </div>
-                        </div>
-                    }
-                }
-                else
-                {
-                    <div class="text-center mt-4">
-                <div class="spinner-border" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-                  
-                }
-            </div>
-            <p>@ErrorMessage</p>
         </div>
     </div>
+    <div class="row loker">
+        <div class="col-md-12">
+            @if (lokers.Count != 0)
+            {
+                @foreach (var item in lokers)
+                {
+                    <div class="row d-flex align-items-center mt-5 loker-list" @onclick="@(x => RouteKriteria(item.Id) )">
+                        <div class="col-md-2 loker-judul text-center">
+                            <p>@item.JudulLowongan</p>
+                        </div>
+                        <div class="col-md-8 loker-keterangan">
+                            <p>@item.Keterangan</p>
+                        </div>
+                        <div class="col-md-2 loker-btn text-center">
+                            <button class="btn btn-create" @onclick="@(x => RouteKriteria(item.Id) )">
+                                Daftar
+                            </button>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-center mt-4">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+
+            }
+        </div>
+        <p>@ErrorMessage</p>
+    </div>
+</div>
 
 
 

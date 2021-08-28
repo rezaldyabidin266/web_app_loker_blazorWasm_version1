@@ -115,22 +115,23 @@ namespace BlazorWasmLoker.Services
         {
            _httpClient.DefaultRequestHeaders.Add("Otp", otp);
             var respond = await _httpClient.PutAsync(Controller + "reset-password", null);
-
             return respond.IsSuccessStatusCode
                 ? await respond.Content.ReadAsStringAsync()
                 : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
-        public async Task<List<PengalamanResoruce>> ListPengalaman(string token)
+        public async Task<List<PengalamanResourceId>> ListPengalaman(string token)
         {
-            _httpClient.DefaultRequestHeaders.Add("token", token);
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Add("token",token);
             var respond = await _httpClient.GetAsync(Controller + "list-pengalaman");
 
             return respond.IsSuccessStatusCode
-                ? JsonConvert.DeserializeObject<List<PengalamanResoruce>>(await respond.Content.ReadAsStringAsync())
+                ? JsonConvert.DeserializeObject<List<PengalamanResourceId>>(await respond.Content.ReadAsStringAsync())
                 : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
         public async Task<string> AddPengalaman(string token, PengalamanResoruce pengalamanResoruce)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             var content = JsonConvert.SerializeObject(pengalamanResoruce);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -152,17 +153,18 @@ namespace BlazorWasmLoker.Services
                 ? await respond.Content.ReadAsStringAsync()
                 : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
-        public async Task<string> DeletePengalaman(string token, string pengalamanId)
+        public async Task<string> DeletePengalaman(string token, int pengalamanId)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
-            _httpClient.DefaultRequestHeaders.Add("pengalamanId", pengalamanId);
-            var respond = await _httpClient.DeleteAsync(Controller + "delete-pengalaman");
+            _httpClient.DefaultRequestHeaders.Add("pengalamanId", pengalamanId.ToString());
 
+            var respond = await _httpClient.DeleteAsync(Controller + "delete-pengalaman");
             return respond.IsSuccessStatusCode
                 ? await respond.Content.ReadAsStringAsync()
                 : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
-        public async Task<List< string>> ListEmailTerdaftar()
+        public async Task<List<string>> ListEmailTerdaftar()
         {
             var respond = await _httpClient.GetAsync(Controller + "list-email-terdaftar");
             return respond.IsSuccessStatusCode
