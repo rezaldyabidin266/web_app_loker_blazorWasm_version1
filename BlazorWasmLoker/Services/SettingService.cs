@@ -14,7 +14,6 @@ namespace BlazorWasmLoker.Services
         {
             _httpClient = httpClient;
         }
-
         public async Task SaveCounter(CounterResoruce counterResoruce)
         {
             await _httpClient.PostAsJsonAsync(Controller + "counter", counterResoruce);

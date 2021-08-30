@@ -67,7 +67,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         //Spinner
         protected bool spin = false;
-        protected bool isVisible { get; set; } = false;
 
         protected override void OnInitialized()
         {
@@ -77,7 +76,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
         {
             await JSRuntime.InvokeVoidAsync("toastShow");
         }
-
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
@@ -143,10 +141,12 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected async Task daftarSubmit()
         {
             spin = true;
+           
             if (editContext.Validate())
             {
                 try
                 {
+                
                     var result = await LokerService.DaftarNoRegister(DaftarResource);
                     await LocalStorage.SetItemAsync("token", result.Token);
                     NavigationManager.NavigateTo("/pertanyaan");
@@ -159,22 +159,20 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
                     spin = false;
                     message = result.Message;
-                    isVisible = true;
 
                 }
                 catch (Exception ex)
                 {
+                    
                     spin = false;
                     message = ex.Message;
-                    isVisible = true;
 
                 }
             }
             else
             {
                 spin = false;
-                message = "Form Invalid";
-                isVisible = true;
+                LokerService.JsConsoleLog("Form Invalid");
 
             }
         }

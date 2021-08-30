@@ -1,4 +1,5 @@
 ﻿using BlazorWasmLoker.Resoruces.Motivations;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Json;
@@ -23,7 +24,11 @@ namespace BlazorWasmLoker.Services
         public async Task<byte[]> GetGambarMotivasi()
         {
             var respond = await _httpClient.GetAsync(Controller + "show-gambar-motivasiftp");
-            return await respond.Content.ReadAsByteArrayAsync();
+            //return await respond.Content.ReadAsByteArrayAsync();
+            return respond.IsSuccessStatusCode
+               ? await respond.Content.ReadAsByteArrayAsync()
+               : throw new Exception(await respond.Content.ReadAsStringAsync());
+
         }
     }
 }

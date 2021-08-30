@@ -1,76 +1,20 @@
-﻿@page "/kriteria/{idLoker:int}"
+﻿@page "/register"
 
-@inherits KriteriaCompBase
+@inherits RegisterCompBase
 
-<section class="backgroud-bg" style="background-image:url('data:image/png;base64,@gambarBackground');">
-    @if (Lokers != null)
-    {
-        <div class="judul-lowongan">
-            <h2>@Lokers.JudulLowongan</h2>
-            <p>@Lokers.Keterangan</p>
-        </div>
-    }
-</section>
 
-@*<div class="overflay"></div>*@
 <div class="container-lg">
-    <div class="row justify-content-md-center justify-content-center">
-        <div class="col-md-7 col-sm-10 col-11 col-kriteria">
-            <div class="kriteria">
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="regis">
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-lg-6 kri">
-                            @if (gambarIlustrasi != null)
-                            {
-                                <img class="kriteriaImg" src="data:image/png;base64,@gambarIlustrasi" />
-                            }
-                            else
-                            {
-                                <div class="text-center">
-                                    <div class="spinner-border" role="status">
-                                        <span class="visually-hidden">Loading...</span>
-                                    </div>
-                                </div>
-                            }
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="kriteria-text">
-                                <p>Kriteria Pelamar :</p>
-                                @if (kriteriaResc.Count != 0)
-                                {
-                                    <ul>
-                                        @foreach (var item in kriteriaResc)
-                                        {
-                                            <li>@item</li>
-                                        }
-                                    </ul>
-                                }
-                                else
-                                {
-                                    <div class="text-center">
-                                        <div class="spinner-border" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                    </div>
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-7 mt-5">
-            <div class="kriteria-daftar">
-                <h2>
-                    Sign Up
-                </h2>
-                <div class="row form-kriteria">
+                    <h2 class="card-title text-center">Sign Up</h2>
                     <EditForm EditContext="editContext"
-                              OnSubmit="@daftarSubmit">
+                              OnSubmit="RegisterSubmit">
                         <DataAnnotationsValidator />
-                        <div class="bungkus-form row g-3">
+                        <div class="dx-fieldset row g-3">
                             <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
+                                <div class="dx-field">
                                     <label class="form-label">Nama</label>
                                     <DxTextBox @bind-Text="@DaftarResource.Nama"
                                                BindValueMode="BindValueMode.OnInput"
@@ -80,7 +24,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
+                                <div class="dx-field">
                                     <label class="form-label">Email</label>
                                     <DxMaskedInput @bind-Value="@DaftarResource.Email"
                                                    BindValueMode="BindValueMode.OnInput"
@@ -91,7 +35,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
+                                <div class="dx-field">
                                     <label class="form-label">Password</label>
                                     <DxTextBox @bind-Text="@DaftarResource.Password"
                                                BindValueMode="BindValueMode.OnInput"
@@ -102,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
+                                <div class="dx-field">
                                     <label class="form-label">No Telepon</label>
                                     <DxMaskedInput @bind-Value="@DaftarResource.NoTlp"
                                                    BindValueMode="BindValueMode.OnInput"
@@ -115,7 +59,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
+                                <div class="dx-field">
                                     <label class="form-label">Tempat Lahir</label>
                                     <DxTextBox @bind-Text="@DaftarResource.TempatLahir"
                                                BindValueMode="BindValueMode.OnInput"
@@ -125,7 +69,7 @@
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
+                                <div class="dx-field">
                                     <label class="form-label">Tanggal Lahir</label>
                                     <DxDateEdit @bind-Date="@DaftarResource.TglLahir"
                                                 Mask="dd/MMMM/yyyy"
@@ -135,8 +79,8 @@
                                     <ValidationMessage For="@(() => DaftarResource.TglLahir)" />
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="bungkus-input">
+                            <div class="col-md-12 col-sm-12">
+                                <div class="dx-field">
                                     <label class="form-label">Alamat</label>
                                     <DxMemo @bind-Text="@DaftarResource.Alamat"
                                             BindValueMode="BindValueMode.OnInput"
@@ -146,7 +90,7 @@
                                     <ValidationMessage For="@(() => DaftarResource.Alamat)" />
                                 </div>
                             </div>
-                            <div class="d-grid gap-2 mt-4">
+                            <div class="d-grid gap-2">
                                 <button class="btn btn-create" type="submit">
                                     @if (spin)
                                     {
@@ -165,7 +109,7 @@
     @if (!string.IsNullOrEmpty(message))
     {
         <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
-            <div class="toast hide align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="toast hide align-items-center text-white bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="d-flex">
                     <div class="toast-body">
                         @message
@@ -175,8 +119,4 @@
             </div>
         </div>
     }
-
 </div>
-
-
-

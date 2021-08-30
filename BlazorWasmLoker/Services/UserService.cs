@@ -36,7 +36,10 @@ namespace BlazorWasmLoker.Services
         {
             _jsRuntime.InvokeVoidAsync("console.log", message);
         }
-
+        public void GotoLogin()
+        {
+            _navigationManager.NavigateTo("/login");
+        }
         public async Task<TokenResource> Login(UserLoginResource userLogin)
         {
             var respond = await _httpClient.PostAsJsonAsync(Controller + "login", userLogin);
@@ -53,6 +56,7 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<InformasiPelamarRespond> InformasiPelamar(string token)
         {
+              _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             var respond = await _httpClient.GetAsync(Controller + "informasi-pelamar");
 

@@ -3,6 +3,7 @@ using BlazorWasmLoker.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,8 @@ namespace BlazorWasmLoker.Pages.UserPages
 {
     public class LoginCompBase : ComponentBase
     {
-
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         [Inject]
         protected UserService userService { get; set; }
         [Inject]
@@ -26,17 +28,18 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected string MessageLoginTrue;
         protected string MessageLogin;
         protected string MessageErrorInvalid;
+
+
         protected override void OnInitialized()
         {
             editContext = new EditContext(UserLoginResource);
         }
-        //protected override async void OnAfterRender(bool firstRender)
-        //{
-
-        //}
-        protected async Task loginAsync()
+        protected override async void OnAfterRender(bool firstRender)
         {
             await JSRuntime.InvokeVoidAsync("toastShow");
+        }
+        protected async Task loginAsync()
+        {
             /* var login = new UserLoginResource { Email = Email, Password = Password, Browser = string.Empty, IpAddress = string.Empty }*/
             if (editContext.Validate())
             {
@@ -49,17 +52,18 @@ namespace BlazorWasmLoker.Pages.UserPages
                         Token = result.Token,
                         Message = result.Message
                     };
-                    MessageLoginTrue = result.Message;
-
+                    MessageLoginTrue = loginRespond.Message;
+                    NavigationManager.NavigateTo("/loker");
                 }
                 catch (Exception ex)
                 {
-                    MessageLogin = ex.Message;
+                    var result = JsonConvert.DeserializeObject<TokenResource>(ex.Message);
+                    MessageLoginTrue = result.Message ;
                 }
             }
             else
             {
-                MessageErrorInvalid = "Form Invalid";
+                userService.JsConsoleLog("FormInvalid");
             }
         }
     }

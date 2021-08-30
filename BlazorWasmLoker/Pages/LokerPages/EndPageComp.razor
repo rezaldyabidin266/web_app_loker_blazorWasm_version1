@@ -1,0 +1,187 @@
+﻿@page "/endPage"
+
+@inherits EndPageCompBase
+
+
+<div class="container-lg">
+    <div class="row justify-content-md-center ">
+        <div class="col-md-7 img-col text-center">
+            <div class="img-wrap mx-auto">
+                @if (gambarMotivasi != null)
+                {
+                    <img src="data:image/png;base64,@gambarMotivasi" />
+                }
+                else
+                {
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
+            </div>
+            <button type="button" class="btn btn-loker mt-5" @onclick="goHome"><i class="fas fa-arrow-left me-2"></i>Back Loker</button>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="col-md-8 list-end">
+            <ul class="nav nav-tabs tab-end justify-content-center" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Biodata</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Pertanyaan</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="contact-tab" data-bs-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Pengalaman</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="tab-content row justify-content-md-center" id="myTabContent">
+        <div class="tab-pane fade show active col-md-8" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="card card-tab">
+                <div class="card-body card-profile">
+                    <div class="row g-3">
+                        <div class="col-lg-5 col-md-5 col-sm-5 col-profile">
+                            <div class="img-wrap">
+                                @if (fotoPelamar != null)
+                                {
+                                    <img src="@fotoPelamar" />
+                                }
+                                else
+                                {
+                                    <div class="text-center">
+                                        <div class="spinner-border" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-7 col-sm-7 col-biodata">
+                            <div class="biodata">
+                                <div class="row">
+                                    <div class="col-md-12 pelamar-data">
+                                        <h1>@responseInfoPelamar.Nama</h1>
+                                        <h4>
+                                            <i class="fas fa-birthday-cake me-2"></i> @responseInfoPelamar.TmptLahir, @TanggalLahirPelamar
+                                        </h4>
+                                        <h4>
+                                            <i class="fas fa-map-marker-alt me-2"></i> @responseInfoPelamar.Alamat
+                                        </h4>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade col-md-8" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="card card-tab pt-4 pb-4">
+
+                @if (FormPertanyaan.Count == 0)
+                {
+                    <div class="text-center">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @foreach (var item in FormPertanyaan)
+                    {
+                        <div class="card-body card-pertanyaan">
+                            <div class="pertanyaan">
+                                <div class="row d-flex align-items-center ">
+                                    <div class="col-md-7 col-sm-7 col-12">
+                                        <span class="pertanyaan-soal">
+                                            @item.No. @item.Pertanyaan
+                                        </span>
+                                    </div>
+                                    <div class="col-md-5 col-sm-5 col-12 jawaban">
+                                        <span class="">
+                                            @item.Jawaban
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="tab-pane fade col-md-8" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+            <div class="card card-tab ">
+                <div class="story">
+                    <div class="story">
+                        @if (PengalamanResoruceId.Count != 0)
+                        {
+                            @foreach (var item in PengalamanResoruceId)
+                            {
+                                <div class="card card-story">
+                                    <div class="item">
+                                        <div class="card-title d-flex align-items-center">
+                                            <span class="me-auto">
+                                                Pengalaman
+                                            </span>
+                                        </div>
+                                        <div class="row card-list">
+                                            <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                                Tempat Kerja
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                                @item.TempatKerja
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                                Jabatan/Posisi
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                                @item.Posisi
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-12 card-excel">
+                                                Pengalaman Kerja
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-12 card-excelIsi">
+                                                @item.Keterangan
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                                Salary
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                                @item.Nominal
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                                Tanggal Masuk
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                                @TanggalAwalKerja
+                                            </div>
+                                            <div class="col-md-4 col-sm-4 col-6 card-excel">
+                                                Tanggal Resign
+                                            </div>
+                                            <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
+                                                @TanggalAkhirKerja
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center mt-4">
+                                <div class="spinner-border" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

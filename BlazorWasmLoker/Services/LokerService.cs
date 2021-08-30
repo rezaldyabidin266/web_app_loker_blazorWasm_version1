@@ -110,6 +110,7 @@ namespace BlazorWasmLoker.Services
 
         public async Task<RootPertanyaanResource> FormPertanyaan(string token, int lokerId)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             _httpClient.DefaultRequestHeaders.Add("lokerId", lokerId.ToString());
             var respond = await _httpClient.GetAsync(Controller + "form-pertanyaan");

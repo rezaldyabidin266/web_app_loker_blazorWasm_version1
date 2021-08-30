@@ -79,10 +79,13 @@
                     </div>
                     <div class="d-flex flex-wrap justify-content-between btn-g">
                         <button class="btn btn-create" type="submit">
-                            @*<span *ngIf="spin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                            @if (spin)
+                            {
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                            }
                             Save
                         </button>
-                        <button class="btn btn-create">Kirim</button>
+                        <button class="btn btn-create" @onclick="kirim">Kirim</button>
                     </div>
                     <p class="info">Pilih save jika ingin menambahkan pengalaman !</p>
                 </div>
@@ -103,7 +106,10 @@
                                         Pengalaman
                                     </span>
                                     <span class="delete d-flex align-items-center">
-                                        @*<span class="spinner-grow spinner-grow-sm spin-del" role="status" aria-hidden="true"></span>*@
+                                        @if (spinDelete)
+                                        {
+                                            <span class="spinner-grow spinner-grow-sm spin-del" role="status" aria-hidden="true"></span>
+                                        }
                                         <i class="fas fa-trash delete-icon" @onclick="@(x => DeletePengalaman(x, item.Id))"></i>
                                     </span>
                                 </div>
@@ -136,13 +142,13 @@
                                         Tanggal Masuk
                                     </div>
                                     <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
-                                        @item.TglAwal
+                                        @TanggalAwalKerja
                                     </div>
                                     <div class="col-md-4 col-sm-4 col-6 card-excel">
                                         Tanggal Resign
                                     </div>
                                     <div class="col-md-8 col-sm-8 col-6 card-excelIsi">
-                                        @item.TglAkhir
+                                        @TanggalAkhirKerja
                                     </div>
                                 </div>
                             </div>
@@ -151,12 +157,14 @@
                 }
                 else
                 {
-                    <div class="text-center mt-4">
-                        <div class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                    <div class="alert alert-warning mt-4 d-flex align-items-center" role="alert">
+                        <i class="fas fa-exclamation-triangle fa-lg me-2"></i>
+                        <div>
+                            belum save pengalaman kerja
                         </div>
                     </div>
                 }
+
             </div>
         </div>
     </div>
@@ -173,7 +181,7 @@
             </div>
         </div>
     }
-    @if (!string.IsNullOrEmpty(errorMessage))
+    @*@if (!string.IsNullOrEmpty(errorMessage))
     {
         <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
             <div class="toast hide align-items-center text-white bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
@@ -185,5 +193,5 @@
                 </div>
             </div>
         </div>
-    }
+    }*@
 </div>

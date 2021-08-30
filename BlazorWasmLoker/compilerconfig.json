@@ -30,5 +30,13 @@
   {
     "outputFile": "Shared/LoginLayout.razor.css",
     "inputFile": "Shared/LoginLayout.razor.less"
+  },
+  {
+    "outputFile": "Pages/LokerPages/EndPageComp.razor.css",
+    "inputFile": "Pages/LokerPages/EndPageComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/RegisterComp.razor.css",
+    "inputFile": "Pages/UserPages/RegisterComp.razor.less"
   }
 ]
