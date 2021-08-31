@@ -22,6 +22,7 @@
     <PackageReference Include="BlazorStrap" Version="1.5.1" />
     <PackageReference Include="BuildWebCompiler" Version="1.12.405" />
     <PackageReference Include="DevExpress.Blazor" Version="21.1.5" />
+    <PackageReference Include="Microsoft.AspNet.WebPages" Version="3.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="5.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.9" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />

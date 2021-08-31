@@ -228,7 +228,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 var post = await LokerService.FormSaveListJawaban(jawabans);
                 messagePostPertanyaan = "Sukses isi form";
-                NavigationManager.NavigateTo("/pengalaman");
+                NavigationManager.NavigateTo("/berkasPelamar");
             }
             catch (Exception ex)
             {

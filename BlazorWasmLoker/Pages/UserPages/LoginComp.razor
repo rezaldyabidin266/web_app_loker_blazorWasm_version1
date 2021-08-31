@@ -32,7 +32,7 @@
                                             Password
                                             <span class="me-auto"></span>
                                             <span class="">
-                                                <a class="lupaPassword" (click)="routeLupaPassword()">Lupa Password ?</a>
+                                                <a class="lupaPassword" @onclick="goRequestOtp">Lupa Password ?</a>
                                             </span>
                                         </label>
                                         <DxTextBox @bind-Text="@UserLoginResource.Password"
@@ -46,7 +46,7 @@
                             </div>
                             <div class="card card-akun">
                                 <div class="card-body">
-                                    Buat Akun? <a class="register">Register</a>
+                                    Buat Akun? <a class="register" @onclick="goRegister">Register</a>
                                 </div>
                             </div>
                             <div class="d-grid gap-2">
@@ -56,7 +56,6 @@
                                 </button>
                             </div>
                             <div class="navHome">
-
                                 <NavLink href="/">
                                     Back To Home
                                 </NavLink>

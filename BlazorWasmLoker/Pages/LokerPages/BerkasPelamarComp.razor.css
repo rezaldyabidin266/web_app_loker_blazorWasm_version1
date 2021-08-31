@@ -1,0 +1,150 @@
+﻿.card-banner {
+  margin-bottom: 14px;
+  background: url("/assets/image/gb9.jpg");
+  background-size: cover;
+  height: 180px;
+  box-shadow: rgba(53, 64, 82, 0.15) 0px 0px 0.875rem 0px;
+  border-radius: 0.4rem;
+  border: 1px solid #dadce0;
+}
+.judul-pertanyaan {
+  text-align: center;
+  margin-bottom: 30px;
+  margin-top: 2.5rem;
+}
+.judul-pertanyaan h2 {
+  color: #2EB872;
+  font-family: PatrickDowload;
+  letter-spacing: 4px;
+  font-size: 3.3rem;
+  margin-bottom: 20px;
+}
+.judul-pertanyaan p {
+  color: #A8A7A7;
+  font-family: RubikDowload;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+.form-foto {
+  margin-top: 30px;
+  font-family: RubikDowload;
+}
+.form-foto h4 {
+  font-weight: 400;
+  font-size: 1.3rem;
+  letter-spacing: 1px;
+}
+.form-foto p {
+  margin-top: -2px;
+  color: #A8A7A7;
+  font-weight: 300;
+  letter-spacing: 1px;
+  font-size: 0.85rem;
+  margin-bottom: 20px;
+}
+.form-foto p span {
+  color: #FF7272;
+}
+.form-foto .uploadForm {
+  padding: 0 !important;
+  border: 4px dotted #dadce0 !important;
+  height: 230px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.form-foto .uploadForm i {
+  color: #A8A7A7;
+}
+.form-foto .custom-drag-over {
+  background-color: #868A8D;
+}
+.form-foto .custom-drag-over img {
+  width: 42px;
+  height: 42px;
+}
+.btn-create {
+  background: #1784E3;
+  box-shadow: 0 0 15px 0 rgba(1, 86, 255, 0.5);
+  padding: 0.25rem 2.2rem;
+  color: white;
+  font-size: 0.8rem;
+}
+@media only screen and (max-width: 767px) {
+  section {
+    margin-top: 4rem;
+    padding: 2rem 0;
+    height: auto;
+  }
+}
+@media only screen and (max-width: 480px) {
+  section {
+    margin-top: 4rem;
+    padding: 2rem 0;
+    height: auto;
+  }
+  .card-banner {
+    margin-bottom: 14px;
+    background: url("/assets/image/gb9.jpg");
+    background-size: cover;
+    background-position: center 200px;
+    height: 180px;
+    box-shadow: rgba(53, 64, 82, 0.15) 0px 0px 0.875rem 0px;
+    border-radius: 0.4rem;
+    border: 1px solid #dadce0;
+  }
+  .judul-pertanyaan {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  .judul-pertanyaan h2 {
+    color: #2EB872;
+    font-family: PatrickDowload;
+    letter-spacing: 4px;
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+  }
+  .judul-pertanyaan p {
+    color: #A8A7A7;
+    font-family: RubikDowload;
+    letter-spacing: 1px;
+    font-weight: 300;
+  }
+  .form-foto {
+    margin-top: 10px;
+    font-family: RubikDowload;
+  }
+  .form-foto h4 {
+    font-weight: 400;
+    font-size: 1.15rem;
+    letter-spacing: 1px;
+  }
+  .form-foto p {
+    margin-top: -2px;
+    color: #A8A7A7;
+    font-weight: 300;
+    letter-spacing: 1px;
+    font-size: 0.8rem;
+    margin-bottom: 20px;
+  }
+  .form-foto p span {
+    color: #FF7272;
+  }
+  .form-foto .uploadForm {
+    padding: 0 !important;
+    border: 2px dotted #dadce0 !important;
+    height: 230px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .form-foto .custom-drop-zone.custom-drag-over {
+    background-color: #868A8D;
+  }
+  .form-foto .custom-drop-zone img {
+    width: 42px;
+    height: 42px;
+  }
+}

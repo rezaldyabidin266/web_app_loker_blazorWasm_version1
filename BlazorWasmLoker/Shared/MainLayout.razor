@@ -1,133 +1,17 @@
 ﻿@inherits LayoutComponentBase
 @inject IBootstrapCss BootstrapCss
 
-@inject IJSRuntime jsRuntime
-
 <div class="page">
     @*<div class="sidebar">
             <NavMenu />
         </div>*@
     <div class="main">
-        <nav id="navbar" class="navbar navbar-expand-lg fixed-top bg-light">
-            <div class="container-lg">
-                <NavLink class="navbar-brand" href="">
-                    <img src="asset/image/faviconLogo.png" alt="">
-                </NavLink>
-                <div class="navbar-toolbar d-flex align-items-center order-lg-3">
-                    <!-- <button class="navbar-toggler collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                      <i class="material-icons open">menu</i>
-                      <i class="material-icons close">close</i>
-                    </button> -->
-                    <!-- Tempat Akun -->
-                    <div class="d-flex drop-akun">
-                        <div class="dropstart">
-                            <div class="nav-link drop-login">
-                                <NavLink class="d-flex align-items-center" style="color:black; text-decoration:none;" href="login">
-                                    <i class="fas fa-sign-in-alt me-2"></i>
-                                    Log In
-                                </NavLink>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="d-flex drop-akun">
-                        <div class="dropstart">
-                            <i class="fas fa-user-circle nav-link fa-2x drop-login" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li>
-                                    <NavLink class="dropdown-item" href="login">
-                                        <i class="fas fa-sign-in-alt me-2"></i>
-                                        <span>Log In</span>
-                                    </NavLink>
-                                </li>
-                                <li>
-                                    <NavLink class="dropdown-item" href="register">
-                                        <i class="fas fa-user-plus me-2"></i>
-                                        <span>Sign Up</span>
-                                    </NavLink>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                    @*<div class="d-flex drop-akun-login" *ngIf="logIn">
-                            <div class="dropstart">
-                                <i class="fas fa-bell nav-link fa-lg drop-login" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                                <ul class="dropdown-menu " aria-labelledby="dropdownMenuButton1">
-                                    <li class="">
-                                        <h6 class="dropdown-header">Notification</h6>
-                                    </li>
-                                    <li *ngFor="let notifValue of notif">
-                                        <a class="dropdown-item" routerLink="/profile">
-                                            <div class="row d-flex align-items-center notifi">
-                                                <div class="col-md-8 col-sm-8 col-8 notif-judul">
-                                                    {{notifValue.judulLowongan}}
-                                                    <p>{{notifValue.statusLamaran}}</p>
-                                                </div>
-                                                <div class="col-md-4 col-sm-4 col-4 d-flex flex-column notif-status">
-                                                    <span class="d-flex align-items-center">
-                                                        <i class="material-icons me-1">watch_later</i>{{notifValue.tanggal | date:'shortDate'}}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>*@
-                    @*<div class="d-flex drop-akun-login" *ngIf="logIn">
-                            <div class="dropstart">
-                                <i class="fas fa-user-circle nav-link fa-2x drop-login" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false"></i>
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li>
-                                        <h6 class="dropdown-header">Account</h6>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" routerLink="/profile">
-                                            <i class="fas fa-user-circle me-2"></i>
-                                            <span>Profile</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" routerLink="/loker">
-                                            <i class="fas fa-briefcase me-2"></i>
-                                            <span>Loker List</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" routerLink="/berkas">
-                                            <i class="fas fa-file me-2"></i>
-                                            <span>Berkas Lamaran</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" routerLink="/updatePassword">
-                                            <i class="fas fa-key me-2"></i>
-                                            <span>Ganti Password</span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="dropdown-item" (click)="Logout()" style="cursor: pointer;">
-                                            <i class="fas fa-sign-out-alt me-2"></i>
-                                            <span>Log Out</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>*@
-                </div>
-            </div>
-        </nav>
+        <NavHeader />
         <div class="pembatas">
             @Body
         </div>
+        <div>
+            <FooterLayout />
+        </div>
     </div>
 </div>
-
-@code{
-
-    protected override void OnInitialized()
-    {
-        jsRuntime.InvokeAsync<object>("navbarScroll");
-    }
-
-
-}

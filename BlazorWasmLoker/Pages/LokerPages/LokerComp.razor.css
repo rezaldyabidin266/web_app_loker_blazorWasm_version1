@@ -1,4 +1,7 @@
-﻿.judul h5 {
+﻿.judul {
+  margin-top: 2.5rem;
+}
+.judul h5 {
   font-family: PatrickDowload;
   font-size: 70px;
   text-align: center;

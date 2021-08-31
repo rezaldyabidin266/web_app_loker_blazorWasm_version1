@@ -7,6 +7,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 
 namespace BlazorWasmLoker.Pages.UserPages
 {
@@ -34,19 +35,20 @@ namespace BlazorWasmLoker.Pages.UserPages
         {
             editContext = new EditContext(UserLoginResource);
         }
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("toastShow");
-        }
         protected async Task loginAsync()
         {
+            await JSRuntime.InvokeVoidAsync("toastShow");
             /* var login = new UserLoginResource { Email = Email, Password = Password, Browser = string.Empty, IpAddress = string.Empty }*/
             if (editContext.Validate())
             {
+
                 try
                 {
+                   
                     var result = await userService.Login(UserLoginResource);
+                    string logIn = "true";
                     await LocalStorage.SetItemAsync("token", result.Token);
+                    await LocalStorage.SetItemAsync<string>("logIn",logIn);
                     loginRespond = new TokenResource
                     {
                         Token = result.Token,
@@ -65,6 +67,15 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 userService.JsConsoleLog("FormInvalid");
             }
+        }
+
+        protected void goRequestOtp()
+        {
+            NavigationManager.NavigateTo("/requestOtp");
+        }
+        protected void goRegister()
+        {
+            NavigationManager.NavigateTo("/register");
         }
     }
 }

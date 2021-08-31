@@ -38,5 +38,25 @@
   {
     "outputFile": "Pages/UserPages/RegisterComp.razor.css",
     "inputFile": "Pages/UserPages/RegisterComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/LokerPages/BerkasPelamarComp.razor.css",
+    "inputFile": "Pages/LokerPages/BerkasPelamarComp.razor.less"
+  },
+  {
+    "outputFile": "Shared/FooterLayout.razor.css",
+    "inputFile": "Shared/FooterLayout.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/RequestOtpResetPasswordComp.razor.css",
+    "inputFile": "Pages/UserPages/RequestOtpResetPasswordComp.razor.less"
+  },
+  {
+    "outputFile": "Shared/NavHeader.razor.css",
+    "inputFile": "Shared/NavHeader.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/GantiPasswordComp.razor.css",
+    "inputFile": "Pages/UserPages/GantiPasswordComp.razor.less"
   }
 ]
