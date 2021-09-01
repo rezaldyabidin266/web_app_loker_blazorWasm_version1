@@ -114,6 +114,8 @@ namespace BlazorWasmLoker.Pages.LokerPages
                         {
                             TanggalAwalKerja = item.TglAwal.ToString("yyyy-MM-dd");
                             TanggalAkhirKerja = item.TglAkhir.ToString("yyyy-MM-dd");
+
+                    
                         }
                     }
                     catch (Exception ex)

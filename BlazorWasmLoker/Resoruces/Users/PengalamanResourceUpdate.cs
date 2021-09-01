@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace BlazorWasmLoker.Resoruces.Users
 {
-    public class PengalamanResourceId
+    public class PengalamanResourceUpdate
     {
         public int Id { get; set; }
         public string TempatKerja { get; set; }
@@ -15,5 +15,6 @@ namespace BlazorWasmLoker.Resoruces.Users
         public DateTime TglAwal { get; set; }
         public DateTime TglAkhir { get; set; }
         public string masaKerja { get; set; }
+
     }
 }

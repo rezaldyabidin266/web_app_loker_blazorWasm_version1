@@ -28,7 +28,6 @@ namespace BlazorWasmLoker.Shared
         {
             JSRuntime.InvokeAsync<object>("navbarScroll");
         }
-
         protected override async Task OnInitializedAsync()
         {
             var logInLocal = await LocalStorage.GetItemAsync<string>("logIn");
@@ -51,7 +50,6 @@ namespace BlazorWasmLoker.Shared
             try
             {
                 listDatar = await LokerService.ListDaftarLokerSaya(token);
-                LokerService.JsConsoleLog(listDatar);
                 foreach (var item in listDatar)
                 {
                     tanggalDaftar = item.Tanggal.ToString("M/d/yy");
@@ -62,7 +60,6 @@ namespace BlazorWasmLoker.Shared
                 LokerService.JsConsoleLog(ex.Message);
             }
         }
-
         protected void logout()
         {
             LocalStorage.ClearAsync();

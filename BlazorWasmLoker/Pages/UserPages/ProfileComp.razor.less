@@ -1,0 +1,416 @@
+﻿section {
+    margin-top: 4rem;
+    font-family: RubikDowload;
+}
+#alamatBr {
+    white-space: pre-wrap;
+}
+
+
+.img-wrap {
+    position: relative;
+    margin-bottom: 0.9rem;
+
+    img {
+        box-shadow: rgba(53, 64, 82,14%) 0px 0px 0.875rem 0px;
+        border-radius: 50%;
+        width: 280px;
+        height: 280px;
+        object-fit: cover;
+    }
+
+    img:hover {
+        box-shadow: rgba(53, 64, 82,40%) 0px 0px 0.875rem 0px;
+    }
+
+    .btn-uploadEdit {
+        margin-top: -60px;
+        margin-right: -170px;
+        height: 48px;
+        width: 48px;
+        background-color: #bbb;
+        border-radius: 50%;
+        margin-bottom: 40px;
+        cursor: pointer;
+    }
+}
+
+.profile {
+   margin-top:2rem;
+    h2 {
+        font-family: RubikDowload;
+        font-weight: 400;
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+        word-spacing: 2px;
+    }
+
+    h3 {
+        font-family: RubikDowload;
+        font-weight: 300;
+        font-size: 1rem;
+        color: #A8A7A7;
+        letter-spacing: 2px;
+        margin-bottom: 18px;
+    }
+
+    .btn-edit {
+        background: #1784E3;
+        padding: .25rem 2.2rem;
+        color: white;
+        font-size: .8rem;
+        border: none !important;
+        margin-top: 15px;
+    }
+
+    h6 {
+        font-size: 15px;
+        font-weight: lighter;
+        font-family: RubikDowload;
+        color: black;
+        margin-bottom: 15px;
+        word-spacing: 2px;
+
+        i {
+            color: #A8A7A7;
+        }
+    }
+
+    .editProfile {
+        margin-top: 0 !important;
+
+        form {
+            .dx-fieldset {
+                margin-top: -25px;
+                margin-left: 0;
+                margin-right: 0;
+                margin-bottom: 20px;
+            }
+        }
+    }
+}
+
+.blok {
+    margin-top: 20px;
+}
+
+.btn-saveChange {
+    background: #1784E3;
+    padding: .25rem 2.2rem;
+    color: white;
+    font-size: .8rem;
+    border: none !important;
+}
+
+.btn-cancel {
+    background: #A8A7A7;
+    padding: .25rem 2.2rem;
+    color: white;
+    font-size: .8rem;
+    border: none !important;
+}
+
+.pengalaman {
+    margin-top: 2rem;
+
+    .title-pengalaman {
+        font-family: RubikDowload;
+        font-weight: 500;
+        letter-spacing: 2px;
+        font-size: 1.1rem;
+    }
+
+    .card-pengalaman {
+        box-shadow: 0 0 15px 0 rgba(0, 0, 0,10%);
+        border-radius: .4rem;
+        padding: 0.5rem 0.4rem;
+        padding-bottom: 0.3rem;
+        background-color: #FEFFEA;
+        border: none;
+
+        .card-body {
+            .judul {
+                h4 {
+                    font-family: RubikDowload;
+                    font-size: 1.2rem;
+                    border-bottom: 1px solid transparent;
+                    letter-spacing: 1px;
+                }
+
+                h4:hover {
+                    border-bottom: 1px solid royalblue;
+                }
+
+                .icon {
+                    margin-top: -8px;
+
+                    i {
+                        font-size: 1rem;
+                    }
+
+                    .delete {
+                        margin-left: 10px;
+                    }
+                }
+
+                margin-bottom: 0;
+            }
+
+            .posisi {
+                h3 {
+                    margin-top: -5px;
+                    font-weight: lighter;
+                    font-size: 0.90rem;
+                    letter-spacing: 1px;
+                    color: #A8A7A7;
+                    font-family: RubikDowload;
+                }
+            }
+
+            .content {
+                margin-top: 22px;
+
+                .gaji {
+                    span {
+                        margin-top: -0px;
+                        font-weight: 400;
+                        font-family: RubikDowload;
+                        letter-spacing: 1px;
+                    }
+
+                    i {
+                        color: #2EB872 !important;
+                        margin-top: 0 !important;
+                    }
+                }
+
+                .badge {
+                    color: #A8A7A7;
+                    font-family: RubikDowload;
+                    word-wrap: 2px;
+                    font-weight: 400;
+                }
+            }
+        }
+
+        transition: 0.4s ease-out;
+    }
+
+    .card-pengalaman:hover {
+        box-shadow: rgba(53, 64, 82,25%) 0px 0px 0.875rem 0px;
+        // border: 1px solid rgb(222, 222, 209);
+        transform: scale(1.03);
+    }
+}
+
+.btn-margin {
+    margin-right: 7px;
+}
+
+.modal-addPengalaman {
+    border: none !important;
+
+    .modal-header {
+        border: none;
+    }
+
+    .addPengalaman {
+        padding: 0 !important;
+
+        .modal-title {
+            color: #2EB872;
+            text-align: center;
+            font-size: 1.1rem;
+            font-family: RubikDowload;
+            letter-spacing: 2px;
+            font-weight: 400;
+            margin-top: -15px;
+        }
+
+        form {
+            .dx-fieldset {
+                margin: 20px;
+
+                .form-label {
+                    font-weight: 400 !important;
+                    letter-spacing: 1px;
+                    font-family: RubikDowload;
+                }
+            }
+        }
+    }
+
+    .modal-footer {
+        border: none;
+    }
+}
+
+.modal-pengalaman {
+    .modal-body {
+        padding: 0;
+
+        form {
+            .dx-fieldset {
+                margin: 20px;
+            }
+        }
+    }
+}
+
+.icon-icon {
+    .btn-des {
+        display: block;
+    }
+}
+
+.btn-mobile {
+    display: none !important;
+}
+
+@media only screen and (max-width: 1200px) {
+}
+
+@media only screen and (max-width: 998px) {
+    section {
+        margin-top: 4rem;
+        padding: 2rem 0;
+        height: auto;
+        font-family: RubikDowload;
+    }
+
+    .profile{
+        margin-top:0;
+    }
+    .pengalaman {
+        margin-top: 0;
+    }
+    .img-wrap {
+        position: relative;
+        margin-bottom: 0.9rem;
+
+        img {
+            border-radius: 50%;
+            width: 240px;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .btn-uploadEdit {
+            margin-top: -62px;
+            margin-right: -160px;
+            height: 45px;
+            width: 45px;
+            background-color: #bbb;
+            border-radius: 50%;
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .btn-margin {
+        margin-right: 0;
+    }
+
+    .title-pengalaman {
+        font-family: RubikDowload;
+        font-weight: 500;
+        letter-spacing: 2px;
+        font-size: 1.3rem;
+    }
+}
+
+@media only screen and (max-width: 585px) {
+    .btn-margin {
+        margin-right: 0;
+    }
+
+    .icon-icon {
+        .btn-des {
+            display: none !important;
+        }
+    }
+
+    .btn-mobile {
+        display: block !important;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .img-wrap {
+        position: relative;
+        margin-bottom: 0.9rem;
+
+        img {
+            border-radius: 50%;
+            width: 220px;
+            height: 220px;
+            object-fit: cover;
+        }
+    }
+
+    .title-pengalaman {
+        font-family: RubikDowload;
+        font-weight: 500;
+        letter-spacing: 2px;
+        font-size: 1.17rem;
+    }
+
+    .profile {
+        h2 {
+            font-family: RubikDowload;
+            font-weight: 400;
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            word-spacing: 2px;
+        }
+
+        h3 {
+            font-family: RubikDowload;
+            font-weight: 300;
+            font-size: 1rem;
+            color: #A8A7A7;
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+        }
+
+        .btn-edit {
+            background: #1784E3;
+            padding: .25rem 2.2rem;
+            color: white;
+            font-size: .8rem;
+            border: none !important;
+            margin-top: 15px;
+        }
+
+        h6 {
+            font-size: 15px;
+            font-weight: lighter;
+            font-family: RubikDowload;
+            color: black;
+            margin-bottom: 13px;
+            word-spacing: 2px;
+
+            i {
+                color: #A8A7A7;
+            }
+        }
+
+        .editProfile {
+            margin-top: 0 !important;
+
+            form {
+                .dx-fieldset {
+                    margin-top: -25px;
+                    margin-left: 0;
+                    margin-right: 0;
+                    margin-bottom: 20px;
+                }
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 320px) {
+}

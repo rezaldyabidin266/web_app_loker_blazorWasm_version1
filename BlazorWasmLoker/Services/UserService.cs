@@ -56,7 +56,7 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<InformasiPelamarRespond> InformasiPelamar(string token)
         {
-              _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             var respond = await _httpClient.GetAsync(Controller + "informasi-pelamar");
 
@@ -96,6 +96,7 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<string> UpdateDataPelamar(string token, UpdatePelamarResoruce updatePelamarResoruce)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             var content = JsonConvert.SerializeObject(updatePelamarResoruce);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
@@ -117,7 +118,7 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<string> ResetPassword(string otp)
         {
-           _httpClient.DefaultRequestHeaders.Add("Otp", otp);
+            _httpClient.DefaultRequestHeaders.Add("Otp", otp);
             var respond = await _httpClient.PutAsync(Controller + "reset-password", null);
             return respond.IsSuccessStatusCode
                 ? await respond.Content.ReadAsStringAsync()
@@ -126,7 +127,7 @@ namespace BlazorWasmLoker.Services
         public async Task<List<PengalamanResourceId>> ListPengalaman(string token)
         {
             _httpClient.DefaultRequestHeaders.Clear();
-            _httpClient.DefaultRequestHeaders.Add("token",token);
+            _httpClient.DefaultRequestHeaders.Add("token", token);
             var respond = await _httpClient.GetAsync(Controller + "list-pengalaman");
 
             return respond.IsSuccessStatusCode
@@ -145,11 +146,12 @@ namespace BlazorWasmLoker.Services
                 ? await respond.Content.ReadAsStringAsync()
                 : throw new Exception(await respond.Content.ReadAsStringAsync());
         }
-        public async Task<string> UpdatePengalaman(string token, string pengalamanId, PengalamanResoruce pengalamanResoruce)
+        public async Task<string> UpdatePengalaman(string token, string pengalamanId, PengalamanResourceId PengalamanResourceId)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             _httpClient.DefaultRequestHeaders.Add("pengalamanId", pengalamanId);
-            var content = JsonConvert.SerializeObject(pengalamanResoruce);
+            var content = JsonConvert.SerializeObject(PengalamanResourceId);
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
             var respond = await _httpClient.PostAsync(Controller + "update-pengalaman", bodyContent);
 
@@ -185,6 +187,7 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<byte[]> GetFoto(string token)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             var respond = await _httpClient.PostAsync(Controller + "get-foto", null);
 
@@ -194,6 +197,7 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<byte[]> GetCv(string token)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("token", token);
             var respond = await _httpClient.PostAsync(Controller + "get-cv", null);
 
