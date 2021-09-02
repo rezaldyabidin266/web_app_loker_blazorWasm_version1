@@ -1,0 +1,57 @@
+﻿section {
+  margin-top: 4rem;
+  padding: 3.5rem 0;
+  height: 100vh;
+}
+.title {
+  color: #2EB872;
+  text-align: center;
+  font-size: 2.2rem;
+  font-family: RubikDowload;
+  letter-spacing: 1px;
+  font-weight: 400;
+  word-spacing: 2px;
+  margin-bottom: 3rem;
+}
+.card-soal .card {
+  background: #FEFFEA;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  padding: 0.25rem 1rem;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+.card-soal .card .card-body .judul-soal {
+  color: black;
+}
+.card-soal .card .card-body .judul-soal h3 {
+  font-weight: 400;
+  font-family: RubikDowload;
+  letter-spacing: 1px;
+  font-size: 1.1rem;
+}
+.card-soal .card .card-body .waktu-soal {
+  margin-right: 0;
+}
+.card-soal .card .card-body .waktu-soal .status {
+  font-size: 0.8rem;
+  font-family: RubikDowload;
+  margin: 2px;
+  color: #1784E3;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.card-soal .card .card-body .waktu-soal span {
+  margin-top: 3px;
+  font-size: 0.8rem;
+  font-family: RubikDowload;
+  margin: 2px;
+  color: #A8A7A7;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.card-soal .card .card-body .waktu-soal span i {
+  font-size: 0.8rem;
+  color: #A8A7A7;
+}

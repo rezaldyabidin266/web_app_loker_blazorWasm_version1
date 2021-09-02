@@ -7,9 +7,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BlazorWasmLoker.Shared
+namespace BlazorWasmLoker.Pages.UserPages
 {
-    public class NavHeaderCompBase : ComponentBase
+    public class ListDaftarPelamarCompBase : ComponentBase
     {
         [Inject]
         protected LokerService LokerService { get; set; }
@@ -20,46 +20,33 @@ namespace BlazorWasmLoker.Shared
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
-        protected bool logIn;
         protected string token;
         protected List<LokerSayaResource> listDatar = new List<LokerSayaResource>();
         protected string tanggalDaftar;
-        protected override void OnInitialized()
-        {
-            JSRuntime.InvokeAsync<object>("navbarScroll");
-        }
+
         protected override async Task OnInitializedAsync()
         {
-            var logInLocal = await LocalStorage.GetItemAsync<string>("logIn");
             token = await LocalStorage.GetItemAsync<string>("token");
-
-            if (logInLocal == "true")
+            await listDaftarPelamar();
+        }
+        protected async Task listDaftarPelamar()
+        {
+            try
             {
-                logIn = true;
-                try
+                listDatar = await LokerService.ListDaftarLokerSaya(token);
+                foreach (var item in listDatar)
                 {
-                    listDatar = await LokerService.ListDaftarLokerSaya(token);
-                    foreach (var item in listDatar)
-                    {
-                        tanggalDaftar = item.Tanggal.ToString("M/d/yy");
-                    }
-                }
-                catch (Exception ex)
-                {
-                    LokerService.JsConsoleLog(ex.Message);
+                    tanggalDaftar = item.Tanggal.ToString("M/d/yy");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                logIn = false;
+                LokerService.JsConsoleLog(ex.Message);
             }
         }
-
-    
-        protected void logout()
+        protected void pertanyaanId(int idPertanyaan)
         {
-            LocalStorage.ClearAsync();
-            LokerService.GotoLogin();
+            NavigationManager.NavigateTo("/updatePertanyaan/" + idPertanyaan);
         }
     }
 }

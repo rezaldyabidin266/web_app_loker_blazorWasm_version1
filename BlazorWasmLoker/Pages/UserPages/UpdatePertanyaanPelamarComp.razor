@@ -1,0 +1,211 @@
+﻿@page "/updatePertanyaan/{IdPertanyaan:int}"
+
+@inherits UpdatePertanyaanPelamarCompBase
+
+
+<div class="container-lg">
+    <div class="row justify-content-md-center">
+        <div class="col-md-8">
+            <div class="judul-pertanyaan">
+                <h2>
+                    Pertanyaan
+                </h2>
+                <p>
+                    Harap Isi semua pertanyaan !
+                </p>
+            </div>
+            @if (FormPertanyaan.Count == 0)
+            {
+                <div class="text-center">
+                    <div class="spinner-border" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            }
+            else
+            {
+                @foreach (var item in FormPertanyaan)
+
+                {
+                    @switch (item.BentukIsian)
+                    {
+                        case "Paragraf":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxMemo Rows="7"
+                                                NullText="Enter Jawaban"
+                                                Text="@item.Jawaban"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+
+                        case "Simple Text":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxTextBox NullText="Enter Jawaban"
+                                                   Text="@item.Jawaban"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                   @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case "Checkbox":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxTagBox Data="@item.Pilihan"
+                                                  AllowCustomTags="false"
+                                                  InputId="@(item.Id.ToString())"
+                                                  TData=object
+                                                  TValue=object
+                                                  Tags="@valueCheckbox"
+                                                  ValuesChanged="@((x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                  ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                        </DxTagBox>
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case "Yes No Question":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan @item.Jawaban</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        @if (item.Jawaban == "Yes")
+                                        {
+                                            <div class="form-check">
+                                                <input class="form-check-input" checked value="Yes" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                <label class="form-check-label">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" value="No" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                <label class="form-check-label">
+                                                    No
+                                                </label>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="form-check">
+                                                <input class="form-check-input" value="Yes" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                <label class="form-check-label">
+                                                    Yes
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" checked value="No" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                <label class="form-check-label">
+                                                    No
+                                                </label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case "Nominal":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxMaskedInput Mask="Rp #,#########"
+                                                       Value="@valueNominal"
+                                                       ValueChanged="@((int x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                        </DxMaskedInput>
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+
+                        case "Tanggal":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxDateEdit Mask="dd/MMMM/yyyy"
+                                                    Date="@valueDate"
+                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                    DateChanged="@((DateTime x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))">
+                                            <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                                        </DxDateEdit>
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+
+                        case "Pilihan Ganda":
+                            <div class="card-body">
+                                <p class="d-flex">
+                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="bintang">*</span>
+                                </p>
+                                <div class="kotak-input">
+                                    <div class="bungkus-input">
+                                        <DxComboBox Data="@item.Pilihan"
+                                                    TData="object"
+                                                    TValue="object"
+                                                    Value="@valuePilihanGanda"
+                                                    ValueChanged="((x) => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                        </DxComboBox>
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                    }
+                }
+
+            }
+            <div class="d-grid gap-2 mt-4 mb-4">
+                <button class="btn btn-create" @onclick="SaveUpdate" type="submit">
+                    @*<span *ngIf="spin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                    Kirim Jawaban
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (!string.IsNullOrEmpty(messageGetPertanyaan))
+{
+    <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+        <div class="toast hide align-items-center text-white bg-danger border-0" role="alert" aria-live="assertive" aria-atomic="true">
+            <div class="d-flex">
+                <div class="toast-body">
+                    @messageGetPertanyaan Harap Login Ulang
+                </div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        </div>
+    </div>
+}

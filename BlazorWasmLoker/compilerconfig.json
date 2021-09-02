@@ -62,5 +62,13 @@
   {
     "outputFile": "Pages/UserPages/ProfileComp.razor.css",
     "inputFile": "Pages/UserPages/ProfileComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/ListDaftarPelamarComp.razor.css",
+    "inputFile": "Pages/UserPages/ListDaftarPelamarComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/UpdatePertanyaanPelamarComp.razor.css",
+    "inputFile": "Pages/UserPages/UpdatePertanyaanPelamarComp.razor.less"
   }
 ]

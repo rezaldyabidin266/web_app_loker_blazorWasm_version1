@@ -42,15 +42,14 @@
                     @if (editProfile)
                     {
                         <div class="row">
-                            @*<div class="col-md-12 mb-2" *ngIf="spinFoto">
-                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Ganti Foto Profile
+                            @if (dowloadGambar)
+                            {
+                                <div class="d-flex align-items-center">
+                                    <div class="spinner-border" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                    </div>
                                 </div>
-                                <div class="col-md-12 mb-2" *ngIf="spinGetFoto">
-                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Ambil Foto Profile
-                                </div>
-                                <div class="col-md-12 mb-2" *ngIf="spinUploadFoto">
-                                    Belum Upload Foto
-                                </div>*@
+                            }
                             <div class="col-md-12">
                                 <h2 class="">@responseInfoPelamar.Nama</h2>
                             </div>
@@ -84,7 +83,7 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 col-sm-6 col-12">
-                                        <a routerLink="/berkas" class="btn btn-primary btn-edit btn-sm w-100" style="background-color: #E94455;">Berkas lamaran</a>
+                                        <a href="/listDaftar" class="btn btn-primary btn-edit btn-sm w-100" style="background-color: #E94455;">Berkas lamaran</a>
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +185,10 @@
                                 <div class="btn-des">
                                     <div class="d-flex align-items-center">
                                         <button id="dropzone-cv" class="btn btn-sm d-flex align-items-center me-2 text-white" style="background-color: #E94455;">
-                                            @*<span *ngIf="spinCv" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>*@
+                                            @if (spinCv)
+                                            {
+                                                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                            }
                                             <i class="fas fa-file-pdf me-2"></i>
                                             Upload Cv
                                         </button>
@@ -223,7 +225,10 @@
                                 </div>
                                 <div class="col-md-6 col-sm-6 col-6">
                                     <button id="dropzone-cvMobile" class="btn btn-sm text-white" style="width: 100% !important; background-color: #E94455;">
-                                        @*<span *ngIf="spinCv" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>*@
+                                        @if (spinCv)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        }
                                         <i class="fas fa-file-pdf me-2"></i>
                                         Upload Cv
                                     </button>
@@ -259,8 +264,11 @@
                                                 <div class="d-flex align-items-center icon">
                                                     <i class="fas fa-edit text-primary" @onclick="@(x => ModalPengalamanUpdate(item.Id))" data-bs-toggle="modal" data-bs-target="#updatePengalaman" style="cursor: pointer;"></i>
                                                     <span class="delete text-danger d-flex align-items-center" style="cursor: pointer;">
-                                                        @*<span *ngIf="statusDelete" class="spinner-grow spinner-grow-sm spin-del" role="status" aria-hidden="true"></span>*@
-                                                        <i class="fas fa-trash-alt" @onclick="@(x => DeletePengalaman(item.Id))" ></i>
+                                                        @if (spinDeletePengalaman)
+                                                        {
+                                                            <span class="spinner-grow spinner-grow-sm spin-del" role="status" aria-hidden="true"></span>
+                                                        }
+                                                        <i class="fas fa-trash-alt" @onclick="@(x => DeletePengalaman(item.Id))"></i>
                                                     </span>
                                                 </div>
                                             </div>
@@ -271,7 +279,7 @@
                                                 <div class="me-auto d-flex align-items-center gaji">
                                                     <i class="fas fa-money-bill-wave fa-lg me-2 text-success"></i>
                                                     <span>
-                                                        @PengalamanGaji
+                                                      @($"Rp {item.Nominal:n0}")
                                                     </span>
                                                 </div>
                                                 <span class="badge">Kerja @item.masaKerja</span>
@@ -291,6 +299,32 @@
                 </div>
             </div>
         </div>
+        @if (!string.IsNullOrEmpty(MessageRespon))
+        {
+            <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+                <div class="toast hide align-items-center text-white bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            @MessageRespon
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        }
+        @*@if (toastTimer)
+        {
+            <div class="position-absolute bottom-0 start-50 translate-middle-x p-3" style="z-index: 11">
+                <div class="toast hide align-items-center text-white bg-info border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            @MessageRespon
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            </div>
+        }*@
     </div>
 </section>
 
@@ -371,7 +405,10 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-saveChange btn-daftar" type="submit" data-bs-dismiss="modal" aria-label="Close">
-                        @*<span *ngIf="spinUpdate" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                        @if (spinUpdatePengalaman)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        }
                         Save Changes
                     </button>
                     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
@@ -381,9 +418,12 @@
     </div>
 </div>
 
-<!-- Modal PEngalamanAdd -->
-@*<div class="modal fade" id="addPengalaman" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-addPengalaman modal-dialog modal-dialog-centered">
+@*Modal PEngalamanAdd*@
+<div class="modal fade" id="addPengalaman" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-addPengalaman modal-dialog modal-dialog-centered">
+        <EditForm EditContext="pengalamanAddContext"
+                  OnSubmit="@AddPengalaman">
+            <DataAnnotationsValidator />
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -395,79 +435,74 @@
                             <div class="col-md-12 col-sm-12">
                                 <div class="dx-field">
                                     <label class="form-label">Tempat Kerja </label>
-                                    <dx-text-box valueChangeEvent="keyup" id="tempatKerja" [(value)]="tempatKerja" [showClearButton]="true" placeholder="Masukan Tempat Kerja" [stylingMode]="stylingMode">
-                                        <dx-validator>
-                                            <dxi-validation-rule type="async" [validationCallback]="validasi">
-                                            </dxi-validation-rule>
-                                        </dx-validator>
-                                    </dx-text-box>
+                                    <DxTextBox @bind-Text="@PengalamanResourdeAdd.TempatKerja"
+                                               BindValueMode="BindValueMode.OnInput"
+                                               NullText="Nama Lengkap"
+                                               ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="dx-field">
                                     <label class="form-label">Jabatan/Posisi</label>
-                                    <dx-text-box valueChangeEvent="keyup" id="posisi" [(value)]="posisi" [showClearButton]="true" placeholder="Masukan Jabatan" [stylingMode]="stylingMode">
-                                        <dx-validator>
-                                            <dxi-validation-rule type="async" [validationCallback]="validasi">
-                                            </dxi-validation-rule>
-                                        </dx-validator>
-                                    </dx-text-box>
+                                    <DxTextBox @bind-Text="@PengalamanResourdeAdd.Posisi"
+                                               BindValueMode="BindValueMode.OnInput"
+                                               NullText="Nama Lengkap"
+                                               ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="dx-field">
                                     <label class="form-label">Salary</label>
-                                    <dx-number-box valueChangeEvent="keyup" id="salary" format="Rp #,##0.##" [(value)]="salary" [showClearButton]="true" placeholder="Masukan Salary " [stylingMode]="stylingMode">
-                                        <dx-validator>
-                                            <dxi-validation-rule type="async" [validationCallback]="validasi">
-                                            </dxi-validation-rule>
-                                        </dx-validator>
-                                    </dx-number-box>
+                                    <DxMaskedInput @bind-Value="@PengalamanResourdeAdd.Nominal"
+                                                   CssClass="cw-320"
+                                                   Mask="Rp #,#########"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="dx-field">
                                     <label class="form-label">Tanggal Masuk</label>
-                                    <dx-date-box valueChangeEvent="keyup" pickerType="list" (onInitialized)="onInitialized($event)" [(value)]="tglMasuk" [useMaskBehavior]="true" displayFormat="dd/MMMM/yyyy" placeholder="27/February/2021" [stylingMode]="stylingMode">
-                                        <dx-validator>
-                                            <dxi-validation-rule type="async" [validationCallback]="validasi">
-                                            </dxi-validation-rule>
-                                        </dx-validator>
-                                    </dx-date-box>
+                                    <DxDateEdit @bind-Date="@PengalamanResourdeAdd.TglAwal"
+                                                Mask="dd/MMMM/yyyy"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                        <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                                    </DxDateEdit>
+                                    <ValidationMessage For="@(() => PengalamanResourdeAdd.TglAwal)" />
                                 </div>
                             </div>
                             <div class="col-md-6 col-sm-6">
                                 <div class="dx-field">
                                     <label class="form-label">Tanggal Resign</label>
-                                    <dx-date-box valueChangeEvent="keyup" pickerType="list" (onInitialized)="onInitialized($event)" [(value)]="tglAkhir" [useMaskBehavior]="true" displayFormat="dd/MMMM/yyyy" placeholder="27/February/2021" [stylingMode]="stylingMode">
-                                        <dx-validator>
-                                            <dxi-validation-rule type="async" [validationCallback]="validasi">
-                                            </dxi-validation-rule>
-                                        </dx-validator>
-                                    </dx-date-box>
+                                    <DxDateEdit @bind-Date="@PengalamanResourdeAdd.TglAkhir"
+                                                Mask="dd/MMMM/yyyy"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                        <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                                    </DxDateEdit>
                                 </div>
                             </div>
                             <div class="col-md-12 col-sm-12">
                                 <div class="dx-field">
                                     <label class="form-label">Pengalaman Kerja</label>
-                                    <dx-text-area valueChangeEvent="keyup" [height]="70" id="keterangan" [(value)]="keterangan" placeholder="Jelaskan tentang pekerjaan anda" [stylingMode]="stylingMode">
-                                        <dx-validator>
-                                            <dxi-validation-rule type="async" [validationCallback]="validasi">
-                                            </dxi-validation-rule>
-                                        </dx-validator>
-                                    </dx-text-area>
+                                    <DxMemo Rows="7"
+                                            NullText="Enter Jawaban"
+                                            @bind-Text="@PengalamanResourdeAdd.Keterangan"
+                                            ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
                                 </div>
                             </div>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-saveChange btn-daftar" (click)="addPengalaman('add')" type="submit" data-bs-dismiss="modal" aria-label="Close">
-                        <span *ngIf="spinAdd" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <button class="btn btn-saveChange btn-daftar" type="submit" data-bs-dismiss="modal" aria-label="Close">
+                        @if (spinAddPengalaman)
+                        {
+                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        }
                         Save
                     </button>
                     <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
                 </div>
             </div>
-        </div>
-    </div>*@
+        </EditForm>
+    </div>
+</div>

@@ -30,7 +30,7 @@
   cursor: pointer;
 }
 .profile {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 .profile h2 {
   font-family: RubikDowload;
@@ -93,7 +93,7 @@
   border: none !important;
 }
 .pengalaman {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
 }
 .pengalaman .title-pengalaman {
   font-family: RubikDowload;

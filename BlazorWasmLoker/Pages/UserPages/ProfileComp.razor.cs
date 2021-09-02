@@ -39,23 +39,33 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected string urlFotoUpload;
         protected string urlCvUpload;
         protected string messageUpload;
+        protected string MessageRespon;
         protected bool editProfile = true;
         protected bool UploadVisible { get; set; } = false;
         public UpdatePelamarResoruce UpdatePelamarResoruce = new UpdatePelamarResoruce();
         public PengalamanResourceId PengalamanResourceUpdate = new PengalamanResourceId();
+        public PengalamanResoruce PengalamanResourdeAdd = new PengalamanResoruce() { TglAwal = DateTime.Now, TglAkhir = DateTime.Now };
         public EditContext editContext { get; set; }
         public EditContext pengalamanUpdateContext { get; set; }
+        public EditContext pengalamanAddContext { get; set; }
         protected char maskChar = ' ';
 
         //spin
         protected bool spinSave = false;
-     
+        protected bool spinDeletePengalaman = false;
+        protected bool spinCv = false;
+        protected bool spinUpdatePengalaman = false;
+        protected bool spinAddPengalaman = false;
+        protected bool dowloadGambar = false;
+        protected bool toastTimer = false;
+
         protected override void OnInitialized()
         {
             urlFotoUpload = UrlApi();
             urlCvUpload = UrlApiCv();
             editContext = new EditContext(UpdatePelamarResoruce);
             pengalamanUpdateContext = new EditContext(PengalamanResourceUpdate);
+            pengalamanAddContext = new EditContext(PengalamanResourdeAdd);
         }
 
         protected override async Task OnInitializedAsync()
@@ -64,6 +74,10 @@ namespace BlazorWasmLoker.Pages.UserPages
             await FotoPelamar();
             await InformasiPelamar();
             await ListPengalaman();
+        }
+        protected override async void OnAfterRender(bool firstRender)
+        {
+            await JSRuntime.InvokeVoidAsync("toastShow");
         }
         protected async Task FotoPelamar()
         {
@@ -76,8 +90,9 @@ namespace BlazorWasmLoker.Pages.UserPages
             catch (Exception ex)
             {
                 fotoPelamar = "asset/image/avatar.jpg";
-                ErrorBg = ex.Message;
+                MessageRespon = ex.Message;
             }
+         
         }
 
         protected string GetUploadUrl(string url)
@@ -100,8 +115,35 @@ namespace BlazorWasmLoker.Pages.UserPages
         }
         protected async void UploadSukses(FileUploadEventArgs e)
         {
+            dowloadGambar = true;
             UserService.JsConsoleLog("Sukses Change Profile");
-            await FotoPelamar().ConfigureAwait(false);
+            MessageRespon = "Sukses Change Profile";
+            try
+            {
+                dowloadGambar = false;
+                byte[] fotoByte = await UserService.GetFoto(token);
+                var foto = Convert.ToBase64String(fotoByte);
+                fotoPelamar = "data:image/png;base64," + foto;
+            }
+            catch (Exception ex)
+            {
+                dowloadGambar = false;
+                fotoPelamar = "asset/image/avatar.jpg";
+                MessageRespon = ex.Message;
+            }
+            //finally
+            //{
+            //    dowloadGambar = false;
+            //    await InvokeAsync(StateHasChanged);
+            //}
+            //await toastSetting();
+            await InvokeAsync(StateHasChanged);
+
+            //await Task.Delay(3000);
+            //toastTimer = false;
+            //await InvokeAsync(StateHasChanged);
+            
+
         }
         protected async Task InformasiPelamar()
         {
@@ -121,7 +163,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             }
             catch (Exception ex)
             {
-                //UserService.GotoLogin();
+                MessageRespon = ex.Message;
                 UserService.JsConsoleLog(ex.Message);
             }
 
@@ -146,6 +188,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 {
                     var result = await UserService.UpdateDataPelamar(token,UpdatePelamarResoruce);
                     LokerService.JsConsoleLog(result);
+                    MessageRespon = result;
                     editProfile = true;
                     spinSave = false;
                     try
@@ -170,13 +213,14 @@ namespace BlazorWasmLoker.Pages.UserPages
                 {
                     spinSave = false;
                     LokerService.JsConsoleLog(ex.Message);
-
+                    MessageRespon = ex.Message;
                 }
             }
             else
             {
                 spinSave = false;
                 LokerService.JsConsoleLog("Form Invalid");
+                MessageRespon = "Form Invalid";
             }
         }
 
@@ -192,10 +236,13 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected void OnFileUploadStartCv(FileUploadStartEventArgs args)
         {
             args.RequestHeaders.Add("token", token);
+            spinCv = true;
         }
         protected void UploadSuksesCv(FileUploadEventArgs e)
         {
-            messageUpload = "Berhasil di upload";
+            spinCv = false;
+            MessageRespon = "Berhasil Upload";
+        
         }
 
         protected async Task ShowPdf()
@@ -207,43 +254,49 @@ namespace BlazorWasmLoker.Pages.UserPages
             }
             catch (Exception ex)
             {
+                MessageRespon = ex.Message;
                 UserService.JsConsoleLog(ex.Message);
             }
         }
-
         protected async Task ListPengalaman()
         {
             try
             {
                 PengalamanResoruceId = await UserService.ListPengalaman(token);
-                foreach (var item in PengalamanResoruceId)
-                {
-                    TanggalAwalKerja = item.TglAwal.ToString("yyyy-MM-dd");
-                    TanggalAkhirKerja = item.TglAkhir.ToString("yyyy-MM-dd");
-                    double nominal = item.Nominal;
-                    //PengalamanGaji = String.Format(CultureInfo.CreateSpecificCulture("id-id"), "Rp. {0:0}", nominal);
-                    PengalamanGaji = $"Rp {nominal:n0}";
-                }
             }
             catch (Exception ex)
             {
+                MessageRespon = ex.Message;
                 UserService.JsConsoleLog(ex.Message);
             }
         }
 
         protected async Task DeletePengalaman(int id)
         {
+            spinDeletePengalaman = true;
             try
             {
                 var result = await UserService.DeletePengalaman(token, id);
                 UserService.JsConsoleLog(result);
+                MessageRespon = result;
+                spinDeletePengalaman = false;
+                try
+                {
+                    PengalamanResoruceId = await UserService.ListPengalaman(token);
+                }
+                catch (Exception ex)
+                {
+                    UserService.JsConsoleLog(ex.Message);
+                }
             }
             catch (Exception ex)
             {
+                MessageRespon = ex.Message;
                 UserService.JsConsoleLog(ex.Message);
-               
+                spinDeletePengalaman = false;
             }
         }
+
 
         protected async Task ModalPengalamanUpdate(int id)
         {
@@ -276,6 +329,7 @@ namespace BlazorWasmLoker.Pages.UserPages
 
         protected async Task updatePengalamanSubmit(int id)
         {
+            spinUpdatePengalaman = true;
             if (pengalamanUpdateContext.Validate())
             {
                 try
@@ -283,17 +337,12 @@ namespace BlazorWasmLoker.Pages.UserPages
                     var idString = id.ToString();
                     var result = await UserService.UpdatePengalaman(token, idString, PengalamanResourceUpdate);
                     UserService.JsConsoleLog(result);
+                    MessageRespon = result;
+                    spinUpdatePengalaman = false;
                     try
                     {
                         PengalamanResoruceId = await UserService.ListPengalaman(token);
-                        foreach (var item in PengalamanResoruceId)
-                        {
-                            TanggalAwalKerja = item.TglAwal.ToString("yyyy-MM-dd");
-                            TanggalAkhirKerja = item.TglAkhir.ToString("yyyy-MM-dd");
-                            double nominal = item.Nominal;
-                            PengalamanGaji = $"Rp {nominal:n0}";
-
-                        }
+                     
                     }
                     catch (Exception ex)
                     {
@@ -302,15 +351,60 @@ namespace BlazorWasmLoker.Pages.UserPages
                 }
                 catch (Exception ex)
                 {
-
+                    MessageRespon = ex.Message;
+                    spinUpdatePengalaman = false;
                     UserService.JsConsoleLog(ex.Message);
                 }
             }
             else
             {
-
+                spinUpdatePengalaman = false;
+                UserService.JsConsoleLog("FORM INVALID");
+                MessageRespon = "Form Invalid";
             }
         }
 
+        protected async Task AddPengalaman()
+        {
+            spinAddPengalaman = true;
+            if (pengalamanAddContext.Validate())
+            {
+                try
+                {
+                    var result = await UserService.AddPengalaman(token, PengalamanResourdeAdd);
+                    UserService.JsConsoleLog(result);
+                    MessageRespon = result;
+                    spinAddPengalaman = false;
+                    try
+                    {
+                        PengalamanResoruceId = await UserService.ListPengalaman(token);
+                       
+                    }
+                    catch (Exception ex)
+                    {
+                        UserService.JsConsoleLog(ex.Message);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageRespon = ex.Message;
+                    UserService.JsConsoleLog(ex.Message);
+                    spinAddPengalaman = false;
+                }
+            }
+            else
+            {
+                spinAddPengalaman = false;
+                UserService.JsConsoleLog("FORM INVALID");
+                MessageRespon = "Form Invalid";
+            }
+        }
+        protected async Task toastSetting()
+        {
+            toastTimer = true;
+            await Task.Delay(3000);
+            toastTimer = false;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

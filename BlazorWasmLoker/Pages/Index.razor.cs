@@ -23,7 +23,7 @@ namespace BlazorWasmLoker.Pages
 
         protected override async Task OnInitializedAsync()
         {
-            listMotivasi = (List<KalimatMotivasiResoruce>)await motivationService.GetListKalimat();
+            //listMotivasi = (List<KalimatMotivasiResoruce>)await motivationService.GetListKalimat();
             gambarByte = await motivationService.GetGambarMotivasi();
             gambar = Convert.ToBase64String(gambarByte);
         }
