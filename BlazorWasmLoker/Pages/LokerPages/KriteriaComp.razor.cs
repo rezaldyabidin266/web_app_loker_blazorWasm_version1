@@ -72,10 +72,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
         {
             editContext = new EditContext(DaftarResource);
         }
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("toastShow");
-        }
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
@@ -94,6 +90,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 ErrorKriteria = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
             }
         }
 
@@ -106,7 +103,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
             catch (Exception ex)
             {
-                ErrorBg = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
             }
 
         }
@@ -121,6 +118,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 ErrorBg = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
             }
 
         }
@@ -133,7 +131,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
             catch (Exception ex)
             {
-
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
                 ErrorMessage = ex.Message;
             }
         }
@@ -141,7 +139,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected async Task daftarSubmit()
         {
             spin = true;
-           
+
             if (editContext.Validate())
             {
                 try
@@ -159,20 +157,21 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
                     spin = false;
                     message = result.Message;
-
+                    await JSRuntime.InvokeVoidAsync("notifDev", message, "success", 3000);
                 }
                 catch (Exception ex)
                 {
                     
                     spin = false;
                     message = ex.Message;
-
+                    await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
                 }
             }
             else
             {
                 spin = false;
                 LokerService.JsConsoleLog("Form Invalid");
+                await JSRuntime.InvokeVoidAsync("notifDev", "Form Invalid", "error", 3000);
 
             }
         }
@@ -186,6 +185,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 message = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
             }
 
         }

@@ -70,5 +70,13 @@
   {
     "outputFile": "Pages/UserPages/UpdatePertanyaanPelamarComp.razor.css",
     "inputFile": "Pages/UserPages/UpdatePertanyaanPelamarComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/OtpComp.razor.css",
+    "inputFile": "Pages/UserPages/OtpComp.razor.less"
+  },
+  {
+    "outputFile": "Pages/UserPages/BuatPasswordComp.razor.css",
+    "inputFile": "Pages/UserPages/BuatPasswordComp.razor.less"
   }
 ]

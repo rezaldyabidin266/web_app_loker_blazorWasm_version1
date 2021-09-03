@@ -166,7 +166,7 @@
   margin-right: -35px;
   border-radius: 10px 5px;
 }
-.drop-akun-login .dropstart .dropdown-menu .dropdown-item {
+.drop-akun-login .dropstart .dropdown-menu::deep {
   margin-bottom: 6px;
   font-size: 0.95rem;
   color: black;
@@ -174,20 +174,20 @@
   font-family: RubikDowload;
   letter-spacing: 1px;
 }
-.drop-akun-login .dropstart .dropdown-menu .dropdown-item i {
+.drop-akun-login .dropstart .dropdown-menu::deep i {
   font-size: 1rem;
   color: #A8A7A7;
 }
-.drop-akun-login .dropstart .dropdown-menu .dropdown-item .notifi {
+.drop-akun-login .dropstart .dropdown-menu::deep .notifi {
   padding-right: 2rem;
 }
-.drop-akun-login .dropstart .dropdown-menu .dropdown-item .notifi .notif-judul {
+.drop-akun-login .dropstart .dropdown-menu::deep .notifi .notif-judul {
   font-size: 0.85rem;
   font-family: RubikDowload;
   letter-spacing: 1px;
   font-weight: 400;
 }
-.drop-akun-login .dropstart .dropdown-menu .dropdown-item .notifi .notif-judul p {
+.drop-akun-login .dropstart .dropdown-menu::deep .notifi .notif-judul p {
   font-family: RubikDowload;
   font-size: 0.7rem;
   margin: 2px;
@@ -195,14 +195,14 @@
   font-weight: 400;
   letter-spacing: 1px;
 }
-.drop-akun-login .dropstart .dropdown-menu .dropdown-item .notifi .notif-status span {
+.drop-akun-login .dropstart .dropdown-menu::deep .notifi .notif-status span {
   font-weight: 400;
   letter-spacing: 1px;
   font-size: 0.8rem;
   color: #A8A7A7;
   font-family: RubikDowload;
 }
-.drop-akun-login .dropstart .dropdown-menu .dropdown-item:hover {
+.drop-akun-login .dropstart .dropdown-menu::deep:hover {
   background: transparent;
 }
 .image .dropdown-menu {

@@ -45,7 +45,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
             try
             {
                 var root = await LokerService.FormPertanyaan(token, idLoker);
-                // messageGetPertanyaan = root.Message;
                 foreach (var item in root.Pertanyaan)
                 {
                     var data = new FromPertanyaanResoruce
@@ -65,13 +64,8 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 messageGetPertanyaan = ex.Message;
                 LokerService.GotoLogin();
-                LokerService.JsConsoleLog(messageGetPertanyaan);
+                await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "error", 3000);
             }
-        }
-
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("toastShow");
         }
 
         protected void pushJawaban(object jawabanHtml, int id, string pertanyaan, string bentukIsian)
@@ -229,10 +223,12 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 var post = await LokerService.FormSaveListJawaban(jawabans);
                 messagePostPertanyaan = "Sukses isi form";
                 NavigationManager.NavigateTo("/berkasPelamar");
+                await JSRuntime.InvokeVoidAsync("notifDev", messagePostPertanyaan, "success", 3000);
             }
             catch (Exception ex)
             {
                 messagePostPertanyaan = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", messagePostPertanyaan, "error", 3000);
             }
         }
     }

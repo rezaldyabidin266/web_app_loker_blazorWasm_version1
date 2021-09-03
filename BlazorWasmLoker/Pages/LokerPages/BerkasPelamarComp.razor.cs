@@ -35,10 +35,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
             urlApi = UrlApi();
             urlApiCv = UrlApiCv();
         }
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("toastShow");
-        }
 
         protected void SelectedFilesChanged(IEnumerable<UploadFileInfo> files)
         {
@@ -75,9 +71,10 @@ namespace BlazorWasmLoker.Pages.LokerPages
         {
             args.RequestHeaders.Add("token", token);
         }
-        protected void UploadSukses(FileUploadEventArgs e)
+        protected async void UploadSukses(FileUploadEventArgs e)
         {
             messageUpload = "Berhasil di upload";
+            await JSRuntime.InvokeVoidAsync("notifDev", messageUpload, "success", 3000);
         }
 
         protected void goPengalaman()

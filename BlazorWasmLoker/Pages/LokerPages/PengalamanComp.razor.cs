@@ -38,10 +38,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
         {
             editContext = new EditContext(PengalamanResoruceMapping);
         }
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("toastShow");
-        }
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
@@ -63,6 +59,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 UserService.GotoLogin();
                 errorMessage = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", errorMessage, "error", 3000);
             }
         }
 
@@ -75,6 +72,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 var tokenVar = await LocalStorage.GetItemAsync<string>("token");
                 var result = await UserService.DeletePengalaman(token, id);
                 suksesMessage = result;
+                await JSRuntime.InvokeVoidAsync("notifDev", suksesMessage, "success", 3000);
                 spinDelete = false;
                 try
                 {
@@ -87,13 +85,13 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 }
                 catch (Exception ex)
                 {
-                    UserService.JsConsoleLog(ex.Message);
+                    await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
                 }
             }
             catch (Exception ex)
             {
-                spinDelete = false;
-                suksesMessage = ex.Message;
+                spinDelete = false;          
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
             }
         }
 
@@ -106,6 +104,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 {
                     var result = await UserService.AddPengalaman(token, PengalamanResoruceMapping);
                     suksesMessage = result;
+                    await JSRuntime.InvokeVoidAsync("notifDev", suksesMessage, "success", 3000);
                     spin = false;
                     try
                     {
@@ -118,14 +117,13 @@ namespace BlazorWasmLoker.Pages.LokerPages
                     }
                     catch (Exception ex)
                     {
-
-                         UserService.JsConsoleLog(ex.Message);
+                        await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
                     }
                 }
                 catch (Exception ex)
                 {
                     spin = false;
-                    suksesMessage = ex.Message;
+                    await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
                 }
                
             }
@@ -133,6 +131,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 spin = false;
                 messagePengalaman = "Form Invalid";
+                await JSRuntime.InvokeVoidAsync("notifDev", messagePengalaman, "error", 3000);
             }
         }
         protected void kirim()

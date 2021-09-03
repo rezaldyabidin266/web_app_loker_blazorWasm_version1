@@ -1,9 +1,7 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
 html, body {
-    /*   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;*/
     height: 100%;
-   /* overflow: scroll !important;*/
 }
 @font-face {
     font-family: RubikDowload;

@@ -30,21 +30,17 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected string MessageLogin;
         protected string MessageErrorInvalid;
 
-
         protected override void OnInitialized()
         {
             editContext = new EditContext(UserLoginResource);
         }
         protected async Task loginAsync()
         {
-            await JSRuntime.InvokeVoidAsync("toastShow");
             /* var login = new UserLoginResource { Email = Email, Password = Password, Browser = string.Empty, IpAddress = string.Empty }*/
             if (editContext.Validate())
             {
-
                 try
                 {
-                   
                     var result = await userService.Login(UserLoginResource);
                     string logIn = "true";
                     await LocalStorage.SetItemAsync("token", result.Token);
@@ -56,16 +52,20 @@ namespace BlazorWasmLoker.Pages.UserPages
                     };
                     MessageLoginTrue = loginRespond.Message;
                     NavigationManager.NavigateTo("/loker");
+
                 }
                 catch (Exception ex)
                 {
                     var result = JsonConvert.DeserializeObject<TokenResource>(ex.Message);
                     MessageLoginTrue = result.Message ;
+                    await JSRuntime.InvokeVoidAsync("notifDev", result.Message,"error",3000);
                 }
             }
             else
             {
                 userService.JsConsoleLog("FormInvalid");
+                await JSRuntime.InvokeVoidAsync("notifDev", "Form Invalid", "error", 3000);
+
             }
         }
 

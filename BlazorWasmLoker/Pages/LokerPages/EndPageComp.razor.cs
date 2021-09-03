@@ -58,6 +58,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 ErrorBg = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", ErrorBg, "error", 3000);
             }
 
         }
@@ -72,7 +73,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 fotoPelamar = "asset/image/avatar.jpg";
-                ErrorBg = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", ErrorBg, "error", 3000);
             }
 
         }
@@ -87,7 +88,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 UserService.GotoLogin();
-                UserService.JsConsoleLog(ex.Message);
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
             }
 
         }
@@ -115,7 +116,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
             catch (Exception ex)
             {
-                UserService.JsConsoleLog(ex.Message);
+                await JSRuntime.InvokeVoidAsync("notifDev", ErrorBg, "error", 3000);
             }
         }
 
@@ -133,7 +134,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
             catch (Exception ex)
             {
-                UserService.JsConsoleLog(ex.Message);
+                await JSRuntime.InvokeVoidAsync("notifDev", ErrorBg, "error", 3000);
             }
         }
 

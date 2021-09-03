@@ -17,13 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-
     <style>
-
-      /*  body{
-            overflow:scroll !important;
-        }*/
-
         .bungkus {
         }
         .sk-cube-grid {
@@ -31,7 +25,6 @@
             height: 150px;
             margin: 100px auto;
         }
-
             .sk-cube-grid .sk-cube {
                 width: 33%;
                 height: 33%;
@@ -112,7 +105,7 @@
     </style>
 </head>
 
-<body style="overflow:scroll !important;">
+<body style="" class="dx-viewport">
     <div id="app">
         <div class="bungkus">
             <div class="sk-cube-grid">
@@ -127,9 +120,7 @@
                 <div class="sk-cube sk-cube9"></div>
             </div>
         </div>
-
     </div>
-
     <div id="blazor-error-ui">
         An unhandled error has occurred.
         <a href="" class="reload">Reload</a>
@@ -139,9 +130,23 @@
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <!--<script src="Js/MyScript.js"></script>-->
     <script src="_content/BlazorStrap/blazorStrap.js"></script>
     <script src="_content/BlazorStrap/popper.min.js"></script>
+
+    <!-- DevExpress -->
+    <script type="text/javascript" src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.4.1.min.js"></script>
+    <!-- DevExtreme themes -->
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.common.css">
+    <link rel="stylesheet" href="https://cdn3.devexpress.com/jslib/20.2.5/css/dx.light.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/devextreme-quill/0.9.8/dx-quill.min.js"></script> <!-- OPTIONAL. REQUIRED FOR HTML EDITOR -->
+    <!-- Diagram and Gantt -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/devexpress-diagram/2.0.11/dx-diagram.min.js"></script> <!--OPTIONAL. REQUIRED FOR DIAGRAM -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/devexpress-gantt/2.0.18/dx-gantt.min.js"></script> <!--OPTIONAL. REQUIRED FOR GANTT -->
+    <!-- DevExtreme library -->
+    <script type="text/javascript" src="https://cdn3.devexpress.com/jslib/20.2.5/js/dx.all.js"></script>
+
+    <!-- Js Import -->
+    <script src="js/SettingCounter.js"></script>
 
     <script>
         function navbarScroll() {
@@ -156,9 +161,11 @@
                 prevScrollpos = currentScrollPos;
             }
         }
-
+        //Toast DevExtreame
+        window.notifDev = (message,type,durasi) => {
+            DevExpress.ui.notify({ message, width: 300 }, type, durasi);
+        }
         //open Cv in URL OBJECT
-
         window.openCv = (byte) => {
             var byteCharacters = atob(byte);
             var byteNumbers = new Array(byteCharacters.length);
@@ -171,12 +178,5 @@
             window.open(fileURL);
         }
     </script>
-
-    <script>
-        function toastShow() {
-            $('.toast').toast('show');
-        }
-    </script>
 </body>
-
 </html>

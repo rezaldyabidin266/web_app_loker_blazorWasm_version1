@@ -31,12 +31,6 @@ namespace BlazorWasmLoker.Pages.UserPages
         {
             token = await LocalStorage.GetItemAsync<string>("token");
         }
-
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("toastShow");
-        }
-
         protected async Task submit()
         {
             if (passwordBaru == passwordConfirm)
@@ -50,18 +44,18 @@ namespace BlazorWasmLoker.Pages.UserPages
                         token = token
                     };
                     message = await userService.GantiPassword(gantiPassword);
-                    userService.GotoLogin();
+                    await JSRuntime.InvokeVoidAsync("notifDev", message, "info", 3000);
                 }
                 catch (Exception ex)
                 {
                     message = ex.Message;
-                   
+                    await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
                 }
             }
             else
             {
-                message = "Password tidak sama";
-               
+                message = "Password Confirm dan Password Baru tidak sama";
+                await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
             }
         }
     }

@@ -108,6 +108,7 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<string> RequestOtpResetPassword(string email, string noHandphone)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("email", email);
             _httpClient.DefaultRequestHeaders.Add("noHandphone", noHandphone);
             var respond = await _httpClient.PutAsync(Controller + "request-otp-reset-password", null);
@@ -118,8 +119,10 @@ namespace BlazorWasmLoker.Services
         }
         public async Task<string> ResetPassword(string otp)
         {
+            _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Add("Otp", otp);
             var respond = await _httpClient.PutAsync(Controller + "reset-password", null);
+
             return respond.IsSuccessStatusCode
                 ? await respond.Content.ReadAsStringAsync()
                 : throw new Exception(await respond.Content.ReadAsStringAsync());

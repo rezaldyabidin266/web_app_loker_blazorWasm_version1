@@ -50,7 +50,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 var root = await LokerService.FormPertanyaan(token, IdPertanyaan);
                 foreach (var item in root.Pertanyaan)
                 {
-                    var data = new FromPertanyaanResoruce
+                    var data = new JawabanResoruce
                     {
                         Id = item.Id,
                         BentukIsian = item.BentukIsian,
@@ -86,7 +86,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 messageGetPertanyaan = ex.Message;
                 LokerService.GotoLogin();
-                LokerService.JsConsoleLog(messageGetPertanyaan);
+                await JSRuntime.InvokeVoidAsync("notifDev",messageGetPertanyaan, "error", 3000);
             }
 
         }
@@ -250,11 +250,12 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 var post = await LokerService.FormSaveListJawaban(jawabans);
                 messageGetPertanyaan = "Sukses Update Form";
-                LokerService.JsConsoleLog("Sukses Update Form");
+                await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "success", 3000);
             }
             catch (Exception ex)
             {
                 messageGetPertanyaan = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "error", 3000);
             }
         }
     }

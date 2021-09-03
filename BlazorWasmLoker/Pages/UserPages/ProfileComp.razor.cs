@@ -75,10 +75,6 @@ namespace BlazorWasmLoker.Pages.UserPages
             await InformasiPelamar();
             await ListPengalaman();
         }
-        protected override async void OnAfterRender(bool firstRender)
-        {
-            await JSRuntime.InvokeVoidAsync("toastShow");
-        }
         protected async Task FotoPelamar()
         {
             try
@@ -91,6 +87,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 fotoPelamar = "asset/image/avatar.jpg";
                 MessageRespon = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
             }
          
         }
@@ -116,8 +113,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected async void UploadSukses(FileUploadEventArgs e)
         {
             dowloadGambar = true;
-            UserService.JsConsoleLog("Sukses Change Profile");
-            MessageRespon = "Sukses Change Profile";
+            await JSRuntime.InvokeVoidAsync("notifDev", "Sukses Change Profile", "success", 3000);
             try
             {
                 dowloadGambar = false;
@@ -136,14 +132,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             //    dowloadGambar = false;
             //    await InvokeAsync(StateHasChanged);
             //}
-            //await toastSetting();
             await InvokeAsync(StateHasChanged);
-
-            //await Task.Delay(3000);
-            //toastTimer = false;
-            //await InvokeAsync(StateHasChanged);
-            
-
         }
         protected async Task InformasiPelamar()
         {
@@ -164,7 +153,8 @@ namespace BlazorWasmLoker.Pages.UserPages
             catch (Exception ex)
             {
                 MessageRespon = ex.Message;
-                UserService.JsConsoleLog(ex.Message);
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
+        
             }
 
         }
@@ -187,8 +177,8 @@ namespace BlazorWasmLoker.Pages.UserPages
                 try
                 {
                     var result = await UserService.UpdateDataPelamar(token,UpdatePelamarResoruce);
-                    LokerService.JsConsoleLog(result);
                     MessageRespon = result;
+                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "success", 3000);
                     editProfile = true;
                     spinSave = false;
                     try
@@ -207,20 +197,21 @@ namespace BlazorWasmLoker.Pages.UserPages
                     catch (Exception ex)
                     {
                         UserService.JsConsoleLog(ex.Message);
+                        await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
                     }
                 }
                 catch (Exception ex)
                 {
                     spinSave = false;
-                    LokerService.JsConsoleLog(ex.Message);
-                    MessageRespon = ex.Message;
+                    await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
+                 
                 }
             }
             else
             {
                 spinSave = false;
-                LokerService.JsConsoleLog("Form Invalid");
                 MessageRespon = "Form Invalid";
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
             }
         }
 
@@ -238,11 +229,10 @@ namespace BlazorWasmLoker.Pages.UserPages
             args.RequestHeaders.Add("token", token);
             spinCv = true;
         }
-        protected void UploadSuksesCv(FileUploadEventArgs e)
+        protected async void UploadSuksesCv(FileUploadEventArgs e)
         {
             spinCv = false;
-            MessageRespon = "Berhasil Upload";
-        
+            await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil Upload", "success", 3000);
         }
 
         protected async Task ShowPdf()
@@ -255,6 +245,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             catch (Exception ex)
             {
                 MessageRespon = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
                 UserService.JsConsoleLog(ex.Message);
             }
         }
@@ -267,6 +258,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             catch (Exception ex)
             {
                 MessageRespon = ex.Message;
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
                 UserService.JsConsoleLog(ex.Message);
             }
         }
@@ -279,6 +271,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 var result = await UserService.DeletePengalaman(token, id);
                 UserService.JsConsoleLog(result);
                 MessageRespon = result;
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "success", 3000);
                 spinDeletePengalaman = false;
                 try
                 {
@@ -294,6 +287,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 MessageRespon = ex.Message;
                 UserService.JsConsoleLog(ex.Message);
                 spinDeletePengalaman = false;
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
             }
         }
 
@@ -323,6 +317,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             }
             catch (Exception ex)
             {
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
                 UserService.JsConsoleLog(ex.Message);
             }
         }
@@ -339,6 +334,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                     UserService.JsConsoleLog(result);
                     MessageRespon = result;
                     spinUpdatePengalaman = false;
+                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "success", 3000);
                     try
                     {
                         PengalamanResoruceId = await UserService.ListPengalaman(token);
@@ -354,6 +350,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                     MessageRespon = ex.Message;
                     spinUpdatePengalaman = false;
                     UserService.JsConsoleLog(ex.Message);
+                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
                 }
             }
             else
@@ -361,6 +358,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 spinUpdatePengalaman = false;
                 UserService.JsConsoleLog("FORM INVALID");
                 MessageRespon = "Form Invalid";
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
             }
         }
 
@@ -375,6 +373,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                     UserService.JsConsoleLog(result);
                     MessageRespon = result;
                     spinAddPengalaman = false;
+                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "success", 3000);
                     try
                     {
                         PengalamanResoruceId = await UserService.ListPengalaman(token);
@@ -390,6 +389,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                     MessageRespon = ex.Message;
                     UserService.JsConsoleLog(ex.Message);
                     spinAddPengalaman = false;
+                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
                 }
             }
             else
@@ -397,14 +397,8 @@ namespace BlazorWasmLoker.Pages.UserPages
                 spinAddPengalaman = false;
                 UserService.JsConsoleLog("FORM INVALID");
                 MessageRespon = "Form Invalid";
+                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
             }
-        }
-        protected async Task toastSetting()
-        {
-            toastTimer = true;
-            await Task.Delay(3000);
-            toastTimer = false;
-            await InvokeAsync(StateHasChanged);
         }
     }
 }

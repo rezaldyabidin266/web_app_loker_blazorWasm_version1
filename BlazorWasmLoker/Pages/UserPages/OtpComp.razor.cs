@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BlazorWasmLoker.Pages.UserPages
 {
-    public class RequestOtpResetPasswordCompBase : ComponentBase
+    public class OtpCompBase : ComponentBase
     {
         [Inject]
         public NavigationManager NavigationManager { get; set; }
@@ -19,33 +19,26 @@ namespace BlazorWasmLoker.Pages.UserPages
         [Inject]
         IJSRuntime JSRuntime { get; set; }
 
+        protected string otp;
         protected char maskChar = ' ';
         protected bool spin = false;
-        protected string message;
-        public string Email { get; set; }
-        public string NoTelepon { get; set; }
 
-
-        protected async Task submitReq()
+        protected async Task onSubmit()
         {
             spin = true;
             try
             {
-                message = await userService.RequestOtpResetPassword(Email, NoTelepon);
-                await JSRuntime.InvokeVoidAsync("notifDev", message, "success", 3000);
-                userService.JsConsoleLog(message);
-                NavigationManager.NavigateTo("/otp");
+                var result = await userService.ResetPassword(otp);
+                await JSRuntime.InvokeVoidAsync("notifDev", result, "success", 3000);               
                 spin = false;
-
+                NavigationManager.NavigateTo("/buatPassword");
             }
             catch (Exception ex)
             {
+                userService.JsConsoleLog(otp);
                 spin = false;
-                message = ex.Message;
-                await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
-
+                await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
             }
         }
-
     }
 }

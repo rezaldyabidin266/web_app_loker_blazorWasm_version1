@@ -1,0 +1,58 @@
+﻿section {
+  height: 100vh;
+}
+.lp-pw {
+  margin-top: 4rem;
+}
+.lp-pw .card-body {
+  background: #FEFFEA;
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 10px 15px 0 rgba(0, 0, 0, 0.15);
+  margin-bottom: 40px;
+  padding-bottom: 30px;
+}
+.lp-pw .card-body .card-title {
+  margin-top: 1rem;
+  margin-left: 1rem;
+  font-size: 2rem;
+  color: #2EB872;
+  font-family: RubikDowload;
+  letter-spacing: 1px;
+  text-align: center;
+}
+.lp-pw .card-body .dx-fieldset {
+  margin: 0.7rem;
+}
+.form-label {
+  font-family: RubikDowload;
+  font-weight: 400;
+  letter-spacing: 1px;
+}
+.btn-create {
+  background: #1784E3;
+  box-shadow: 0 0 15px 0 rgba(1, 86, 255, 0.5);
+  padding: 0.25rem 2.2rem;
+  color: white;
+  font-size: 0.95rem;
+}
+@media only screen and (max-width: 573px) {
+  section {
+    height: 100vh;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .lp-pw .card-body {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 40px;
+  }
+  .lp-pw .card-body .card-title {
+    margin-top: 1rem;
+    margin-left: 0.5rem;
+    font-size: 1.6rem;
+  }
+  .lp-pw .card-body .dx-fieldset {
+    margin: 0rem;
+  }
+}
