@@ -50,7 +50,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 var root = await LokerService.FormPertanyaan(token, IdPertanyaan);
                 foreach (var item in root.Pertanyaan)
                 {
-                    var data = new JawabanResoruce
+                    var data = new FromPertanyaanResoruce
                     {
                         Id = item.Id,
                         BentukIsian = item.BentukIsian,
@@ -86,7 +86,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 messageGetPertanyaan = ex.Message;
                 LokerService.GotoLogin();
-                await JSRuntime.InvokeVoidAsync("notifDev",messageGetPertanyaan, "error", 3000);
+                await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "error", 3000);
             }
 
         }
@@ -128,6 +128,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                     JawabanTambahan = null
                 };
                 jawabans.Add(jawab);
+                LokerService.JsConsoleLog(jawabans);
 
             }
             else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Paragraf))
@@ -204,6 +205,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                     JawabanTambahan = null
                 };
                 jawabans.Add(jawab);
+                LokerService.JsConsoleLog(jawabans);
             }
             else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
             {
@@ -251,6 +253,46 @@ namespace BlazorWasmLoker.Pages.UserPages
                 var post = await LokerService.FormSaveListJawaban(jawabans);
                 messageGetPertanyaan = "Sukses Update Form";
                 await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "success", 3000);
+                try
+                {
+                    var root = await LokerService.FormPertanyaan(token, IdPertanyaan);
+                    foreach (var item in root.Pertanyaan)
+                    {
+                        var data = new FromPertanyaanResoruce
+                        {
+                            Id = item.Id,
+                            BentukIsian = item.BentukIsian,
+                            IsRequired = item.IsRequired,
+                            Jawaban = item.Jawaban,
+                            No = item.No,
+                            Pertanyaan = item.Pertanyaan,
+                            Pilihan = item.Pilihan
+                        };
+
+                        if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Checkbox))
+                        {
+                            valueCheckbox = item.Jawaban.Split(',').ToList();
+                        }
+                        else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
+                        {
+                            valueNominal = int.Parse(item.Jawaban.Replace(",", ""));
+                        }
+                        else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.PilihanGanda))
+                        {
+                            valuePilihanGanda = item.Jawaban;
+                        }
+                        else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
+                        {
+                            valueDate = Convert.ToDateTime(item.Jawaban);
+                        }
+                        FormPertanyaan.Add(data);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    messageGetPertanyaan = ex.Message;
+                    await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "error", 3000);
+                }
             }
             catch (Exception ex)
             {
@@ -260,3 +302,4 @@ namespace BlazorWasmLoker.Pages.UserPages
         }
     }
 }
+

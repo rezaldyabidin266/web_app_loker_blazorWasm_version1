@@ -17,9 +17,9 @@ namespace BlazorWasmLoker.Services
         {
             _httpClient = httpClient;
         }
-        public async Task<IEnumerable<KalimatMotivasiResoruce>> GetListKalimat()
+        public async Task<List<KalimatMotivasiResoruce>> GetListKalimat()
         {
-            return await _httpClient.GetFromJsonAsync<IEnumerable<KalimatMotivasiResoruce>>(Controller + "list-kalimat");
+            return await _httpClient.GetFromJsonAsync<List<KalimatMotivasiResoruce>>(Controller + "list-kalimat");
         }
         public async Task<byte[]> GetGambarMotivasi()
         {

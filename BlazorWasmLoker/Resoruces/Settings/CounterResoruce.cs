@@ -9,7 +9,7 @@ namespace BlazorWasmLoker.Resoruces.Settings
     {
         public string Page { get; set; }
         public string Browser { get; set; }
-        public string Platfrom { get; set; }
+        public string platform { get; set; }
         public string Location { get; set; }
         public string Isp { get; set; }
         public string ComputerScreen { get; set; }

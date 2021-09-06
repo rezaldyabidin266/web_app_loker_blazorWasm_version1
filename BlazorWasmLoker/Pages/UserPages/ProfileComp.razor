@@ -29,6 +29,7 @@
                                               SelectedFilesChanged="SelectedFilesChanged"
                                               AllowedFileExtensions="@(new List<string> { ".jpg", ".jpeg", ".png" })"
                                               ExternalSelectButtonCssSelector="#dropzone-image"
+                                              AcceptedFileTypes="@(new List<string> { ".jpg", ".jpeg", ".png" })"
                                               ShowSelectButton="false"
                                               FileUploaded="@UploadSukses">
                                     </DxUpload>
@@ -77,6 +78,7 @@
                                                       SelectedFilesChanged="SelectedFilesChanged"
                                                       AllowedFileExtensions="@(new List<string> { ".jpg", ".jpeg", ".png" })"
                                                       ExternalSelectButtonCssSelector="#dropzone-imageUploadButton"
+                                                      AcceptedFileTypes="@(new List<string> { ".jpg", ".jpeg", ".png" })"
                                                       ShowSelectButton="false"
                                                       FileUploaded="UploadSukses">
                                             </DxUpload>
@@ -198,6 +200,7 @@
                                                       FileUploadStart="@OnFileUploadStartCv"
                                                       SelectedFilesChanged="SelectedFilesChangedCv"
                                                       AllowedFileExtensions="@(new List<string> { ".pdf" })"
+                                                      AcceptedFileTypes="@(new List<string> { ".pdf"})"
                                                       ExternalSelectButtonCssSelector="#dropzone-cv"
                                                       ShowSelectButton="false"
                                                       FileUploaded="UploadSuksesCv">
@@ -238,6 +241,7 @@
                                                   FileUploadStart="@OnFileUploadStartCv"
                                                   SelectedFilesChanged="SelectedFilesChangedCv"
                                                   AllowedFileExtensions="@(new List<string> { ".pdf" })"
+                                                  AcceptedFileTypes="@(new List<string> { ".pdf" })"
                                                   ExternalSelectButtonCssSelector="#dropzone-cvMobile"
                                                   ShowSelectButton="false"
                                                   FileUploaded="UploadSuksesCv">
@@ -279,7 +283,7 @@
                                                 <div class="me-auto d-flex align-items-center gaji">
                                                     <i class="fas fa-money-bill-wave fa-lg me-2 text-success"></i>
                                                     <span>
-                                                      @($"Rp {item.Nominal:n0}")
+                                                        @($"Rp {item.Nominal:n0}")
                                                     </span>
                                                 </div>
                                                 <span class="badge">Kerja @item.masaKerja</span>

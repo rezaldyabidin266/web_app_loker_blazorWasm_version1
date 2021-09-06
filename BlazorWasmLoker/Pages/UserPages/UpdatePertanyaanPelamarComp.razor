@@ -77,7 +77,7 @@
                                                   TData=object
                                                   TValue=object
                                                   Values="@(item.Jawaban.Split(',').ToList())"
-                                                  ValuesChanged="@((x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                  SelectedItemsChanged="@((x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         </DxTagBox>
 
@@ -137,8 +137,8 @@
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
                                         <DxMaskedInput Mask="Rp #,#########"
-                                                       Value="@valueNominal"
-                                                       ValueChanged="@((int x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                       Value="@(int.Parse(item.Jawaban.Replace(",", "")))"
+                                                       TextChanged="@((x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
                                                        ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         </DxMaskedInput>
                                     </div>
@@ -155,11 +155,12 @@
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
                                         <DxDateEdit Mask="dd/MMMM/yyyy"
-                                                    Date="@valueDate"
+                                                    Date="@(Convert.ToDateTime(item.Jawaban))"
                                                     ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
                                                     DateChanged="@((DateTime x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))">
                                             <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                         </DxDateEdit>
+                                        @*DateExpression="@(() => (Convert.ToDateTime(item.Jawaban)))"*@
                                     </div>
                                 </div>
                             </div>
@@ -176,8 +177,8 @@
                                         <DxComboBox Data="@item.Pilihan"
                                                     TData="object"
                                                     TValue="object"
-                                                    Value="@valuePilihanGanda"
-                                                    ValueChanged="((x) => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                                    Value="@(item.Jawaban)"
+                                                    SelectedItemChanged="@((x) => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))">
                                         </DxComboBox>
                                     </div>
                                 </div>
