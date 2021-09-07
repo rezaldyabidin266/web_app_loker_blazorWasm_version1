@@ -49,7 +49,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         public EditContext pengalamanUpdateContext { get; set; }
         public EditContext pengalamanAddContext { get; set; }
         protected char maskChar = ' ';
-
+ 
         //spin
         protected bool spinSave = false;
         protected bool spinDeletePengalaman = false;

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace BlazorWasmLoker.Pages.UserPages
 {
     public class UpdatePertanyaanPelamarCompBase : ComponentBase
@@ -26,6 +27,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         IJSRuntime JSRuntime { get; set; }
 
         protected List<FromPertanyaanResoruce> FormPertanyaan = new List<FromPertanyaanResoruce>();
+        protected FromPertanyaanResoruce FormPertanyaanSingle = new();
         protected List<JawabanResoruce> jawabans = new List<JawabanResoruce>();
         public EditContext editContext { get; set; }
         protected string messageGetPertanyaan;
@@ -35,8 +37,11 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected MyHelper.BentukIsian bentukIsian { get; set; }
         protected List<string> valueCheckbox { get; set; }
         protected int valueNominal { get; set; }
+        protected int nominalHtml { get; set; }
+        protected bool nominalHtmlEdit { get; set; } = false;
         protected string valuePilihanGanda { get; set; }
         protected DateTime valueDate { get; set; }
+        protected DateTime valuezz { get; set; }
         protected override void OnInitialized()
         {
             editContext = new EditContext(FormPertanyaan);
@@ -192,18 +197,38 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 var jawaban = jawabanHtml.ToString();
                 var jawabanInt = (int)jawabanHtml;
-                valueNominal = jawabanInt;
 
-                jawab = new JawabanResoruce
+                nominalHtml = jawabanInt;
+                valueNominal = jawabanInt;
+                nominalHtmlEdit = true;
+                LokerService.JsConsoleLog(nominalHtml);
+                if (jawabanInt == 0)
                 {
-                    Id = id,
-                    Pertanyaan = pertanyaan,
-                    Jawaban = jawaban,
-                    Nominal = jawabanInt,
-                    Tanggal = DateTime.Now,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
+                    jawab = new JawabanResoruce
+                    {
+                        Id = id,
+                        Pertanyaan = pertanyaan,
+                        Jawaban = jawaban,
+                        Nominal = 1,
+                        Tanggal = DateTime.Now,
+                        FilePendukung = null,
+                        JawabanTambahan = null
+                    };
+                }
+                else
+                {
+                    jawab = new JawabanResoruce
+                    {
+                        Id = id,
+                        Pertanyaan = pertanyaan,
+                        Jawaban = jawaban,
+                        Nominal = jawabanInt,
+                        Tanggal = DateTime.Now,
+                        FilePendukung = null,
+                        JawabanTambahan = null
+                    };
+                }
+
                 jawabans.Add(jawab);
                 LokerService.JsConsoleLog(jawabans);
             }
@@ -247,52 +272,58 @@ namespace BlazorWasmLoker.Pages.UserPages
         }
         protected async void SaveUpdate()
         {
-            LokerService.JsConsoleLog(jawabans);
+           
             try
             {
-                var post = await LokerService.FormSaveListJawaban(jawabans);
-                messageGetPertanyaan = "Sukses Update Form";
-                await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "success", 3000);
-                try
+               
+                foreach (var item in FormPertanyaan)
                 {
-                    var root = await LokerService.FormPertanyaan(token, IdPertanyaan);
-                    foreach (var item in root.Pertanyaan)
+                    if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
                     {
-                        var data = new FromPertanyaanResoruce
+
+                        jawab = new JawabanResoruce
                         {
                             Id = item.Id,
-                            BentukIsian = item.BentukIsian,
-                            IsRequired = item.IsRequired,
-                            Jawaban = item.Jawaban,
-                            No = item.No,
                             Pertanyaan = item.Pertanyaan,
-                            Pilihan = item.Pilihan
+                            Jawaban = item.Jawaban,
+                            Nominal = int.Parse(item.Jawaban.Replace(",", "")),
+                            Tanggal = DateTime.Now,
+                            FilePendukung = "kosong"
                         };
-
-                        if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Checkbox))
-                        {
-                            valueCheckbox = item.Jawaban.Split(',').ToList();
-                        }
-                        else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
-                        {
-                            valueNominal = int.Parse(item.Jawaban.Replace(",", ""));
-                        }
-                        else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.PilihanGanda))
-                        {
-                            valuePilihanGanda = item.Jawaban;
-                        }
-                        else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
-                        {
-                            valueDate = Convert.ToDateTime(item.Jawaban);
-                        }
-                        FormPertanyaan.Add(data);
                     }
+                    else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
+                    {
+                        jawab = new JawabanResoruce
+                        {
+                            Id = item.Id,
+                            Pertanyaan = item.Pertanyaan,
+                            Jawaban = item.Jawaban,
+                            Nominal = 1,
+                            Tanggal = Convert.ToDateTime(item.Jawaban),
+                            FilePendukung = "kosong"
+                        };
+                    }
+                    else
+                    {
+                        jawab = new JawabanResoruce
+                        {
+                            Id = item.Id,
+                            Pertanyaan = item.Pertanyaan,
+                            Jawaban = item.Jawaban,
+                            Nominal = 1,
+                            Tanggal = DateTime.Now,
+                            FilePendukung = "kosong"
+                        };
+                    }
+                    jawabans.Add(jawab);
                 }
-                catch (Exception ex)
-                {
-                    messageGetPertanyaan = ex.Message;
-                    await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "error", 3000);
-                }
+
+                var post = await LokerService.FormSaveListJawaban(jawabans);
+                LokerService.JsConsoleLog(FormPertanyaan);
+                LokerService.JsConsoleLog(jawabans);
+                messageGetPertanyaan = "Sukses Update Form";
+                await JSRuntime.InvokeVoidAsync("notifDev", messageGetPertanyaan, "success", 3000);
+
             }
             catch (Exception ex)
             {

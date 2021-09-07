@@ -167,16 +167,34 @@ namespace BlazorWasmLoker.Pages.LokerPages
             {
                 var jawaban = jawabanHtml.ToString();
                 var jawabanInt = (int)jawabanHtml;
-                jawab = new JawabanResoruce
+
+                if (jawabanInt == 0)
                 {
-                    Id = id,
-                    Pertanyaan = pertanyaan,
-                    Jawaban = jawaban,
-                    Nominal = jawabanInt,
-                    Tanggal = DateTime.Now,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
+                    jawab = new JawabanResoruce
+                    {
+                        Id = id,
+                        Pertanyaan = pertanyaan,
+                        Jawaban = jawaban,
+                        Nominal = 1,
+                        Tanggal = DateTime.Now,
+                        FilePendukung = null,
+                        JawabanTambahan = null
+                    };
+                }
+                else
+                {
+                    jawab = new JawabanResoruce
+                    {
+                        Id = id,
+                        Pertanyaan = pertanyaan,
+                        Jawaban = jawaban,
+                        Nominal = jawabanInt,
+                        Tanggal = DateTime.Now,
+                        FilePendukung = null,
+                        JawabanTambahan = null
+                    };
+                }
+
                 jawabans.Add(jawab);
             }
             else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))

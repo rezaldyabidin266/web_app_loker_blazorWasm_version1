@@ -1,7 +1,7 @@
 ﻿@page "/updatePertanyaan/{IdPertanyaan:int}"
 
 @inherits UpdatePertanyaanPelamarCompBase
-
+@* BIKIN MAPPING FORM PERTANYAAn *@
 
 <div class="container-lg">
     <div class="row justify-content-md-center">
@@ -24,8 +24,174 @@
             }
             else
             {
-                @foreach (var item in FormPertanyaan)
+                @*@foreach (var item in FormPertanyaan)
+                    {
+                        @switch (item.BentukIsian)
+                        {
+                            case "Paragraf":
+                                <div class="card-body">
+                                    <p class="d-flex">
+                                        <span class="me-auto">@item.Pertanyaan</span>
+                                        <span class="bintang">*</span>
+                                    </p>
+                                    <div class="kotak-input">
+                                        <div class="bungkus-input">
+                                            <DxMemo Rows="7"
+                                                    NullText="Enter Jawaban"
+                                                    Text="@item.Jawaban"
+                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                    @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
 
+                            case "Simple Text":
+                                <div class="card-body">
+                                    <p class="d-flex">
+                                        <span class="me-auto">@item.Pertanyaan</span>
+                                        <span class="bintang">*</span>
+                                    </p>
+                                    <div class="kotak-input">
+                                        <div class="bungkus-input">
+                                            <DxTextBox NullText="Enter Jawaban"
+                                                       Text="@item.Jawaban"
+                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
+                                                       @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
+                            case "Checkbox":
+                                <div class="card-body">
+                                    <p class="d-flex">
+                                        <span class="me-auto">@item.Pertanyaan</span>
+                                        <span class="bintang">*</span>
+                                    </p>
+                                    <div class="kotak-input">
+                                        <div class="bungkus-input">
+                                            <DxTagBox Data="@item.Pilihan"
+                                                      AllowCustomTags="false"
+                                                      InputId="@(item.Id.ToString())"
+                                                      TData=object
+                                                      TValue=object
+                                                      Values="@(item.Jawaban.Split(',').ToList())"
+                                                      SelectedItemsChanged="@((x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                      ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                            </DxTagBox>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
+                            case "Yes No Question":
+                                <div class="card-body">
+                                    <p class="d-flex">
+                                        <span class="me-auto">@item.Pertanyaan @item.Jawaban</span>
+                                        <span class="bintang">*</span>
+                                    </p>
+                                    <div class="kotak-input">
+                                        <div class="bungkus-input">
+                                            @if (item.Jawaban == "Yes")
+                                            {
+                                                <div class="form-check">
+                                                    <input class="form-check-input" checked value="Yes" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                    <label class="form-check-label">
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" value="No" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                    <label class="form-check-label">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="form-check">
+                                                    <input class="form-check-input" value="Yes" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                    <label class="form-check-label">
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                                <div class="form-check">
+                                                    <input class="form-check-input" checked value="No" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id">
+                                                    <label class="form-check-label">
+                                                        No
+                                                    </label>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
+                            case "Nominal":
+                                <div class="card-body">
+                                    <p class="d-flex">
+                                        <span class="me-auto">@item.Pertanyaan @nominalHtml</span>
+                                        <span class="bintang">*</span>
+                                    </p>
+                                    <div class="kotak-input">
+                                        <div class="bungkus-input">
+                                            @{
+                                                if (!nominalHtmlEdit)
+                                                {
+                                                    nominalHtml = int.Parse(item.Jawaban.Replace(",", ""));
+                                                }
+                                            }
+                                            <DxMaskedInput Mask="Rp #,#########"
+                                                           Value="nominalHtml"
+                                                           ValueChanged="@((int x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian) )"
+                                                           ValueExpression="@(() => nominalHtml)">
+                                            </DxMaskedInput>
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
+                            case "Tanggal":
+                                <div class="card-body">
+                                    <p class="d-flex">
+                                        <span class="me-auto">@item.Pertanyaan</span>
+                                        <span class="bintang">*</span>
+                                    </p>
+                                    <div class="kotak-input">
+                                        <div class="bungkus-input">
+                                            @{ var dateHtml = Convert.ToDateTime(item.Jawaban); }
+                                            <DxDateEdit Mask="dd/MMMM/yyyy"
+                                                        Date="@dateHtml"
+                                                        DateChanged="@((DateTime x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                        DateExpression="@(() => dateHtml)">
+                                                <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                                            </DxDateEdit>
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
+
+                            case "Pilihan Ganda":
+                                <div class="card-body">
+                                    <p class="d-flex">
+                                        <span class="me-auto">@item.Pertanyaan</span>
+                                        <span class="bintang">*</span>
+                                    </p>
+                                    <div class="kotak-input">
+                                        <div class="bungkus-input">
+                                            <DxComboBox Data="@item.Pilihan"
+                                                        TData="object"
+                                                        TValue="object"
+                                                        Value="@(item.Jawaban)"
+                                                        SelectedItemChanged="@((x) => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                            </DxComboBox>
+                                        </div>
+                                    </div>
+                                </div>
+                                break;
+                        }
+                    }*@
+
+
+                @foreach (var item in FormPertanyaan)
                 {
                     @switch (item.BentukIsian)
                     {
@@ -39,9 +205,7 @@
                                     <div class="bungkus-input">
                                         <DxMemo Rows="7"
                                                 NullText="Enter Jawaban"
-                                                Text="@item.Jawaban"
-                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
                                     </div>
                                 </div>
                             </div>
@@ -57,8 +221,7 @@
                                     <div class="bungkus-input">
                                         <DxTextBox NullText="Enter Jawaban"
                                                    Text="@item.Jawaban"
-                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                   @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
                                     </div>
                                 </div>
                             </div>
@@ -123,7 +286,6 @@
                                                 </label>
                                             </div>
                                         }
-
                                     </div>
                                 </div>
                             </div>
@@ -131,21 +293,22 @@
                         case "Nominal":
                             <div class="card-body">
                                 <p class="d-flex">
-                                    <span class="me-auto">@item.Pertanyaan</span>
+                                    <span class="me-auto">@item.Pertanyaan </span>
                                     <span class="bintang">*</span>
                                 </p>
                                 <div class="kotak-input">
+                                    @{
+                                        var nominalHtml = int.Parse(item.Jawaban.Replace(",", ""));
+                                    }
                                     <div class="bungkus-input">
                                         <DxMaskedInput Mask="Rp #,#########"
-                                                       Value="@(int.Parse(item.Jawaban.Replace(",", "")))"
-                                                       TextChanged="@((x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
-                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                                       Value="@(nominalHtml)"
+                                                       ValueExpression="@(() => nominalHtml)">
                                         </DxMaskedInput>
                                     </div>
                                 </div>
                             </div>
                             break;
-
                         case "Tanggal":
                             <div class="card-body">
                                 <p class="d-flex">
@@ -155,12 +318,9 @@
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
                                         <DxDateEdit Mask="dd/MMMM/yyyy"
-                                                    Date="@(Convert.ToDateTime(item.Jawaban))"
-                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                    DateChanged="@((DateTime x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))">
+                                                    Date="@(Convert.ToDateTime(item.Jawaban))">
                                             <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                         </DxDateEdit>
-                                        @*DateExpression="@(() => (Convert.ToDateTime(item.Jawaban)))"*@
                                     </div>
                                 </div>
                             </div>
@@ -186,7 +346,6 @@
                             break;
                     }
                 }
-
             }
             <div class="d-grid gap-2 mt-4 mb-4">
                 <button class="btn btn-create" @onclick="SaveUpdate" type="submit">
