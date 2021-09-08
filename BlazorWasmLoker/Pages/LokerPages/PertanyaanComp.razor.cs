@@ -25,17 +25,14 @@ namespace BlazorWasmLoker.Pages.LokerPages
         public NavigationManager NavigationManager { get; set; }
         protected List<FromPertanyaanResoruce> FormPertanyaan = new List<FromPertanyaanResoruce>();
         protected List<JawabanResoruce> jawabans = new List<JawabanResoruce>();
-        public EditContext editContext { get; set; }
         protected string messageGetPertanyaan;
         protected string token;
         protected string messagePostPertanyaan;
         protected JawabanResoruce jawab;
         protected DateTime Date = DateTime.Today;
-        protected MyHelper.BentukIsian bentukIsian { get; set; }
-
         protected override void OnInitialized()
         {
-            editContext = new EditContext(FormPertanyaan);
+           
         }
 
         protected override async Task OnInitializedAsync()
@@ -68,176 +65,84 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
         }
 
-        protected void pushJawaban(object jawabanHtml, int id, string pertanyaan, string bentukIsian)
-        {
-            if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.PilihanGanda))
-            {
-                string jawabanString = jawabanHtml.ToString();
-                jawab = new JawabanResoruce
-                {
-                    Id = id,
-                    Pertanyaan = pertanyaan,
-                    Jawaban = jawabanString,
-                    Nominal = 1,
-                    Tanggal = DateTime.Now,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
-                jawabans.Add(jawab);
-
-            }
-            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Checkbox))
-            {
-                //object -> List<object> kalau gak di ubah hasilnya system-sytem
-                var result = ((IEnumerable)jawabanHtml).Cast<object>().ToList();
-                //List<Object> -> string
-                string arrayConver = string.Join(",", result);
-
-                jawab = new JawabanResoruce
-                {
-                    Id = id,
-                    Pertanyaan = pertanyaan,
-                    Jawaban = arrayConver,
-                    Nominal = 1,
-                    Tanggal = DateTime.Now,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
-                jawabans.Add(jawab);
-
-            }
-            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Paragraf))
-            {
-                //Get value di ChangeEvent
-                var prop = jawabanHtml.GetType().GetProperties().First(o => o.Name == "Value").GetValue(jawabanHtml, null);
-                var jawaban = prop.ToString();
-                jawab = new JawabanResoruce
-                {
-                    Id = id,
-                    Pertanyaan = pertanyaan,
-                    Jawaban = jawaban,
-                    Nominal = 1,
-                    Tanggal = DateTime.Now,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
-
-                jawabans.Add(jawab);
-
-            }
-            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.SimpleText))
-            {
-                //Get value di ChangeEvent
-                var prop = jawabanHtml.GetType().GetProperties().First(o => o.Name == "Value").GetValue(jawabanHtml, null);
-                var jawaban = prop.ToString();
-                jawab = new JawabanResoruce
-                {
-                    Id = id,
-                    Pertanyaan = pertanyaan,
-                    Jawaban = jawaban,
-                    Nominal = 1,
-                    Tanggal = DateTime.Now,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
-
-                jawabans.Add(jawab);
-
-            }
-            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.YesNo))
-            {
-                //Get value di ChangeEvent
-                var prop = jawabanHtml.GetType().GetProperties().First(o => o.Name == "Value").GetValue(jawabanHtml, null);
-                var jawaban = prop.ToString();
-                jawab = new JawabanResoruce
-                {
-                    Id = id,
-                    Pertanyaan = pertanyaan,
-                    Jawaban = jawaban,
-                    Nominal = 1,
-                    Tanggal = DateTime.Now,
-                    FilePendukung = null,
-                    JawabanTambahan = null
-                };
-
-                jawabans.Add(jawab);
-
-            }
-            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
-            {
-                var jawaban = jawabanHtml.ToString();
-                var jawabanInt = (int)jawabanHtml;
-
-                if (jawabanInt == 0)
-                {
-                    jawab = new JawabanResoruce
-                    {
-                        Id = id,
-                        Pertanyaan = pertanyaan,
-                        Jawaban = jawaban,
-                        Nominal = 1,
-                        Tanggal = DateTime.Now,
-                        FilePendukung = null,
-                        JawabanTambahan = null
-                    };
-                }
-                else
-                {
-                    jawab = new JawabanResoruce
-                    {
-                        Id = id,
-                        Pertanyaan = pertanyaan,
-                        Jawaban = jawaban,
-                        Nominal = jawabanInt,
-                        Tanggal = DateTime.Now,
-                        FilePendukung = null,
-                        JawabanTambahan = null
-                    };
-                }
-
-                jawabans.Add(jawab);
-            }
-            else if (bentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
-            {
-
-                Date = Convert.ToDateTime(jawabanHtml);
-                var jawaban = Date.ToString("yyyy-MM-dd");
-
-                if (MyFungsi.Helper.IsNotEmpty(jawaban))
-                {
-                    jawab = new JawabanResoruce
-                    {
-                        Id = id,
-                        Pertanyaan = pertanyaan,
-                        Jawaban = jawaban,
-                        Nominal = 1,
-                        Tanggal = Date,
-                        FilePendukung = null,
-                        JawabanTambahan = null
-                    };
-                }
-                else
-                {
-                    jawab = new JawabanResoruce
-                    {
-                        Id = id,
-                        Pertanyaan = pertanyaan,
-                        Jawaban = DateTime.Now.ToString(),
-                        Nominal = 1,
-                        Tanggal = DateTime.Now,
-                        FilePendukung = null,
-                        JawabanTambahan = null
-                    };
-                }
-
-                jawabans.Add(jawab);
-            }
-        }
         protected async void Save()
         {
             LokerService.JsConsoleLog(jawabans);
             try
             {
+                foreach (var item in FormPertanyaan)
+                {
+                    if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Nominal))
+                    {
+                        var jawabanInt = int.Parse(item.Jawaban.Replace(",", ""));
+                        if (jawabanInt == 0)
+                        {
+                            jawab = new JawabanResoruce
+                            {
+                                Id = item.Id,
+                                Pertanyaan = item.Pertanyaan,
+                                Jawaban = item.Jawaban,
+                                Nominal = 1,
+                                Tanggal = DateTime.Now,
+                                FilePendukung = "kosong",
+                            };
+                        }
+                        else
+                        {
+                            jawab = new JawabanResoruce
+                            {
+                                Id = item.Id,
+                                Pertanyaan = item.Pertanyaan,
+                                Jawaban = item.Jawaban,
+                                Nominal = int.Parse(item.Jawaban.Replace(",", "")),
+                                Tanggal = DateTime.Now,
+                                FilePendukung = "kosong"
+                            };
+                        }
+
+                    }
+                    else if (item.BentukIsian == MyHelper.InfoBentukIsian(MyHelper.BentukIsian.Tanggal))
+                    {
+                        if (MyFungsi.Helper.IsNotEmpty(item.Jawaban))
+                        {                
+                            jawab = new JawabanResoruce
+                            {
+                                Id = item.Id,
+                                Pertanyaan = item.Pertanyaan,
+                                Jawaban = item.Jawaban,
+                                Nominal = 1,
+                                Tanggal = Convert.ToDateTime(item.Jawaban),
+                                FilePendukung = "kosong"
+                            };
+                        }
+                        else
+                        {
+                            jawab = new JawabanResoruce
+                            {
+                                Id = item.Id,
+                                Pertanyaan = item.Pertanyaan,
+                                Jawaban = DateTime.Now.ToString(),
+                                Nominal = 1,
+                                Tanggal = DateTime.Now,
+                                FilePendukung = "kosong"
+                            };
+                        }
+                    }
+                    else
+                    {
+                        jawab = new JawabanResoruce
+                        {
+                            Id = item.Id,
+                            Pertanyaan = item.Pertanyaan,
+                            Jawaban = item.Jawaban,
+                            Nominal = 1,
+                            Tanggal = DateTime.Now,
+                            FilePendukung = "kosong"
+                        };
+                    }
+                    jawabans.Add(jawab);
+                }
+
                 var post = await LokerService.FormSaveListJawaban(jawabans);
                 messagePostPertanyaan = "Sukses isi form";
                 NavigationManager.NavigateTo("/berkasPelamar");

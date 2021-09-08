@@ -27,6 +27,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected LokerResource Lokers { get; set; } = new LokerResource();
         public DaftarResource DaftarResource = new DaftarResource() { TglLahir = DateTime.Today };
         public EditContext editContext { get; set; }
+        protected bool logIn;
 
         protected List<string> kriteriaResc = new();
         protected string gambarBackground;
@@ -56,7 +57,6 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         //Mask Char
         protected char maskChar = ' ';
-        protected char maskGmail = '_';
         protected MaskAutoCompleteMode AutoCompleteMode { get; set; } = MaskAutoCompleteMode.Strong;
         protected string EmailMask { get; set; } = @"(\w|[.-])+@(\w|-)+\.(\w|-){2,4}";
         protected bool PlaceholderVisible { get; set; } = true;
@@ -79,6 +79,16 @@ namespace BlazorWasmLoker.Pages.LokerPages
             await KriteriaPelamar(IdLoker);
             await GambarBg(IdLoker);
             await GambarIl(IdLoker);
+
+            var logInLocal = await LocalStorage.GetItemAsync<string>("logIn");
+            if (logInLocal == "true")
+            {
+                logIn = true;
+            }
+            else
+            {
+                logIn = false;
+            }
         }
 
         protected async Task KriteriaPelamar(int IdLoker)
@@ -188,6 +198,11 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
             }
 
+        }
+
+        protected void goPertanyaan()
+        {
+            NavigationManager.NavigateTo("/pertanyaan");
         }
 
     }

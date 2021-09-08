@@ -22,8 +22,4 @@ function ketikan(kalimat,id){
         .deleteAll()
         .start();
 
-    console.log(kalimatFilter());
-    console.log(id);
-
-
 }

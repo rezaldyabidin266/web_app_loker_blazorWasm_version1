@@ -23,3 +23,11 @@ window.openCv = (byte) => {
     var fileURL = URL.createObjectURL(file);
     window.open(fileURL);
 }
+
+//Password Show/Hide
+function changePasswordVisibility(cssClass, showPassword) {
+    var passInput = document.querySelector("." + cssClass + " input"); 
+    if (passInput) {
+        passInput.type = showPassword ? "text" : "password";
+    }
+}

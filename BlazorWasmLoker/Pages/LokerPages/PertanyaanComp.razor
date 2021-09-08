@@ -24,12 +24,9 @@
             }
             else
             {
+        
                 @foreach (var item in FormPertanyaan)
-
                 {
-                    @*<div>
-                            @{ var isian = (MyHelper.BentukIsian)Enum.Parse(typeof(MyHelper.BentukIsian), item.BentukIsian); }
-                        </div>*@
                     @switch (item.BentukIsian)
                     {
                         case "Paragraf":
@@ -43,7 +40,7 @@
                                         <DxMemo Rows="7"
                                                 NullText="Enter Jawaban"
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                                TextChanged="@(x => item.Jawaban = x.ToString())" />
                                     </div>
                                 </div>
                             </div>
@@ -59,7 +56,7 @@
                                     <div class="bungkus-input">
                                         <DxTextBox NullText="Enter Jawaban"
                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                   @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" />
+                                                   TextChanged="@(x => item.Jawaban = x.ToString())" />
                                     </div>
                                 </div>
                             </div>
@@ -76,8 +73,11 @@
                                         <DxTagBox Data="@item.Pilihan"
                                                   TData=object
                                                   TValue=object
-                                                 
-                                                  ValuesChanged="@((x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
+                                                  SelectedItemsChanged="@((x) =>
+                                                                          { var result = x.Cast<object>().ToList();
+                                                                              string arrayConver = string.Join(",", result);
+                                                                              item.Jawaban = arrayConver;
+                                                                          })"
                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         </DxTagBox>
                                     </div>
@@ -94,13 +94,13 @@
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
                                         <div class="form-check">
-                                            <input class="form-check-input" value="Yes" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id" >
+                                            <input class="form-check-input" value="Yes" @onchange="@(x => item.Jawaban = x.Value.ToString())" type="radio" name="@item.Id">
                                             <label class="form-check-label" for="@item.Id">
                                                 Yes
                                             </label>
                                         </div>
                                         <div class="form-check">
-                                            <input class="form-check-input" value="No" @onchange="@(x => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))" type="radio" name="@item.Id" >
+                                            <input class="form-check-input" value="No" @onchange="@(x => item.Jawaban = x.Value.ToString())" type="radio" name="@item.Id">
                                             <label class="form-check-label" for="@item.Id">
                                                 No
                                             </label>
@@ -117,15 +117,13 @@
                                 </p>
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
-                                        <DxMaskedInput Mask="Rp #,#########"
-                                                       ValueChanged="@((int x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))"
-                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
-                                        </DxMaskedInput>
+                                        <DxSpinEdit ValueChanged="@((int x) => item.Jawaban = x.ToString())"
+                                                    Mask="Rp #,#########"
+                                                    MinValue="0" />
                                     </div>
                                 </div>
                             </div>
                             break;
-
                         case "Tanggal":
                             <div class="card-body">
                                 <p class="d-flex">
@@ -134,9 +132,15 @@
                                 </p>
                                 <div class="kotak-input">
                                     <div class="bungkus-input">
-                                        <DxDateEdit Mask="dd/MMMM/yyyy"
+                                        @{
+                                            var dateHtml = Convert.ToDateTime(item.Jawaban);
+
+                                        }
+                                        <DxDateEdit Mask="dd/MMMM/yyyy"                                               
+                                                    PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                    FirstDayOfWeek="DayOfWeek.Monday"
                                                     ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto"
-                                                    DateChanged="@((DateTime x) => pushJawaban(x, item.Id, item.Pertanyaan, item.BentukIsian))">
+                                                    DateChanged="@((DateTime x) => item.Jawaban = x.ToString("yyyy-MM-dd"))">
                                             <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                         </DxDateEdit>
                                     </div>
@@ -155,8 +159,7 @@
                                         <DxComboBox Data="@item.Pilihan"
                                                     TData="object"
                                                     TValue="object"
-                                             
-                                                    ValueChanged="((x) => pushJawaban(x,item.Id,item.Pertanyaan,item.BentukIsian))">
+                                                    SelectedItemChanged="@((x) => item.Jawaban = x.ToString())">
                                         </DxComboBox>
                                     </div>
                                 </div>

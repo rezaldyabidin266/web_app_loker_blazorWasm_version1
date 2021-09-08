@@ -60,105 +60,116 @@
             </div>
         </div>
         <div class="col-md-7 mt-5">
-            <div class="kriteria-daftar">
-                <h2>
-                    Sign Up
-                </h2>
-                <div class="row form-kriteria">
-                    <EditForm EditContext="editContext"
-                              OnSubmit="@daftarSubmit">
-                        <DataAnnotationsValidator />
-                        <div class="bungkus-form row g-3">
-                            <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
-                                    <label class="form-label">Nama</label>
-                                    <DxTextBox @bind-Text="@DaftarResource.Nama"
-                                               BindValueMode="BindValueMode.OnInput"
-                                               NullText="Nama Lengkap"
-                                               ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
-                                    <ValidationMessage For="@(() => DaftarResource.Nama)" />
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
-                                    <label class="form-label">Email</label>
-                                    <DxMaskedInput @bind-Value="@DaftarResource.Email"
+            @if (!logIn)
+            {
+                <div class="kriteria-daftar">
+                    <h2>
+                        Sign Up
+                    </h2>
+                    <div class="row form-kriteria">
+                        <EditForm EditContext="editContext"
+                                  OnSubmit="@daftarSubmit">
+                            <DataAnnotationsValidator />
+                            <div class="bungkus-form row g-3">
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Nama</label>
+                                        <DxTextBox @bind-Text="@DaftarResource.Nama"
                                                    BindValueMode="BindValueMode.OnInput"
-                                                   NullText="Alamat Email"
-                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
-                                    </DxMaskedInput>
-                                    <ValidationMessage For="@(() => DaftarResource.Email)" />
+                                                   NullText="Nama Lengkap"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        <ValidationMessage For="@(() => DaftarResource.Nama)" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
-                                    <label class="form-label">Password</label>
-                                    <DxTextBox @bind-Text="@DaftarResource.Password"
-                                               BindValueMode="BindValueMode.OnInput"
-                                               NullText="Password"
-                                               Password="true"
-                                               ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
-                                    <ValidationMessage For="@(() => DaftarResource.Password)" />
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Email</label>
+                                        <DxMaskedInput @bind-Value="@DaftarResource.Email"
+                                                       BindValueMode="BindValueMode.OnInput"
+                                                       NullText="Alamat Email"
+                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                        </DxMaskedInput>
+                                        <ValidationMessage For="@(() => DaftarResource.Email)" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
-                                    <label class="form-label">No Telepon</label>
-                                    <DxMaskedInput @bind-Value="@DaftarResource.NoTlp"
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Password</label>
+                                        <DxTextBox @bind-Text="@DaftarResource.Password"
                                                    BindValueMode="BindValueMode.OnInput"
-                                                   Mask="###############"
-                                                   NullText="No Tlpn"
-                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
-                                        <DxTextMaskProperties Placeholder="maskChar" SaveLiteral="true" />
-                                    </DxMaskedInput>
-                                    <ValidationMessage For="@(() => DaftarResource.NoTlp)" />
+                                                   NullText="Password"
+                                                   Password="true"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        <ValidationMessage For="@(() => DaftarResource.Password)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">No Telepon</label>
+                                        <DxMaskedInput @bind-Value="@DaftarResource.NoTlp"
+                                                       BindValueMode="BindValueMode.OnInput"
+                                                       Mask="###############"
+                                                       NullText="No Tlpn"
+                                                       ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                            <DxTextMaskProperties Placeholder="maskChar" SaveLiteral="true" />
+                                        </DxMaskedInput>
+                                        <ValidationMessage For="@(() => DaftarResource.NoTlp)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Tempat Lahir</label>
+                                        <DxTextBox @bind-Text="@DaftarResource.TempatLahir"
+                                                   BindValueMode="BindValueMode.OnInput"
+                                                   NullText="Tempat Lahir"
+                                                   ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        <ValidationMessage For="@(() => DaftarResource.TempatLahir)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-6">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Tanggal Lahir</label>
+                                        <DxDateEdit @bind-Date="@DaftarResource.TglLahir"
+                                                    Mask="dd/MMMM/yyyy"
+                                                    ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
+                                            <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
+                                        </DxDateEdit>
+                                        <ValidationMessage For="@(() => DaftarResource.TglLahir)" />
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="bungkus-input">
+                                        <label class="form-label">Alamat</label>
+                                        <DxMemo @bind-Text="@DaftarResource.Alamat"
+                                                BindValueMode="BindValueMode.OnInput"
+                                                Rows="7"
+                                                NullText="Alamat saat ini"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        <ValidationMessage For="@(() => DaftarResource.Alamat)" />
+                                    </div>
+                                </div>
+                                <div class="d-grid gap-2 mt-4">
+                                    <button class="btn btn-create" type="submit">
+                                        @if (spin)
+                                        {
+                                            <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        }
+                                        Sign Up
+                                    </button>
                                 </div>
                             </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
-                                    <label class="form-label">Tempat Lahir</label>
-                                    <DxTextBox @bind-Text="@DaftarResource.TempatLahir"
-                                               BindValueMode="BindValueMode.OnInput"
-                                               NullText="Tempat Lahir"
-                                               ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
-                                    <ValidationMessage For="@(() => DaftarResource.TempatLahir)" />
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-sm-6">
-                                <div class="bungkus-input">
-                                    <label class="form-label">Tanggal Lahir</label>
-                                    <DxDateEdit @bind-Date="@DaftarResource.TglLahir"
-                                                Mask="dd/MMMM/yyyy"
-                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
-                                        <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
-                                    </DxDateEdit>
-                                    <ValidationMessage For="@(() => DaftarResource.TglLahir)" />
-                                </div>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="bungkus-input">
-                                    <label class="form-label">Alamat</label>
-                                    <DxMemo @bind-Text="@DaftarResource.Alamat"
-                                            BindValueMode="BindValueMode.OnInput"
-                                            Rows="7"
-                                            NullText="Alamat saat ini"
-                                            ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
-                                    <ValidationMessage For="@(() => DaftarResource.Alamat)" />
-                                </div>
-                            </div>
-                            <div class="d-grid gap-2 mt-4">
-                                <button class="btn btn-create" type="submit">
-                                    @if (spin)
-                                    {
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                                    }
-                                    Sign Up
-                                </button>
-                            </div>
-                        </div>
-                    </EditForm>
+                        </EditForm>
+                    </div>
                 </div>
-            </div>
+            }
+            else
+            {
+                <div class="tombol-next">
+                    <button class="btn btn-pertanyaan" type="button" @onclick="goPertanyaan">           
+                        <i class="fas fa-question-circle fa-md me-1"></i> Lanjut Ke Pertanyaan
+                    </button>
+                </div>
+            }
         </div>
     </div>
 </div>
