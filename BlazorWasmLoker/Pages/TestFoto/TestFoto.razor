@@ -18,10 +18,6 @@
 <div class="pusing">
     Halo
 </div>
-@*<DxUpload Name="FileGambar" Visible="@UploadVisible" ExternalSelectButtonCssSelector="#overviewDemoSelectButton" ExternalDropZoneCssSelector="#overviewDemoDropZone" MaxFileSize="15000000"
-              ExternalDropZoneDragOverCssClass="bg-light border-secondary text-dark" FileUploadStart="@OnFileUploadStart" UploadUrl="@GetUploadUrl("https://www.api2.loker.bogorstudio.com/api/Users/upload-foto")" SelectedFilesChanged="@SelectedFilesChanged" CssClass="w-100">
-    </DxUpload>*@
-
 <DxUpload Name="FileGambar" Visible="@UploadVisible" ExternalSelectButtonCssSelector="#overviewDemoSelectButton" ExternalDropZoneCssSelector="#overviewDemoDropZone" MaxFileSize="15000000"
               ExternalDropZoneDragOverCssClass="bg-light border-secondary text-dark" FileUploadStart="@OnFileUploadStart" UploadUrl="@GetUploadUrl(urlApi)" SelectedFilesChanged="@SelectedFilesChanged" CssClass="w-100">
     </DxUpload>
@@ -33,9 +29,9 @@
 
     protected string urlApi;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-       urlApi = UrlApi();
+        urlApi = UrlApi();
     }
 
     protected void SelectedFilesChanged(IEnumerable<UploadFileInfo> files)

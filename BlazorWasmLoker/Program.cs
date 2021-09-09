@@ -35,7 +35,6 @@ namespace BlazorWasmLoker
             builder.Services.AddBlazoredLocalStorage();
             builder.Services.AddBlazoredSessionStorage();
             builder.Services.AddDevExpressBlazor();
-            builder.Services.AddBootstrapCSS();
             await builder.Build().RunAsync();
         }
     }

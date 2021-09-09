@@ -70,12 +70,11 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 var foto = Convert.ToBase64String(fotoByte);
                 fotoPelamar = "data:image/png;base64," + foto;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 fotoPelamar = "asset/image/avatar.jpg";
                 await JSRuntime.InvokeVoidAsync("notifDev", ErrorBg, "error", 3000);
             }
-
         }
 
         protected async Task InformasiPelamar()
@@ -114,7 +113,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
                     FormPertanyaan.Add(data);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await JSRuntime.InvokeVoidAsync("notifDev", ErrorBg, "error", 3000);
             }
@@ -132,7 +131,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
                 }
                   
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 await JSRuntime.InvokeVoidAsync("notifDev", ErrorBg, "error", 3000);
             }
