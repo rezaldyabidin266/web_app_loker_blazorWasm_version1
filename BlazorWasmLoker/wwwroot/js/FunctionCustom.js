@@ -25,9 +25,9 @@ window.openCv = (byte) => {
 }
 
 //Password Show/Hide
-function changePasswordVisibility(cssClass, showPassword) {
-    var passInput = document.querySelector("." + cssClass + " input"); 
-    if (passInput) {
-        passInput.type = showPassword ? "text" : "password";
+function showHidePassword(cssClass, showPassword) {
+    var InputItem = document.querySelector("." + cssClass + " input"); 
+    if (InputItem) {
+        InputItem.type = showPassword ? "text" : "password";
     }
 }

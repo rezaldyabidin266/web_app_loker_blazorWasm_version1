@@ -65,7 +65,10 @@
         <div class="col-md-7">
             <div class="d-grid gap-2 mt-5 mb-5">
                 <button class="btn btn-create" type="button" @onclick="goPengalaman">
-                    @*<span *ngIf="spin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                    @if (spin)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
                     Kirim File
                 </button>
             </div>

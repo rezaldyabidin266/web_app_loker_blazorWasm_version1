@@ -24,7 +24,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected string passwordBaru;
         protected string passwordConfirm;
         protected string token;
-
+        protected bool spin = false;
         protected string message;
 
         protected override async Task OnInitializedAsync()
@@ -33,10 +33,12 @@ namespace BlazorWasmLoker.Pages.UserPages
         }
         protected async Task submit()
         {
+            spin = true;
             if (passwordBaru == passwordConfirm)
             {
                 try
                 {
+                    spin = false;
                     var gantiPassword = new GantiPasswordResoruce
                     {
                         passwrodLama = passwordLama,
@@ -48,12 +50,14 @@ namespace BlazorWasmLoker.Pages.UserPages
                 }
                 catch (Exception ex)
                 {
+                    spin = false;
                     message = ex.Message;
                     await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
                 }
             }
             else
             {
+                spin = false;
                 message = "Password Confirm dan Password Baru tidak sama";
                 await JSRuntime.InvokeVoidAsync("notifDev", message, "error", 3000);
             }

@@ -25,7 +25,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected string urlApiCv;
         protected string token;
         protected string messageUpload;
-
+        protected bool spin = false;
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
@@ -79,6 +79,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected void goPengalaman()
         {
+            spin = true;
             NavigationManager.NavigateTo("/pengalaman");
         }
     }

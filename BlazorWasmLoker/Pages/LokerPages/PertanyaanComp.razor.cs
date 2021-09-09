@@ -30,10 +30,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected string messagePostPertanyaan;
         protected JawabanResoruce jawab;
         protected DateTime Date = DateTime.Today;
-        protected override void OnInitialized()
-        {
-           
-        }
+        protected bool spin = false;
 
         protected override async Task OnInitializedAsync()
         {
@@ -67,7 +64,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
 
         protected async void Save()
         {
-            LokerService.JsConsoleLog(jawabans);
+            spin = true;
             try
             {
                 foreach (var item in FormPertanyaan)
@@ -143,6 +140,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
                     jawabans.Add(jawab);
                 }
 
+                spin = false;
                 var post = await LokerService.FormSaveListJawaban(jawabans);
                 messagePostPertanyaan = "Sukses isi form";
                 NavigationManager.NavigateTo("/berkasPelamar");
@@ -150,6 +148,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             }
             catch (Exception ex)
             {
+                spin = false;
                 messagePostPertanyaan = ex.Message;
                 await JSRuntime.InvokeVoidAsync("notifDev", messagePostPertanyaan, "error", 3000);
             }

@@ -171,7 +171,10 @@
             }
             <div class="d-grid gap-2 mt-4 mb-4">
                 <button class="btn btn-create" @onclick="Save" type="submit">
-                    @*<span *ngIf="spin" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>*@
+                    @if (spin)
+                    {
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    }
                     Kirim Jawaban
                 </button>
             </div>

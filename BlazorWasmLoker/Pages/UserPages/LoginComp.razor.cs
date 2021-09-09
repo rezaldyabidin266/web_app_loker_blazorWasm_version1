@@ -42,7 +42,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             set
             {
                 sp = value;
-                JSRuntime.InvokeVoidAsync("changePasswordVisibility", "PasswordTextBox", sp);
+                JSRuntime.InvokeVoidAsync("showHidePassword", "PasswordTextBox", sp);
             }
         }
 
