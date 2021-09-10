@@ -29,7 +29,7 @@ namespace BlazorWasmLoker
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-           
+ 
             var apiEndPoint = BaseApiUrl.Devlopment;
             builder.Services.AddAppSettingService(apiEndPoint);
             builder.Services.AddBlazoredLocalStorage();

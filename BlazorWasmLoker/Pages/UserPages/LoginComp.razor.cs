@@ -46,6 +46,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             }
         }
 
+
         protected override void OnInitialized()
         {
             editContext = new EditContext(UserLoginResource);
