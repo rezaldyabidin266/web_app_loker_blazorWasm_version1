@@ -24,12 +24,13 @@
                 <DxUpload Name="FileGambar"
                           UploadUrl="@GetUploadUrl(urlApi)"
                           FileUploadStart="@OnFileUploadStart"
-                          SelectedFilesChanged="SelectedFilesChanged"
+                          AllowMultiFileUpload="false"  
                           AllowedFileExtensions="@(new List<string> { ".jpg", ".jpeg", ".png" })"
                           AcceptedFileTypes="@(new List<string> { ".jpg", ".jpeg", ".png" })"
                           ExternalDropZoneCssSelector="#DropZoneFoto"
                           ExternalSelectButtonCssSelector="#ClickZoneFoto"
                           ShowSelectButton="false"
+                          UploadMode="UploadMode.Instant"
                           ExternalDropZoneDragOverCssClass="custom-drag-over text-white"
                           FileUploaded="UploadSukses">
                 </DxUpload>
@@ -48,13 +49,14 @@
                 </div>
                 <DxUpload Name="FileGambar"
                           UploadUrl="@GetUploadUrl(urlApiCv)"
-                          FileUploadStart="@OnFileUploadStartCv"
-                          SelectedFilesChanged="SelectedFilesChangedCv"
+                          FileUploadStart="@OnFileUploadStartCv"                        
                           AllowedFileExtensions="@(new List<string> { ".pdf" })"
                           AcceptedFileTypes="@(new List<string> { ".pdf" })"
+                           AllowMultiFileUpload="false"  
                           ExternalDropZoneCssSelector="#DropZoneCv"
                           ExternalSelectButtonCssSelector="#ClickZoneCv"
                           ShowSelectButton="false"
+                           UploadMode="UploadMode.Instant"
                           ExternalDropZoneDragOverCssClass="custom-drag-over text-white"
                           FileUploaded="UploadSukses">
                 </DxUpload>

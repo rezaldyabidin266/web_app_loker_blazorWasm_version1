@@ -34,6 +34,8 @@ async function onActivate(event) {
 
 async function onFetch(event) {
     let cachedResponse = null;
+    let cacheClone = null;
+
     if (event.request.method === 'GET') {
         // For all navigation requests, try to serve index.html from cache
         // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
@@ -42,7 +44,44 @@ async function onFetch(event) {
         const request = shouldServeIndexHtml ? 'index.html' : event.request;
         const cache = await caches.open(cacheName);
         cachedResponse = await cache.match(request);
-    }
 
-    return cachedResponse || fetch(event.request);
+        cacheClone = await caches.open(cacheName).then((cache) => {
+            //dicocok kan urlnya
+            return cache.match(event.request).then((response) => {
+                //bila cocok pake response bila gak cocok request lagi
+                return response || fetch(event.request).then((response) => {
+                    //console.log("ini RESPONSE",response)
+                    //misal kayak gini datanya form ya berubah tapi harus di refresh sekali + post juga gagal
+                    return cache.put(response, response.clone());
+                    //cache.put(event.request, response.clone());
+                    //return response;
+                }, (error) => {
+                    console.warn(error);
+                    throw error;
+                })
+            })
+        })
+    }
+        
+    console.log(event.request.method);
+
+
+    cacheClone = await caches.open(cacheName).then((cache) => {
+        //dicocok kan urlnya
+        return cache.match(event.request).then((response) => {
+            //bila cocok pake response bila gak cocok request lagi
+            return response || fetch(event.request).then((response) => {
+                //console.log("ini RESPONSE",response)
+                //misal kayak gini datanya form ya berubah tapi harus di refresh sekali + post juga gagal
+                //return cache.put(response, response.clone());;
+                cache.put(event.request, response.clone());
+                return response;
+            }, (error) => {
+                console.warn(error);
+                throw error;
+            })
+        })
+    })
+
+    return cachedResponse || cacheClone;
 }

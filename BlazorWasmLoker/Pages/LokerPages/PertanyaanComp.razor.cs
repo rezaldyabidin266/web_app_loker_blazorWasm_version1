@@ -39,6 +39,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
             try
             {
                 var root = await LokerService.FormPertanyaan(token, idLoker);
+                LokerService.JsConsoleLog(root.Pertanyaan);
                 foreach (var item in root.Pertanyaan)
                 {
                     var data = new FromPertanyaanResoruce
