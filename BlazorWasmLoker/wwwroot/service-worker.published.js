@@ -7,11 +7,31 @@ self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 /*self.addEventListener('fetch', event => event.respondWith(onFetch(event)));*/
 self.addEventListener('fetch', function (event) {
 
+
+    //USER OFFFLINE
+    if (!navigator.onLine) {
+        console.log('INI OFFLINE')
+        if (event.request.method === "POST") {
+            const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
+            const request = shouldServeIndexHtml ? 'index.html' : event.request;
+            var authHeader = event.request.headers
+            console.log('INI POST OFFLINE');
+            console.log(event.request)
+            Promise.resolve(event.request.text()).then((payload) => {
+                //save offline requests to indexed db
+                saveIntoIndexedDb(request, authHeader, payload)
+            })
+        }
+
+    }
+
     //Jika dia bukan GET kerjakan secara default
     if (event.request.method != 'GET') return;
 
     event.respondWith(onFetch(event));
     event.waitUntil(updateFetch(event));
+
+
 
 })
 
@@ -44,103 +64,124 @@ async function onActivate(event) {
 async function onFetch(event) {
 
     try {
-        let cachedResponse = null;
-        let cacheClone = null;
 
+        let cachedResponse = null;
         if (event.request.method === 'GET') {
             // For all navigation requests, try to serve index.html from cache
             // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
-            const shouldServeIndexHtml = event.request.mode === 'navigate';
-            console.log(event.request.mode);
+            const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
 
             const request = shouldServeIndexHtml ? 'index.html' : event.request;
             const cache = await caches.open(cacheName);
-            cachedResponse = await cache.match(request);
-            //if (cachedResponse) return cachedResponse
+            cachedResponse = await fetch(request).catch(() => {
+                return cache.match(request)
+            });
 
-            //const networkResponse = await fetch(event.request);
-            //event.waitUntil(
-            //    cache.put(event.request, networkResponse.clone())
-            //);
-            //return networkResponse;
-        }
-
-        cacheClone = await caches.open(cacheName).then((cache) => {
-            //dicocok kan urlnya
-            return cache.match(event.request).then((response) => {
-                //bila cocok pake response bila gak cocok request lagi
-                return response || fetch(event.request).then((response) => {
-                    //console.log("ini RESPONSE",response)
-                    cache.put(event.request, response.clone());
-                    return response;
-                }, (error) => {
-                    console.warn(error);
-                    throw error;
+            cacheClone = await caches.open(cacheName).then((cache) => {
+                //dicocok kan urlnya
+                return cache.match(event.request).then((response) => {
+                    //bila cocok pake response bila gak cocok request lagi
+                    return response || fetch(request).then((response) => {
+                        //console.log("ini RESPONSE",response)
+                        cache.put(event.request, response.clone());
+                        return response;
+                    }, (error) => {
+                        console.warn(error);
+                        throw error;
+                    })
                 })
             })
-        })
+        } else {
+            if (!navigator.onLine) {
+                const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
+                const request = shouldServeIndexHtml ? 'index.html' : event.request;
+                console.log(request.method);
+                console.log(request.formData());
+                console.log(request.url);
+                console.log('INI POST OFFLINE');
+                var authHeader = event.request.headers
+                Promise.resolve(request.text()).then((payload) => {
+                    //save offline requests to indexed db
+                    saveIntoIndexedDb(request, authHeader, payload)
+                })
 
-        let jaringan = await fetch(event.request)
+            }
+        }
 
-        return cachedResponse || jaringan;
+        return cachedResponse;
 
     } catch (e) {
 
         let cachedResponse = null;
-        let cacheClone = null;
-
         if (event.request.method === 'GET') {
             // For all navigation requests, try to serve index.html from cache
             // If you need some URLs to be server-rendered, edit the following check to exclude those URLs
-            const shouldServeIndexHtml = event.request.mode === 'navigate';
-            console.log(event.request.mode);
+            const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
 
             const request = shouldServeIndexHtml ? 'index.html' : event.request;
             const cache = await caches.open(cacheName);
             cachedResponse = await cache.match(request);
-        }
-
-        cacheClone = await caches.open(cacheName).then((cache) => {
-            //dicocok kan urlnya
-            return cache.match(event.request).then((response) => {
-                //bila cocok pake response bila gak cocok request lagi
-                return response || fetch(event.request).then((response) => {
-                    //console.log("ini RESPONSE",response)
-                    cache.put(event.request, response.clone());
-                    return response;
-                }, (error) => {
-                    console.warn(error);
-                    throw error;
+            cacheClone = await caches.open(cacheName).then((cache) => {
+                //dicocok kan urlnya
+                return cache.match(event.request).then((response) => {
+                    //bila cocok pake response bila gak cocok request lagi
+                    return response || fetch(request).then((response) => {
+                        //console.log("ini RESPONSE",response)
+                        cache.put(event.request, response.clone());
+                        return response;
+                    }, (error) => {
+                        console.warn(error);
+                        throw error;
+                    })
                 })
             })
-        })
+        } else {
+            if (!navigator.onLine) {
+                const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
+                const request = shouldServeIndexHtml ? 'index.html' : event.request;
 
-        return  cachedResponse || cacheClone;
+                console.log(request.formData());
+                console.log(request.url);
+                console.log(request.method);
+                console.log('Catch INI POST OFFLINE');
+
+                var authHeader = event.request.headers
+                Promise.resolve(request.text()).then((payload) => {
+                    //save offline requests to indexed db
+                    saveIntoIndexedDb(request, authHeader, payload)
+                })
+            }
+        }
+
+        return cachedResponse;
     }
-
-
-    //cacheClone = await caches.open(cacheName).then((cache) => {
-    //    //dicocok kan urlnya
-    //    return cache.match(event.request).then((response) => {
-    //        //bila cocok pake response bila gak cocok request lagi
-    //        return response || fetch(event.request).then((response) => {
-    //            //console.log("ini RESPONSE",response)
-    //            cache.put(event.request, response.clone());
-    //            return response;
-    //        }, (error) => {
-    //            console.warn(error);
-    //            throw error;
-    //        })
-    //    })
-    //})
-
-    //return cachedResponse || cacheClone || fetch(event.request);
 }
 
 function updateFetch(event) {
+    const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
+    const request = shouldServeIndexHtml ? 'index.html' : event.request;
     return caches.open(cacheName).then((cache) => {
-        return fetch(event.request).then((response) => {
+        return fetch(request).then((response) => {
             return cache.put(event.request, response);
         })
     })
+}
+
+function saveIntoIndexedDb(url, authHeader, payload) {
+    var myRequest = {};
+    /*jsonPayLoad = JSON.parse(payload);*/
+    console.log(payload)
+    jsonPayLoad = payload;
+    myRequest.url = url;
+    myRequest.authHeader = authHeader;
+    /*myRequest.payload = JSON.stringify(jsonPayLoad);*/
+    myRequest.payload = payload;
+    var databaseOpen = indexedDB.open("DatabaseIndex",1);
+    console.log(myRequest)
+    databaseOpen.onsuccess = function (event) {
+        var db = event.target.result;
+        var tx = db.transaction(["postrequest"], 'readwrite');
+        tx.objectStore("postrequest").add(myRequest);
+/*        store.add(myRequest)*/
+    }
 }
