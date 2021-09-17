@@ -93,7 +93,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                     };
                     NavigationManager.NavigateTo("/loker");
                     spin = false;
-                    userService.JsConsoleLog(UserLoginResource);
+                    //userService.JsConsoleLog(UserLoginResource);
                 }
                 catch (Exception ex)
                 {

@@ -31,3 +31,4 @@ function showHidePassword(cssClass, showPassword) {
         InputItem.type = showPassword ? "text" : "password";
     }
 }
+

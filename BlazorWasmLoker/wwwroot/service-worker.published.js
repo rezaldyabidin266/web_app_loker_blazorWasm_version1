@@ -7,9 +7,9 @@ self.addEventListener('install', function (event) {
     event.waitUntil(onInstall(event));
 
     checkNetworkState();
+
 });
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
-/*self.addEventListener('fetch', event => event.respondWith(onFetch(event)));*/
 self.addEventListener('fetch', function (event) {
 
 
@@ -21,7 +21,7 @@ self.addEventListener('fetch', function (event) {
             const request = shouldServeIndexHtml ? 'index.html' : event.request;
             var authHeader = event.request.headers.get('token');
             console.log('INI POST OFFLINE');
-            console.log(event.request)
+          
             Promise.resolve(event.request.text()).then((payload) => {
                 //save offline requests to indexed db
                 saveIntoIndexedDb(request, authHeader, payload)
@@ -36,14 +36,17 @@ self.addEventListener('fetch', function (event) {
     event.respondWith(onFetch(event));
     event.waitUntil(updateFetch(event));
 
-
-
 })
 
 const cacheNamePrefix = 'offline-cache-';
 const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
 const offlineAssetsInclude = [/\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.json$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/, /\.blat$/, /\.dat$/];
 const offlineAssetsExclude = [/^service-worker\.js$/];
+
+//PassingValue
+let chanelResponse = new BroadcastChannel('chanelResponse');
+
+/*localStorage.setItem("sw", "sw");*/
 
 async function onInstall(event) {
     console.info('Service worker: Install');
@@ -148,10 +151,6 @@ async function onFetch(event) {
             if (!navigator.onLine) {
                 const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
                 const request = shouldServeIndexHtml ? 'index.html' : event.request;
-
-                console.log(request.formData());
-                console.log(request.url);
-                console.log(request.method);
                 console.log('Catch INI POST OFFLINE');
 
                 var authHeader = event.request.headers
@@ -180,7 +179,8 @@ function checkNetworkState() {
     setInterval(function () {
         if (navigator.onLine) {
             sendOfflinePostRequestsToServer();
-            
+    
+
         }
     }, 3000);
 }
@@ -207,6 +207,9 @@ async function sendOfflinePostRequestsToServer() {
                             'Authorization': records[0].authHeader
                         },
                         body: records[0].payload
+                    }).then(response => response.json()).then((res) => {
+                      
+                        console.log(res.token);
                     }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
 
                 for (var i = 0; i < allRecords.result.length; i++)
@@ -224,8 +227,6 @@ async function sendOfflinePostRequestsToServer() {
         if (!db.objectStoreNames.contains('postObject')) {
             objectStore = db.createObjectStore("postObject", { keyPath: 'id', autoIncrement: true });
             objectStore.createIndex("url", "url", { unique: false });
-            //objectStore.createIndex("authHeader", "authHeader", { unique: false });
-            //objectStore.createIndex("payload", "payload", { unique: false });
         }
         else {
             objectStore = db.objectStoreNames.get('postObject');
@@ -243,32 +244,17 @@ function saveIntoIndexedDb(url, authHeader, payload) {
     };
 
     var request = indexedDB.open("PostData");
-    console.log(request);
+  
     request.onsuccess = function (event) {
         var db = event.target.result;
         var tx = db.transaction('postObject', 'readwrite');
         var store = tx.objectStore('postObject');
+       
         store.add(myRequest);
         //for (var i in myRequest) {
         //    store.add(myRequest[i]);
         //}
-       
     }
-
-    //var openDb = indexedDB.open("PostData");
-    //var db;
-    //openDb.onsuccess = function (event) {
-    //    db = openDb.result;
-    //    console.log("success Open" + db);
-    //    var tx = db.transaction(['postObject'], 'readwrite');
-    //    var store = tx.objectStore('postObject');
-    //    store.add({ id: "00-03", name: "Kenny", age: 19, email: "kenny@planet.org" });
-    //    tx.onsuccess = function (event) {
-    //        console.log("Add Data")
-    //    }
-    //}
-
-    
 }
 
 
@@ -276,7 +262,12 @@ async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, reco
 
     let promise = Promise.resolve(data).then((response) => {
 
-        console.log('Successfully sent request to server')
+        console.log('Successfully sent request to server');
+        chanelResponse.onmessage = (event) => {
+            localStorage.setItem("token2", event);
+            console.log(event)
+            console.log('halo');
+        };
         if (records.length != 0) {
 
             sendFetchRequestsToServer(
@@ -288,7 +279,7 @@ async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, reco
                         'Authorization': records[0].authHeader
                     },
                     body: records[0].payload
-                }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
+                }).then((response) => { console.log(response.json()) }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
         }
         return true
     }).catch((e) => {
@@ -297,4 +288,5 @@ async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, reco
         saveIntoIndexedDb(reqUrl, authHeader, payload)
     })
 }
+
 
