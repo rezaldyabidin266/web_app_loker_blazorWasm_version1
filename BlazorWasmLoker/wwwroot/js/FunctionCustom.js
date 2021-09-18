@@ -26,9 +26,24 @@ window.openCv = (byte) => {
 
 //Password Show/Hide
 function showHidePassword(cssClass, showPassword) {
-    var InputItem = document.querySelector("." + cssClass + " input"); 
+    var InputItem = document.querySelector("." + cssClass + " input");
     if (InputItem) {
         InputItem.type = showPassword ? "text" : "password";
     }
 }
 
+//var myWorker = new Worker('service-worker.published.js'),
+//    data,
+//    changeData = function () {
+//        // save data to local storage
+//        localStorage.setItem('data', (new Date).getTime().toString());
+//        // get data from local storage
+//        data = localStorage.getItem('data');
+//        sendToWorker();
+//    },
+//    sendToWorker = function () {
+//        // send data to your worker
+//        myWorker.postMessage({
+//            data: data
+//        });
+//    };
