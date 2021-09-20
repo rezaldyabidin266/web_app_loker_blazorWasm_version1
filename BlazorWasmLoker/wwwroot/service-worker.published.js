@@ -11,22 +11,21 @@ self.addEventListener('install', function (event) {
 });
 self.addEventListener('activate', event => event.waitUntil(onActivate(event)));
 
-let clientW;
-
 self.addEventListener('fetch', function (event) {
-
-    /*    clientW = clients.get(event);*/
 
     //USER OFFFLINE
     if (!navigator.onLine) {
         console.log('INI OFFLINE')
-        if (event.request.method === "POST") {
+        var LocalStorage;
+        self.addEventListener('message', (event) => {
+            LocalStorage = event.data;
+        });
+
+        if (event.request.method != 'GET') {
             const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
             const request = shouldServeIndexHtml ? 'index.html' : event.request;
 
-            var authHeader = event.request.headers.get('token');
-
-
+            var authHeader = event.request.headers.get('idLoker');
             console.log('INI POST OFFLINE');
 
             Promise.resolve(event.request.text()).then((payload) => {
@@ -99,7 +98,7 @@ async function onFetch(event) {
                         cache.put(event.request, response.clone());
                         return response;
                     }, (error) => {
-                      
+
                         throw error;
                     })
                 })
@@ -129,7 +128,7 @@ async function onFetch(event) {
                         //console.log("ini RESPONSE",response)
                         cache.put(event.request, response.clone());
                         return response;
-                    }, (error) => {                     
+                    }, (error) => {
                         throw error;
                     })
                 })
@@ -151,65 +150,66 @@ function updateFetch(event) {
 }
 
 function checkNetworkState() {
+
+    var LocalStorage;
+
+    self.addEventListener('message', (event) => {
+
+        LocalStorage = event.data;
+        //console.log('addMessage ' + LocalStorage.pengalamanId);
+
+    });
+
     setInterval(function () {
         if (navigator.onLine) {
-            sendOfflinePostRequestsToServer();
-
+            sendOfflinePostRequestsToServer(LocalStorage);
         }
     }, 3000);
 
-    const bct = new BroadcastChannel('install-channel');
-
-    bct.onmessage = (event) => {
-        console.log(event)
-        bct.postMessage({ token: 'MASIH KOSONG Install' });
-    };
 }
 
-async function sendOfflinePostRequestsToServer() {
+async function sendOfflinePostRequestsToServer(LocalStorage) {
     var request = indexedDB.open("PostData");
-    const broadcast = new BroadcastChannel('count-channel');
-    const broadcastToken = new BroadcastChannel('token-channel');
-    var localRespon;
 
-    broadcast.onmessage = (event) => {
-        localRespon = event.data;
-       // console.log(localRespon);
-    };
+    //BroadcastaChannel
+    //const broadcast = new BroadcastChannel('count-channel');
+    //broadcast.onmessage = (event) => { };
 
-    broadcastToken.onmessage = (event) => {
-        console.log(event)
-        broadcastToken.postMessage({ token : 'MASIH KOSONG'});
-    };
+    var parameterLocal = LocalStorage;
 
     request.onsuccess = function (event) {
         var db = event.target.result;
         var tx = db.transaction('postObject', 'readwrite');
         var store = tx.objectStore('postObject');
         var allRecords = store.getAll();
+        console.log(allRecords.result)
         allRecords.onsuccess = function () {
 
             if (allRecords.result && allRecords.result.length > 0) {
-                //console.warn(localRespon);//undefined
+           
+                console.log(LocalStorage.pengalamanId);
+
+                var jsonToken = JSON.parse(LocalStorage.token)
 
                 var records = allRecords.result
+                console.log(records[0].method);
                 //make recursive call to hit fetch requests to server in a serial manner
                 var resp = sendFetchRequestsToServer(
                     fetch(records[0].url, {
-                        method: "post",
+                        method: records[0].method,
                         headers: {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
-                            'Authorization': records[0].authHeader,
-                      
+                            'token': jsonToken,
+                            'lokerId': LocalStorage.idLoker,
+                            'pengalamanId': LocalStorage.pengalamanId
                         },
                         body: records[0].payload
                     }).then(response => response.json()).then((res) => {
 
-                        //console.log(res.token);
-                        broadcast.postMessage({ token: res.token });
+                        /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
 
-                    }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
+                    }).catch((error) => { console.log(error) }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1), LocalStorage)
 
                 for (var i = 0; i < allRecords.result.length; i++)
                     store.delete(allRecords.result[i].id)
@@ -235,12 +235,30 @@ async function sendOfflinePostRequestsToServer() {
 
 function saveIntoIndexedDb(url, authHeader, payload) {
 
-    var jsonPayLoad = JSON.parse(payload)
-    var myRequest = {
-        url: url.url,
-        authHeader: authHeader,
-        payload: JSON.stringify(jsonPayLoad)
-    };
+    var myRequest;
+
+    //JIKA DIA DELETE
+    if (url.method === 'DELETE') {
+
+        myRequest = {
+            url: url.url,
+            authHeader: authHeader,
+            payload: JSON.stringify(jsonPayLoad),
+            method: url.method
+        };
+
+    } else {
+
+        var jsonPayLoad = JSON.parse(payload)
+        myRequest = {
+            url: url.url,
+            authHeader: authHeader,
+            payload: JSON.stringify(jsonPayLoad),
+            method: url.method
+        };
+
+    }
+
 
     var request = indexedDB.open("PostData");
 
@@ -250,14 +268,15 @@ function saveIntoIndexedDb(url, authHeader, payload) {
         var store = tx.objectStore('postObject');
 
         store.add(myRequest);
-        //for (var i in myRequest) {
-        //    store.add(myRequest[i]);
-        //}
+
+        //get IndexDb Store
+        var allRecords = store.getAll();
+        console.log(allRecords.result);
     }
 }
 
 
-async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, records) {
+async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, records, LocalStorage) {
 
 
     let promise = Promise.resolve(data).then((response) => {
@@ -265,17 +284,19 @@ async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, reco
         console.log('Successfully sent request to server');
         if (records.length != 0) {
 
+            var jsonToken = JSON.parse(LocalStorage.token)
             sendFetchRequestsToServer(
                 fetch(records[0].url, {
-                    method: "post",
+                    method: records[0].method,
                     headers: {
                         'Accept': 'application/json',
                         'Content-Type': 'application/json',
-                        'Authorization': records[0].authHeader,
-                
+                        'token': jsonToken,
+                        'lokerId': LocalStorage.idLoker,
+                        'pengalamanId': LocalStorage.pengalamanId
                     },
                     body: records[0].payload
-                }).then((response) => { console.log(response.json()) }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
+                }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
         }
         return true
     }).catch((e) => {

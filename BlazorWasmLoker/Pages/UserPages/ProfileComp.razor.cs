@@ -127,11 +127,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 fotoPelamar = "asset/image/avatar.jpg";
                 MessageRespon = ex.Message;
             }
-            //finally
-            //{
-            //    dowloadGambar = false;
-            //    await InvokeAsync(StateHasChanged);
-            //}
+
             await InvokeAsync(StateHasChanged);
         }
         protected async Task InformasiPelamar()
@@ -266,6 +262,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected async Task DeletePengalaman(int id)
         {
             spinDeletePengalaman = true;
+            await LocalStorage.SetItemAsync("pengalamanId", id);
             try
             {
                 var result = await UserService.DeletePengalaman(token, id);
@@ -324,6 +321,7 @@ namespace BlazorWasmLoker.Pages.UserPages
 
         protected async Task updatePengalamanSubmit(int id)
         {
+            await LocalStorage.SetItemAsync("pengalamanId", id);
             spinUpdatePengalaman = true;
             if (pengalamanUpdateContext.Validate())
             {

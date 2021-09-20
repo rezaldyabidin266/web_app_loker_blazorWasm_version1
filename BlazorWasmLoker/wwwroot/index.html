@@ -131,55 +131,51 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>
+
         navigator.serviceWorker.register('service-worker.js');
 
-        //navigator.serviceWorker.addEventListener('message', event => {
-        //    console.log(event);
-        //    console.log(event.data.token);
-        //})
+        //PostMEssage TokenLocalStorage
 
-        const broadcast = new BroadcastChannel('count-channel');
-        const broadcastToken = new BroadcastChannel('token-channel');
-        const bct = new BroadcastChannel('install-channel');
+        //if (!navigator.onLine) {
 
-        // Listen to the response
-        broadcast.onmessage = (event) => {
-            const getRespon = async function () {
-                let respon = await event.data.token;
-                localStorage.setItem('token2', respon);
-            }
-            setInterval(getRespon, 1000);
+   
+        //}
 
-        };
+        setInterval(function () {
 
-        broadcastToken.onmessage = (event) => {
-            console.log(event)
-        }
+            var tokenLocalOnline = localStorage.getItem("token");
+            var idLoker = localStorage.getItem("IdLoker");
+            var pengalamanId = localStorage.getItem("pengalamanId");
 
-        bct.onmessage = (event) => {
-            console.log(event)
-        }
+            //console.log('Index.Js ' + pengalamanId);
 
-        var tokenLocal = localStorage.getItem("token2");
-        var tokenLocalOnline = localStorage.getItem("token");
-        console.log(tokenLocalOnline);
-        console.log(tokenLocal);
-
-        var idLoker = localStorage.getItem("IdLoker");
-        // Send first request
-        if (!navigator.onLine) {
-
-            broadcastToken.postMessage({ token: localStorage.getItem("token"), });
-
-            bct.postMessage({ token: localStorage.getItem("token"), });
-
-            broadcast.postmessage({
-                token: tokenLocal,
-                idLorker: idLoker
+            navigator.serviceWorker.controller.postMessage({
+                token: tokenLocalOnline,
+                idLoker: idLoker,
+                pengalamanId: pengalamanId
             });
 
-           
-        }
+        }, 1000);
+
+                //broadcastChanell Two-way binding index ~ sw.js
+        /*  const broadcast = new BroadcastChannel('count-channel');*/
+                // Listen to the response
+                //broadcast.onmessage = (event) => {
+                //    const getRespon = async function () {
+                //        let respon = await event.data.token;
+                //        localStorage.setItem('token2', respon);
+                //    }
+                //    setInterval(getRespon, 1000);
+
+                //};
+        /*        var tokenLocal = localStorage.getItem("token2");*/
+                // Send first request
+                //if (!navigator.onLine) {
+                //    broadcast.postmessage({
+                //        token: tokenLocal,
+                //        idLorker: idLoker
+                //    });
+                //}
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>

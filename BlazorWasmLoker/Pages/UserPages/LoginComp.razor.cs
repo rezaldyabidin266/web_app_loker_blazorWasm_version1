@@ -91,6 +91,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                         Token = result.Token,
                         Message = result.Message
                     };
+                    userService.JsConsoleLog(result.Token);
                     NavigationManager.NavigateTo("/loker");
                     spin = false;
                     //userService.JsConsoleLog(UserLoginResource);
