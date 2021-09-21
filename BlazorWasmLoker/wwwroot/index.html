@@ -134,20 +134,17 @@
 
         navigator.serviceWorker.register('service-worker.js');
 
-        //PostMEssage TokenLocalStorage
-
+        //PostMEssage LocalStorage
         setInterval(function () {
 
             var tokenLocalOnline = localStorage.getItem("token");
             var idLoker = localStorage.getItem("IdLoker");
-            var pengalamanId = localStorage.getItem("pengalamanId");
-
-            //console.log('Index.Js ' + pengalamanId);
+            var pengalaman = JSON.parse(localStorage.getItem("pengalamanIdArray"));
 
             navigator.serviceWorker.controller.postMessage({
                 token: tokenLocalOnline,
                 idLoker: idLoker,
-                pengalamanId: pengalamanId
+                pengalamanId: pengalaman
             });
 
         }, 1000);

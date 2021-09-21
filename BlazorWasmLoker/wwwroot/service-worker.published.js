@@ -154,10 +154,7 @@ function checkNetworkState() {
     var LocalStorage;
 
     self.addEventListener('message', (event) => {
-
         LocalStorage = event.data;
-        //console.log('addMessage ' + LocalStorage.pengalamanId);
-
     });
 
     setInterval(function () {
@@ -175,41 +172,54 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
     //const broadcast = new BroadcastChannel('count-channel');
     //broadcast.onmessage = (event) => { };
 
-    var parameterLocal = LocalStorage;
-
     request.onsuccess = function (event) {
         var db = event.target.result;
         var tx = db.transaction('postObject', 'readwrite');
         var store = tx.objectStore('postObject');
         var allRecords = store.getAll();
-        console.log(allRecords.result)
         allRecords.onsuccess = function () {
 
             if (allRecords.result && allRecords.result.length > 0) {
-           
+
+
                 console.log(LocalStorage.pengalamanId);
+                console.log(allRecords.result.length);
+
+                var arrayIdPengalaman;
+
+                if (LocalStorage.pengalamanId === null) {
+                    arrayIdPengalaman = ['Array Kosong'];
+                } else {
+                    arrayIdPengalaman = LocalStorage.pengalamanId
+                }
+
+                console.log(arrayIdPengalaman);
+
+                //bisa juga pake Content-Type: 'application/json'
 
                 var jsonToken = JSON.parse(LocalStorage.token)
 
                 var records = allRecords.result
                 console.log(records[0].method);
-                //make recursive call to hit fetch requests to server in a serial manner
-                var resp = sendFetchRequestsToServer(
-                    fetch(records[0].url, {
-                        method: records[0].method,
-                        headers: {
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                            'token': jsonToken,
-                            'lokerId': LocalStorage.idLoker,
-                            'pengalamanId': LocalStorage.pengalamanId
-                        },
-                        body: records[0].payload
-                    }).then(response => response.json()).then((res) => {
 
-                        /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
-
-                    }).catch((error) => { console.log(error) }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1), LocalStorage)
+                for (var i = 0; i < allRecords.result.length; i++) {
+                    console.log(arrayIdPengalaman[i]);
+                    //make recursive call to hit fetch requests to server in a serial manner
+                    var resp = sendFetchRequestsToServer(
+                        fetch(records[i].url, {
+                            method: records[i].method,
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'token': jsonToken,
+                                'lokerId': LocalStorage.idLoker,
+                                'pengalamanId': arrayIdPengalaman[i]
+                            },
+                            body: records[i].payload
+                        }).then(response => response.json()).then((res) => {
+                            /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
+                        }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
+                }
 
                 for (var i = 0; i < allRecords.result.length; i++)
                     store.delete(allRecords.result[i].id)
@@ -236,7 +246,7 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
 function saveIntoIndexedDb(url, authHeader, payload) {
 
     var myRequest;
-
+    console.log(payload);
     //JIKA DIA DELETE
     if (url.method === 'DELETE') {
 
@@ -271,7 +281,7 @@ function saveIntoIndexedDb(url, authHeader, payload) {
 
         //get IndexDb Store
         var allRecords = store.getAll();
-        console.log(allRecords.result);
+        console.log(allRecords);
     }
 }
 
@@ -282,22 +292,22 @@ async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, reco
     let promise = Promise.resolve(data).then((response) => {
 
         console.log('Successfully sent request to server');
-        if (records.length != 0) {
+        //if (records.length != 0) {
+        //    console.log(records.length);
 
-            var jsonToken = JSON.parse(LocalStorage.token)
-            sendFetchRequestsToServer(
-                fetch(records[0].url, {
-                    method: records[0].method,
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'token': jsonToken,
-                        'lokerId': LocalStorage.idLoker,
-                        'pengalamanId': LocalStorage.pengalamanId
-                    },
-                    body: records[0].payload
-                }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
-        }
+        //    var jsonToken = JSON.parse(LocalStorage.token)
+        //        sendFetchRequestsToServer(
+        //            fetch(records[0].url, {
+        //                method: records[0].method,
+        //                headers: {
+        //                    'Accept': 'application/json',
+        //                    'Content-Type': 'application/json',
+        //                    'token': jsonToken,
+        //                    'lokerId': LocalStorage.idLoker,
+        //                },
+        //                body: records[0].payload
+        //            }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
+        //}
         return true
     }).catch((e) => {
         //fetch fails only in case of network error. Fetch is successful in case of any response code

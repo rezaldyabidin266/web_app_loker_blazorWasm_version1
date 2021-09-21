@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.JSInterop;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -49,7 +50,8 @@ namespace BlazorWasmLoker.Pages.UserPages
         public EditContext pengalamanUpdateContext { get; set; }
         public EditContext pengalamanAddContext { get; set; }
         protected char maskChar = ' ';
- 
+        protected ArrayList pengalamanId = new ArrayList();
+
         //spin
         protected bool spinSave = false;
         protected bool spinDeletePengalaman = false;
@@ -262,7 +264,10 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected async Task DeletePengalaman(int id)
         {
             spinDeletePengalaman = true;
-            await LocalStorage.SetItemAsync("pengalamanId", id);
+
+            pengalamanId.Add(id);
+            await LocalStorage.SetItemAsync<ArrayList>("pengalamanIdArray", pengalamanId);
+ 
             try
             {
                 var result = await UserService.DeletePengalaman(token, id);
@@ -321,7 +326,10 @@ namespace BlazorWasmLoker.Pages.UserPages
 
         protected async Task updatePengalamanSubmit(int id)
         {
-            await LocalStorage.SetItemAsync("pengalamanId", id);
+            pengalamanId.Add(id);
+
+            await LocalStorage.SetItemAsync<ArrayList>("pengalamanIdArray", pengalamanId);
+
             spinUpdatePengalaman = true;
             if (pengalamanUpdateContext.Validate())
             {
