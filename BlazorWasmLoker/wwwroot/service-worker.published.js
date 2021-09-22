@@ -25,13 +25,25 @@ self.addEventListener('fetch', function (event) {
             const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
             const request = shouldServeIndexHtml ? 'index.html' : event.request;
 
-            var authHeader = event.request.headers.get('idLoker');
+            var authHeader = event.request.headers.get("Content-Type");
             console.log('INI POST OFFLINE');
 
-            Promise.resolve(event.request.text()).then((payload) => {
-                //save offline requests to indexed db
-                saveIntoIndexedDb(request, authHeader, payload)
-            })
+            if ((request.url.indexOf('/upload-foto') !== -1) || (request.url.indexOf('/upload-cv') !== -1)) {
+
+                Promise.resolve(event.request.formData()).then((payload) => {
+                    //save offline requests to indexed db
+                    saveIntoIndexedDb(request, authHeader, payload)
+                })
+
+            }
+            else {
+                Promise.resolve(event.request.text()).then((payload) => {
+                    //save offline requests to indexed db
+                    saveIntoIndexedDb(request, authHeader, payload)
+                })
+            }
+
+
         }
 
     }
@@ -181,44 +193,60 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
 
             if (allRecords.result && allRecords.result.length > 0) {
 
-
-                console.log(LocalStorage.pengalamanId);
-                console.log(allRecords.result.length);
-
                 var arrayIdPengalaman;
-
                 if (LocalStorage.pengalamanId === null) {
                     arrayIdPengalaman = ['Array Kosong'];
                 } else {
                     arrayIdPengalaman = LocalStorage.pengalamanId
                 }
 
-                console.log(arrayIdPengalaman);
-
-                //bisa juga pake Content-Type: 'application/json'
-
                 var jsonToken = JSON.parse(LocalStorage.token)
-
                 var records = allRecords.result
-                console.log(records[0].method);
 
                 for (var i = 0; i < allRecords.result.length; i++) {
-                    console.log(arrayIdPengalaman[i]);
-                    //make recursive call to hit fetch requests to server in a serial manner
-                    var resp = sendFetchRequestsToServer(
-                        fetch(records[i].url, {
-                            method: records[i].method,
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                                'token': jsonToken,
-                                'lokerId': LocalStorage.idLoker,
-                                'pengalamanId': arrayIdPengalaman[i]
-                            },
-                            body: records[i].payload
-                        }).then(response => response.json()).then((res) => {
-                            /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
-                        }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
+
+                    if ((records[i].url.indexOf('/upload-foto') !== -1) || (records[i].url.indexOf('/upload-cv') !== -1)) {
+
+                        var form_data = new FormData();
+                        var itemFile = records[i].payload;
+
+                        for (var key in itemFile) {
+                            console.log(key);
+                            console.log(itemFile[key]);
+                            form_data.append(key, itemFile[key]);
+                        }
+
+                        //make recursive call to hit fetch requests to server in a serial manner
+                        var resp = sendFetchRequestsToServer(
+                            fetch(records[i].url, {
+                                method: records[i].method,
+                                headers: {
+                                    'token': jsonToken,
+                                },
+                                body: form_data
+                            }).then(response => response.json()).then((res) => {
+                                /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
+                            }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
+                    }
+                    else {
+
+                        //make recursive call to hit fetch requests to server in a serial manner
+                        var resp = sendFetchRequestsToServer(
+                            fetch(records[i].url, {
+                                method: records[i].method,
+                                headers: {
+                                    'Accept': 'application/json',
+                                    'Content-Type': 'application/json',
+                                    'token': jsonToken,
+                                    'lokerId': LocalStorage.idLoker,
+                                    'pengalamanId': arrayIdPengalaman[i]
+                                },
+                                body: records[i].payload
+                            }).then(response => response.json()).then((res) => {
+                                /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
+                            }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
+
+                    }
                 }
 
                 for (var i = 0; i < allRecords.result.length; i++)
@@ -233,7 +261,7 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
         };
 
         var objectStore;
-        if (!db.objectStoreNames.contains('postObject')) {
+        if (!db.objectStoreNames.contains('postObject')) {     //jangan pernah hapus keyPath!
             objectStore = db.createObjectStore("postObject", { keyPath: 'id', autoIncrement: true });
             objectStore.createIndex("url", "url", { unique: false });
         }
@@ -246,32 +274,50 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
 function saveIntoIndexedDb(url, authHeader, payload) {
 
     var myRequest;
+    console.log(typeof payload);
     console.log(payload);
+
     //JIKA DIA DELETE
     if (url.method === 'DELETE') {
 
         myRequest = {
             url: url.url,
             authHeader: authHeader,
-            payload: JSON.stringify(jsonPayLoad),
+            payload: JSON.stringify(payload),
             method: url.method
         };
 
     } else {
 
-        var jsonPayLoad = JSON.parse(payload)
-        myRequest = {
-            url: url.url,
-            authHeader: authHeader,
-            payload: JSON.stringify(jsonPayLoad),
-            method: url.method
-        };
+            if ((url.url.indexOf('/upload-foto') !== -1) || (url.url.indexOf('/upload-cv') !== -1)) {
+
+                var formDataFile = {};
+                payload.forEach((value, key) => formDataFile[key] = value);
+
+                myRequest = {
+                    url: url.url,
+                    authHeader: authHeader,
+                    payload: formDataFile,
+                    method: url.method,
+                };
+
+            } else {
+
+                var jsonPayLoad = JSON.parse(payload)
+                myRequest = {
+                    url: url.url,
+                    authHeader: authHeader,
+                    payload: JSON.stringify(jsonPayLoad),
+                    method: url.method,
+                };
+
+            }
+
 
     }
 
 
     var request = indexedDB.open("PostData");
-
     request.onsuccess = function (event) {
         var db = event.target.result;
         var tx = db.transaction('postObject', 'readwrite');
@@ -292,22 +338,7 @@ async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, reco
     let promise = Promise.resolve(data).then((response) => {
 
         console.log('Successfully sent request to server');
-        //if (records.length != 0) {
-        //    console.log(records.length);
 
-        //    var jsonToken = JSON.parse(LocalStorage.token)
-        //        sendFetchRequestsToServer(
-        //            fetch(records[0].url, {
-        //                method: records[0].method,
-        //                headers: {
-        //                    'Accept': 'application/json',
-        //                    'Content-Type': 'application/json',
-        //                    'token': jsonToken,
-        //                    'lokerId': LocalStorage.idLoker,
-        //                },
-        //                body: records[0].payload
-        //            }), records[0].url, records[0].authHeader, records[0].payload, records.slice(1))
-        //}
         return true
     }).catch((e) => {
         //fetch fails only in case of network error. Fetch is successful in case of any response code
