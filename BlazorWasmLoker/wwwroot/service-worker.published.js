@@ -15,11 +15,6 @@ self.addEventListener('fetch', function (event) {
 
     //USER OFFFLINE
     if (!navigator.onLine) {
-        console.log('INI OFFLINE')
-        var LocalStorage;
-        self.addEventListener('message', (event) => {
-            LocalStorage = event.data;
-        });
 
         if (event.request.method != 'GET') {
             const shouldServeIndexHtml = event.request.mode === 'navigate' && !event.request.url.includes('/Identity/');
@@ -42,10 +37,7 @@ self.addEventListener('fetch', function (event) {
                     saveIntoIndexedDb(request, authHeader, payload)
                 })
             }
-
-
         }
-
     }
 
     //Jika dia bukan GET kerjakan secara default
@@ -61,7 +53,7 @@ const cacheName = `${cacheNamePrefix}${self.assetsManifest.version}`;
 const offlineAssetsInclude = [/\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /\.json$/, /\.css$/, /\.woff$/, /\.png$/, /\.jpe?g$/, /\.gif$/, /\.ico$/, /\.blat$/, /\.dat$/];
 const offlineAssetsExclude = [/^service-worker\.js$/];
 
-
+var LocalStorage;
 
 async function onInstall(event) {
     console.info('Service worker: Install');
@@ -76,6 +68,8 @@ async function onInstall(event) {
 
 async function onActivate(event) {
     console.info('Service worker: Activate');
+
+    event.waitUntil(self.clients.claim());
 
     // Delete unused caches
     const cacheKeys = await caches.keys();
@@ -161,13 +155,11 @@ function updateFetch(event) {
     })
 }
 
+self.addEventListener('message', (event) => {
+    LocalStorage = event.data;
+});
+
 function checkNetworkState() {
-
-    var LocalStorage;
-
-    self.addEventListener('message', (event) => {
-        LocalStorage = event.data;
-    });
 
     setInterval(function () {
         if (navigator.onLine) {
@@ -181,8 +173,8 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
     var request = indexedDB.open("PostData");
 
     //BroadcastaChannel
-    //const broadcast = new BroadcastChannel('count-channel');
-    //broadcast.onmessage = (event) => { };
+    const broadcast = new BroadcastChannel('count-channel');
+    broadcast.onmessage = (event) => { };
 
     request.onsuccess = function (event) {
         var db = event.target.result;
@@ -225,7 +217,9 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
                                 },
                                 body: form_data
                             }).then(response => response.json()).then((res) => {
-                                /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
+
+                                broadcast.postMessage({ pesan: 'Berhasil request data offline, diharapkan segera online' });
+
                             }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
                     }
                     else {
@@ -243,7 +237,9 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
                                 },
                                 body: records[i].payload
                             }).then(response => response.json()).then((res) => {
-                                /*  broadcast.postMessage({ token: res.token });*///token LOGIN Offline
+
+                                broadcast.postMessage({ pesan: 'Berhasil request data offline, diharapkan segera online' });
+
                             }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
 
                     }
@@ -274,8 +270,6 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
 function saveIntoIndexedDb(url, authHeader, payload) {
 
     var myRequest;
-    console.log(typeof payload);
-    console.log(payload);
 
     //JIKA DIA DELETE
     if (url.method === 'DELETE') {

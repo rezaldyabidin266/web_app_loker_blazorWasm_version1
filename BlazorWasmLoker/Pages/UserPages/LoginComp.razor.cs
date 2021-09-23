@@ -8,6 +8,7 @@ using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 //using System.Web.Helpers;
 
 namespace BlazorWasmLoker.Pages.UserPages
@@ -33,6 +34,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected TokenResource loginRespond;
         protected bool spin = false;
         protected bool sp = false;
+        protected string userNetwork;
         protected bool showPassword
         {
             get
@@ -45,6 +47,9 @@ namespace BlazorWasmLoker.Pages.UserPages
                 JSRuntime.InvokeVoidAsync("showHidePassword", "PasswordTextBox", sp);
             }
         }
+        //Timer
+        protected Timer timer = new Timer();
+
 
 
         protected override void OnInitialized()
@@ -54,6 +59,15 @@ namespace BlazorWasmLoker.Pages.UserPages
 
         protected override async Task OnInitializedAsync()
         {
+
+            timer.Interval = 1000;
+            timer.Elapsed += async (s, e) =>
+            {
+                userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
+                userService.JsConsoleLog(userNetwork);
+                await InvokeAsync(StateHasChanged);
+            };
+            timer.Start();
 
             browserUser = await JSRuntime.InvokeAsync<string>("myBrowser");
             await getIp();
@@ -74,6 +88,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected async Task loginAsync()
         {
             spin = true;
+
             /* var login = new UserLoginResource { Email = Email, Password = Password, Browser = string.Empty, IpAddress = string.Empty }*/
             if (editContext.Validate())
             {

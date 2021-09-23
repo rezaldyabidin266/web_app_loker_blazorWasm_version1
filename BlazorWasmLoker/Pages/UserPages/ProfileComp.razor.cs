@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace BlazorWasmLoker.Pages.UserPages
 {
@@ -51,6 +52,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         public EditContext pengalamanAddContext { get; set; }
         protected char maskChar = ' ';
         protected ArrayList pengalamanId = new ArrayList();
+        protected string userNetwork;
 
         //spin
         protected bool spinSave = false;
@@ -61,6 +63,9 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected bool dowloadGambar = false;
         protected bool toastTimer = false;
 
+        //Timer
+        protected Timer timer = new Timer();
+
         protected override void OnInitialized()
         {
             urlFotoUpload = UrlApi();
@@ -68,11 +73,23 @@ namespace BlazorWasmLoker.Pages.UserPages
             editContext = new EditContext(UpdatePelamarResoruce);
             pengalamanUpdateContext = new EditContext(PengalamanResourceUpdate);
             pengalamanAddContext = new EditContext(PengalamanResourdeAdd);
+
+ 
         }
 
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
+
+            timer.Interval = 1000;
+            timer.Elapsed += async (s, e) =>
+            {
+                userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
+                LokerService.JsConsoleLog(userNetwork);
+                await InvokeAsync(StateHasChanged);
+            };
+            timer.Start();
+
             await FotoPelamar();
             await InformasiPelamar();
             await ListPengalaman();

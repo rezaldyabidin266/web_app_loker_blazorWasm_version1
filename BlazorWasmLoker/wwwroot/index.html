@@ -142,32 +142,37 @@
             var pengalaman = JSON.parse(localStorage.getItem("pengalamanIdArray"));
 
             navigator.serviceWorker.controller.postMessage({
+                pesan: 'Sw Work',
                 token: tokenLocalOnline,
                 idLoker: idLoker,
-                pengalamanId: pengalaman
+                pengalamanId: pengalaman,
+
             });
 
+            if (navigator.onLine) {
+                localStorage.setItem("statusNetwork", "Online");
+            } else {
+                localStorage.setItem("statusNetwork", "Offline");
+            }
         }, 1000);
 
-                //broadcastChanell Two-way binding index ~ sw.js
-        /*  const broadcast = new BroadcastChannel('count-channel');*/
-                // Listen to the response
-                //broadcast.onmessage = (event) => {
-                //    const getRespon = async function () {
-                //        let respon = await event.data.token;
-                //        localStorage.setItem('token2', respon);
-                //    }
-                //    setInterval(getRespon, 1000);
+        //broadcastChanell Two-way binding index ~ sw.js
+        const broadcast = new BroadcastChannel('count-channel');
+        //Listen to the response
+        broadcast.onmessage = (event) => {
+            console.log(event.data.pesan);
+        };
+        broadcast.postMessage({
+            pesan: 'Tidak ada pesan',
+        });
 
-                //};
-        /*        var tokenLocal = localStorage.getItem("token2");*/
-                // Send first request
-                //if (!navigator.onLine) {
-                //    broadcast.postmessage({
-                //        token: tokenLocal,
-                //        idLorker: idLoker
-                //    });
-                //}
+
+        //window.statusNetwork = () => {
+        //    if (!navigator.onLine) {
+        //        return true;
+        //    }
+        //    return false;
+        //}
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
