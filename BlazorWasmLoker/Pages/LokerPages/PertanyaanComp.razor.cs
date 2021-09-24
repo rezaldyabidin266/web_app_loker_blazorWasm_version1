@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace BlazorWasmLoker.Pages.LokerPages
 {
@@ -32,9 +33,22 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected DateTime Date = DateTime.Today;
         protected bool spin = false;
 
+        //Timer
+        protected Timer timer = new Timer();
+        protected string userNetwork;
+
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
+
+            timer.Interval = 1000;
+            timer.Elapsed += async (s, e) =>
+            {
+                userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
+                await InvokeAsync(StateHasChanged);
+            };
+            timer.Start();
+
             var idLoker = await LocalStorage.GetItemAsync<int>("IdLoker");
             try
             {
@@ -150,8 +164,15 @@ namespace BlazorWasmLoker.Pages.LokerPages
             catch (Exception ex)
             {
                 spin = false;
-                messagePostPertanyaan = ex.Message;
-                await JSRuntime.InvokeVoidAsync("notifDev", messagePostPertanyaan, "error", 3000);
+                if (userNetwork != "Online")
+                {
+                    await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+                }
+                else
+                {
+                    messagePostPertanyaan = ex.Message;
+                    await JSRuntime.InvokeVoidAsync("notifDev", messagePostPertanyaan, "error", 3000);
+                }
             }
         }
     }

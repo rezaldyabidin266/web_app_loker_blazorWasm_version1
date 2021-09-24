@@ -54,6 +54,7 @@ const offlineAssetsInclude = [/\.dll$/, /\.pdb$/, /\.wasm/, /\.html/, /\.js$/, /
 const offlineAssetsExclude = [/^service-worker\.js$/];
 
 var LocalStorage;
+var responseServiceWorker;
 
 async function onInstall(event) {
     console.info('Service worker: Install');
@@ -216,9 +217,11 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
                                     'token': jsonToken,
                                 },
                                 body: form_data
-                            }).then(response => response.json()).then((res) => {
+                            }).then(response => response.text()).then((result) => {
 
-                                broadcast.postMessage({ pesan: 'Berhasil request data offline, diharapkan segera online' });
+                                responseServiceWorker = result;
+                                console.log(result);
+                                broadcast.postMessage({ pesan: result });
 
                             }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
                     }
@@ -236,9 +239,11 @@ async function sendOfflinePostRequestsToServer(LocalStorage) {
                                     'pengalamanId': arrayIdPengalaman[i]
                                 },
                                 body: records[i].payload
-                            }).then(response => response.json()).then((res) => {
+                            }).then(response => response.json()).then((result) => {
 
-                                broadcast.postMessage({ pesan: 'Berhasil request data offline, diharapkan segera online' });
+                                responseServiceWorker = result;
+                                console.log(result);
+                                broadcast.postMessage({ pesan: result });
 
                             }).catch((error) => { console.log(error) }), records[i].url, records[i].authHeader, records[i].payload, records.slice(1), LocalStorage)
 
@@ -283,29 +288,29 @@ function saveIntoIndexedDb(url, authHeader, payload) {
 
     } else {
 
-            if ((url.url.indexOf('/upload-foto') !== -1) || (url.url.indexOf('/upload-cv') !== -1)) {
+        if ((url.url.indexOf('/upload-foto') !== -1) || (url.url.indexOf('/upload-cv') !== -1)) {
 
-                var formDataFile = {};
-                payload.forEach((value, key) => formDataFile[key] = value);
+            var formDataFile = {};
+            payload.forEach((value, key) => formDataFile[key] = value);
 
-                myRequest = {
-                    url: url.url,
-                    authHeader: authHeader,
-                    payload: formDataFile,
-                    method: url.method,
-                };
+            myRequest = {
+                url: url.url,
+                authHeader: authHeader,
+                payload: formDataFile,
+                method: url.method,
+            };
 
-            } else {
+        } else {
 
-                var jsonPayLoad = JSON.parse(payload)
-                myRequest = {
-                    url: url.url,
-                    authHeader: authHeader,
-                    payload: JSON.stringify(jsonPayLoad),
-                    method: url.method,
-                };
+            var jsonPayLoad = JSON.parse(payload)
+            myRequest = {
+                url: url.url,
+                authHeader: authHeader,
+                payload: JSON.stringify(jsonPayLoad),
+                method: url.method,
+            };
 
-            }
+        }
 
 
     }
@@ -341,4 +346,11 @@ async function sendFetchRequestsToServer(data, reqUrl, authHeader, payload, reco
     })
 }
 
-
+self.addEventListener('push', function (event) {
+    console.log('Notifikasi push')
+    event.waitUntil(
+        self.registration.showNotification('Es Brasil', {
+            body: responseServiceWorker,
+        })
+    );
+});

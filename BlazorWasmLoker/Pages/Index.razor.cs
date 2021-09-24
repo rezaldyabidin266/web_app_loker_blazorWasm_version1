@@ -23,7 +23,8 @@ namespace BlazorWasmLoker.Pages
         public NavigationManager NavigationManager { get; set; }
         [Inject]
         IJSRuntime JSRuntime { get; set; }
-
+        [Inject]
+        protected Blazored.LocalStorage.ILocalStorageService LocalStorage { get; set; }
         protected IHttpContextAccessor httpContextAccessor;
 
         protected List<KalimatMotivasiResoruce> listMotivasi = new List<KalimatMotivasiResoruce>();
@@ -44,6 +45,8 @@ namespace BlazorWasmLoker.Pages
         public IpDocResource getIpDoc { get; set; } = new IpDocResource() { };
         public CounterResoruce saveCounter { get; set; }
 
+        protected string swResponse;
+
         protected override void OnInitialized()
         {
         
@@ -60,6 +63,7 @@ namespace BlazorWasmLoker.Pages
             userReferrer = await JSRuntime.InvokeAsync<string>("userReferrer");
             getUserAgent = await JSRuntime.InvokeAsync<string>("getUserAgent");
             userPathName = NavigationManager.Uri;
+
             await getIp();
             await IpDoc();
             await SaveCounter();

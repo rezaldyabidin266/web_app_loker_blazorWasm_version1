@@ -64,7 +64,6 @@ namespace BlazorWasmLoker.Pages.UserPages
             timer.Elapsed += async (s, e) =>
             {
                 userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
-                userService.JsConsoleLog(userNetwork);
                 await InvokeAsync(StateHasChanged);
             };
             timer.Start();
@@ -109,12 +108,20 @@ namespace BlazorWasmLoker.Pages.UserPages
                     userService.JsConsoleLog(result.Token);
                     NavigationManager.NavigateTo("/loker");
                     spin = false;
-                    //userService.JsConsoleLog(UserLoginResource);
+
                 }
                 catch (Exception ex)
                 {
-                    var result = JsonConvert.DeserializeObject<TokenResource>(ex.Message);
-                    await JSRuntime.InvokeVoidAsync("notifDev", result.Message,"error",3000);
+
+                    if (userNetwork != "Online") 
+                    {
+                        await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+                    }
+                    else
+                    {
+                        var result = JsonConvert.DeserializeObject<TokenResource>(ex.Message);
+                        await JSRuntime.InvokeVoidAsync("notifDev", result.Message, "error", 3000);
+                    }
                     spin = false;
                 }
             }

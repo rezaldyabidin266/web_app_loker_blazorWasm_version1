@@ -52,7 +52,8 @@ namespace BlazorWasmLoker.Pages.UserPages
         public EditContext pengalamanAddContext { get; set; }
         protected char maskChar = ' ';
         protected ArrayList pengalamanId = new ArrayList();
-        protected string userNetwork;
+
+        protected string swResponse;
 
         //spin
         protected bool spinSave = false;
@@ -65,6 +66,7 @@ namespace BlazorWasmLoker.Pages.UserPages
 
         //Timer
         protected Timer timer = new Timer();
+        protected string userNetwork;
 
         protected override void OnInitialized()
         {
@@ -85,7 +87,6 @@ namespace BlazorWasmLoker.Pages.UserPages
             timer.Elapsed += async (s, e) =>
             {
                 userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
-                LokerService.JsConsoleLog(userNetwork);
                 await InvokeAsync(StateHasChanged);
             };
             timer.Start();
@@ -218,8 +219,15 @@ namespace BlazorWasmLoker.Pages.UserPages
                 catch (Exception ex)
                 {
                     spinSave = false;
-                    await JSRuntime.InvokeVoidAsync("notifDev", ex.Message, "error", 3000);
-                 
+                    if (userNetwork != "Online")
+                    {
+                        await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+                    }
+                    else
+                    {
+                        MessageRespon = ex.Message;
+                        await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
+                    }
                 }
             }
             else
@@ -247,6 +255,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected async void UploadSuksesCv(FileUploadEventArgs e)
         {
             spinCv = false;
+
             await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil Upload", "success", 3000);
         }
 
@@ -303,10 +312,17 @@ namespace BlazorWasmLoker.Pages.UserPages
             }
             catch (Exception ex)
             {
-                MessageRespon = ex.Message;
-                UserService.JsConsoleLog(ex.Message);
+                if (userNetwork != "Online")
+                {
+                    await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+                }
+                else
+                {
+                    MessageRespon = ex.Message;
+                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
+                }
                 spinDeletePengalaman = false;
-                await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
+
             }
         }
 
@@ -370,10 +386,17 @@ namespace BlazorWasmLoker.Pages.UserPages
                 }
                 catch (Exception ex)
                 {
-                    MessageRespon = ex.Message;
                     spinUpdatePengalaman = false;
-                    UserService.JsConsoleLog(ex.Message);
-                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
+
+                    if (userNetwork != "Online")
+                    {
+                        await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+                    }
+                    else
+                    {
+                        MessageRespon = ex.Message;
+                        await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
+                    }
                 }
             }
             else
@@ -409,10 +432,16 @@ namespace BlazorWasmLoker.Pages.UserPages
                 }
                 catch (Exception ex)
                 {
-                    MessageRespon = ex.Message;
-                    UserService.JsConsoleLog(ex.Message);
+                    if (userNetwork != "Online")
+                    {
+                        await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+                    }
+                    else
+                    {
+                        MessageRespon = ex.Message;
+                        await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
+                    }
                     spinAddPengalaman = false;
-                    await JSRuntime.InvokeVoidAsync("notifDev", MessageRespon, "error", 3000);
                 }
             }
             else

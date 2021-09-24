@@ -160,19 +160,21 @@
         const broadcast = new BroadcastChannel('count-channel');
         //Listen to the response
         broadcast.onmessage = (event) => {
-            console.log(event.data.pesan);
+
+            //buat array terus loop 
+
+            var SwResponse = `${event.data.pesan} Mode Offline `;
+
+     
+            if (SwResponse != null) {
+                console.log(SwResponse)
+                DevExpress.ui.notify({ message: SwResponse, width: 300 }, "info", 3000);
+            }
         };
         broadcast.postMessage({
             pesan: 'Tidak ada pesan',
         });
 
-
-        //window.statusNetwork = () => {
-        //    if (!navigator.onLine) {
-        //        return true;
-        //    }
-        //    return false;
-        //}
 
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
