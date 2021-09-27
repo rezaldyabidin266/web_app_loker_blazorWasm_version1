@@ -12,7 +12,7 @@
                             <div class="img-wrap d-flex align-items-center flex-column" id="dropzone-image">
                                 @if (fotoPelamar != null)
                                 {
-                                    <img src="@fotoPelamar" style="cursor: pointer;" class="img-thumbnail">
+                                    <img src="@fotoPelamar"  style="cursor: pointer;" class="img-thumbnail">
                                 }
                                 else
                                 {
@@ -141,6 +141,8 @@
                                             <label class="form-label">Tanggal Lahir</label>
                                             <DxDateEdit @bind-Date="@UpdatePelamarResoruce.TglLahir"
                                                         Mask="dd/MMMM/yyyy"
+                                                        PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                        FirstDayOfWeek="DayOfWeek.Monday"
                                                         ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                                 <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                             </DxDateEdit>
@@ -353,6 +355,8 @@
                                     <label class="form-label">Tanggal Masuk</label>
                                     <DxDateEdit @bind-Date="@PengalamanResourceUpdate.TglAwal"
                                                 Mask="dd/MMMM/yyyy"
+                                                PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                FirstDayOfWeek="DayOfWeek.Monday"
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                     </DxDateEdit>
@@ -364,6 +368,8 @@
                                     <label class="form-label">Tanggal Resign</label>
                                     <DxDateEdit @bind-Date="@PengalamanResourceUpdate.TglAkhir"
                                                 Mask="dd/MMMM/yyyy"
+                                                PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                FirstDayOfWeek="DayOfWeek.Monday"
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                     </DxDateEdit>
@@ -442,6 +448,8 @@
                                     <label class="form-label">Tanggal Masuk</label>
                                     <DxDateEdit @bind-Date="@PengalamanResourdeAdd.TglAwal"
                                                 Mask="dd/MMMM/yyyy"
+                                                PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                FirstDayOfWeek="DayOfWeek.Monday"
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                     </DxDateEdit>
@@ -453,6 +461,8 @@
                                     <label class="form-label">Tanggal Resign</label>
                                     <DxDateEdit @bind-Date="@PengalamanResourdeAdd.TglAkhir"
                                                 Mask="dd/MMMM/yyyy"
+                                                PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                FirstDayOfWeek="DayOfWeek.Monday"
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                     </DxDateEdit>

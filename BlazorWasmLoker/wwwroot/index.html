@@ -132,7 +132,9 @@
     <script src="_framework/blazor.webassembly.js"></script>
     <script>
 
-        navigator.serviceWorker.register('service-worker.js');
+        navigator.serviceWorker.register('service-worker.js').then(reg => {
+            reg.update();
+        });
 
         //PostMEssage LocalStorage
         setInterval(function () {
@@ -162,12 +164,12 @@
         broadcast.onmessage = (event) => {
 
             //buat array terus loop 
-
             var SwResponse = `${event.data.pesan} Mode Offline `;
 
-     
+            //Kirim Triger Reset ID
+            localStorage.setItem("idPengalamanReset", "true");
+        
             if (SwResponse != null) {
-                console.log(SwResponse)
                 DevExpress.ui.notify({ message: SwResponse, width: 300 }, "info", 3000);
             }
         };

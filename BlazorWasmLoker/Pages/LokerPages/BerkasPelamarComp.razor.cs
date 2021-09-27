@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace BlazorWasmLoker.Pages.LokerPages
 {
@@ -19,16 +20,28 @@ namespace BlazorWasmLoker.Pages.LokerPages
         IJSRuntime JSRuntime { get; set; }
         [Inject]
         public NavigationManager NavigationManager { get; set; }
-
         protected bool UploadVisible { get; set; } = false;
         protected string urlApi;
         protected string urlApiCv;
         protected string token;
         protected string messageUpload;
         protected bool spin = false;
+
+        //Timer
+        protected Timer timer = new Timer();
+        protected string userNetwork;
+
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
+
+            timer.Interval = 1000;
+            timer.Elapsed += async (s, e) =>
+            {
+                userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
+                await InvokeAsync(StateHasChanged);
+            };
+            timer.Start();
         }
         protected override void OnInitialized()
         {
@@ -39,6 +52,7 @@ namespace BlazorWasmLoker.Pages.LokerPages
         protected void SelectedFilesChanged(IEnumerable<UploadFileInfo> files)
         {
             UploadVisible = files.ToList().Count > 0;
+            userService.JsConsoleLog("file Select");
             InvokeAsync(StateHasChanged);
         }
 
@@ -63,13 +77,29 @@ namespace BlazorWasmLoker.Pages.LokerPages
             return userService.UploadCv();
         }
 
-        protected void OnFileUploadStart(FileUploadStartEventArgs args)
+        protected async void OnFileUploadStart(FileUploadStartEventArgs args)
         {
             args.RequestHeaders.Add("token", token);
+            userService.JsConsoleLog("file Upload Start");
+
+            if (userNetwork != "Online")
+            {
+                await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+            }
         }
-        protected void OnFileUploadStartCv(FileUploadStartEventArgs args)
+
+        protected void OnFileError(FileUploadErrorEventArgs e)
+        {
+            userService.JsConsoleLog("file Upload Error");
+        }
+
+        protected async void OnFileUploadStartCv(FileUploadStartEventArgs args)
         {
             args.RequestHeaders.Add("token", token);
+            if (userNetwork != "Online")
+            {
+                await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+            }
         }
         protected async void UploadSukses(FileUploadEventArgs e)
         {

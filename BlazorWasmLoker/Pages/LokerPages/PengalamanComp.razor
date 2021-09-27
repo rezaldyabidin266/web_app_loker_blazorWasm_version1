@@ -52,6 +52,8 @@
                             <label class="form-label">Tanggal Masuk</label>
                             <DxDateEdit @bind-Date="@PengalamanResoruceMapping.TglAwal"
                                         Mask="dd/MMMM/yyyy"
+                                        PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                        FirstDayOfWeek="DayOfWeek.Monday"
                                         ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                 <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                             </DxDateEdit>
@@ -63,6 +65,8 @@
                             <label class="form-label">Tanggal Keluar</label>
                             <DxDateEdit @bind-Date="@PengalamanResoruceMapping.TglAkhir"
                                         Mask="dd/MMMM/yyyy"
+                                        PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                        FirstDayOfWeek="DayOfWeek.Monday"
                                         ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                 <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                             </DxDateEdit>

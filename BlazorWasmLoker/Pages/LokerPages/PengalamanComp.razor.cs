@@ -53,11 +53,23 @@ namespace BlazorWasmLoker.Pages.LokerPages
             timer.Elapsed += async (s, e) =>
             {
                 userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
+                var idPengalamanReset = await LocalStorage.GetItemAsync<string>("idPengalamanReset");
+
+                await ListPengalamanOnInit();
+                //Pengalaman Reset Id 
+                if (idPengalamanReset != null)
+                {
+                    if (idPengalamanReset == "true")
+                    {
+                        await LocalStorage.SetItemAsync<string>("idPengalamanReset", "false");
+                        pengalamanId.Clear();
+                    }
+                }
                 await InvokeAsync(StateHasChanged);
             };
             timer.Start();
 
-            await ListPengalamanOnInit();
+           
         }
 
         protected async Task ListPengalamanOnInit()

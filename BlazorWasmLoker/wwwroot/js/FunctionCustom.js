@@ -13,14 +13,19 @@
 
 //open Cv in URL OBJECT
 window.openCv = (byte) => {
+
+    //Byte Pdf
     var byteCharacters = atob(byte);
     var byteNumbers = new Array(byteCharacters.length);
     for (var i = 0; i < byteCharacters.length; i++) {
         byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     var byteArray = new Uint8Array(byteNumbers);
+    //Byte Array -> Blob
     var file = new Blob([byteArray], { type: 'application/pdf;base64' });
+    //Blob -> Object URL
     var fileURL = URL.createObjectURL(file);
+    //Open Window Tab Cv pake UrlObject
     window.open(fileURL);
 }
 

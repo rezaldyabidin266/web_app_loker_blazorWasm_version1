@@ -67,6 +67,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         //Timer
         protected Timer timer = new Timer();
         protected string userNetwork;
+        protected string idPengalamanReset;
 
         protected override void OnInitialized()
         {
@@ -75,25 +76,35 @@ namespace BlazorWasmLoker.Pages.UserPages
             editContext = new EditContext(UpdatePelamarResoruce);
             pengalamanUpdateContext = new EditContext(PengalamanResourceUpdate);
             pengalamanAddContext = new EditContext(PengalamanResourdeAdd);
-
- 
         }
 
         protected override async Task OnInitializedAsync()
         {
             token = await LocalStorage.GetItemAsync<string>("token");
-
+       
             timer.Interval = 1000;
             timer.Elapsed += async (s, e) =>
             {
                 userNetwork = await LocalStorage.GetItemAsync<string>("statusNetwork");
+                idPengalamanReset = await LocalStorage.GetItemAsync<string>("idPengalamanReset");
+
+                await ListPengalaman();
+                //Pengalaman Reset Id 
+                if (idPengalamanReset != null)
+                {
+                    if (idPengalamanReset == "true")
+                    {
+                        await LocalStorage.SetItemAsync<string>("idPengalamanReset", "false");
+                        pengalamanId.Clear();
+                    }
+                }
                 await InvokeAsync(StateHasChanged);
             };
             timer.Start();
 
             await FotoPelamar();
             await InformasiPelamar();
-            await ListPengalaman();
+         
         }
         protected async Task FotoPelamar()
         {
@@ -102,6 +113,7 @@ namespace BlazorWasmLoker.Pages.UserPages
                 byte[] fotoByte = await UserService.GetFoto(token);
                 var foto = Convert.ToBase64String(fotoByte);
                 fotoPelamar = "data:image/png;base64," + foto;
+
             }
             catch (Exception ex)
             {
@@ -126,9 +138,13 @@ namespace BlazorWasmLoker.Pages.UserPages
             UploadVisible = files.ToList().Count > 0;
             InvokeAsync(StateHasChanged);
         }
-        protected void OnFileUploadStart(FileUploadStartEventArgs args)
+        protected async void OnFileUploadStart(FileUploadStartEventArgs args)
         {
             args.RequestHeaders.Add("token", token);
+            if (userNetwork != "Online")
+            {
+                await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+            }
         }
         protected async void UploadSukses(FileUploadEventArgs e)
         {
@@ -247,9 +263,13 @@ namespace BlazorWasmLoker.Pages.UserPages
         {
             return UserService.UploadCv();
         }
-        protected void OnFileUploadStartCv(FileUploadStartEventArgs args)
+        protected async void OnFileUploadStartCv(FileUploadStartEventArgs args)
         {
             args.RequestHeaders.Add("token", token);
+            if (userNetwork != "Online")
+            {
+                await JSRuntime.InvokeVoidAsync("notifDev", "Berhasil request data offline, diharapkan segera online", "warning", 5000);
+            }
             spinCv = true;
         }
         protected async void UploadSuksesCv(FileUploadEventArgs e)
@@ -265,6 +285,11 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 byte[] CvByte = await UserService.GetCv(token);
                 await JSRuntime.InvokeVoidAsync("openCv",CvByte);
+
+                //Pdf Keywoard
+                var pdf = Convert.ToBase64String(CvByte);       //Base64 Pdf
+                var Showpdf = "data:application/pdf;base64," + pdf;
+
             }
             catch (Exception ex)
             {
@@ -278,6 +303,7 @@ namespace BlazorWasmLoker.Pages.UserPages
             try
             {
                 PengalamanResoruceId = await UserService.ListPengalaman(token);
+             
             }
             catch (Exception ex)
             {
@@ -360,7 +386,6 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected async Task updatePengalamanSubmit(int id)
         {
             pengalamanId.Add(id);
-
             await LocalStorage.SetItemAsync<ArrayList>("pengalamanIdArray", pengalamanId);
 
             spinUpdatePengalaman = true;

@@ -131,6 +131,8 @@
                                         <label class="form-label">Tanggal Lahir</label>
                                         <DxDateEdit @bind-Date="@DaftarResource.TglLahir"
                                                     Mask="dd/MMMM/yyyy"
+                                                    PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                    FirstDayOfWeek="DayOfWeek.Monday"
                                                     ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                             <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                         </DxDateEdit>
@@ -165,7 +167,7 @@
             else
             {
                 <div class="tombol-next">
-                    <button class="btn btn-pertanyaan" type="button" @onclick="goPertanyaan">           
+                    <button class="btn btn-pertanyaan" type="button" @onclick="goPertanyaan">
                         <i class="fas fa-question-circle fa-md me-1"></i> Lanjut Ke Pertanyaan
                     </button>
                 </div>

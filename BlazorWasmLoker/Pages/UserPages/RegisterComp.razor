@@ -73,6 +73,8 @@
                                     <label class="form-label">Tanggal Lahir</label>
                                     <DxDateEdit @bind-Date="@DaftarResource.TglLahir"
                                                 Mask="dd/MMMM/yyyy"
+                                                PickerDisplayMode="DatePickerDisplayMode.Calendar"
+                                                FirstDayOfWeek="DayOfWeek.Monday"
                                                 ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto">
                                         <DxDateTimeMaskProperties CaretMode="@MaskCaretMode.Advancing" />
                                     </DxDateEdit>
