@@ -68,6 +68,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         protected Timer timer = new Timer();
         protected string userNetwork;
         protected string idPengalamanReset;
+        protected string showPdfVari;
 
         protected override void OnInitialized()
         {
@@ -285,10 +286,10 @@ namespace BlazorWasmLoker.Pages.UserPages
             {
                 byte[] CvByte = await UserService.GetCv(token);
                 await JSRuntime.InvokeVoidAsync("openCv",CvByte);
-
+               
                 //Pdf Keywoard
-                var pdf = Convert.ToBase64String(CvByte);       //Base64 Pdf
-                var Showpdf = "data:application/pdf;base64," + pdf;
+                //var pdf = Convert.ToBase64String(CvByte);       //Base64 Pdf
+                //showPdfVari = "data:application/pdf;base64," + pdf;
 
             }
             catch (Exception ex)
