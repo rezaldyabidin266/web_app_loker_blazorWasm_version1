@@ -25,7 +25,7 @@ namespace BlazorWasmLoker.Pages.UserPages
         IJSRuntime JSRuntime { get; set; }
         [Inject]
         protected SettingService settingService { get; set; }
-        public UserLoginResource UserLoginResource = new UserLoginResource() { };
+        
         public IpResource getIpvalue { get; set; } = new IpResource() { };
         public EditContext editContext { get; set; }
         protected string Email;
